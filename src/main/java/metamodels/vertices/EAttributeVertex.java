@@ -3,10 +3,6 @@ package metamodels.vertices;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
 
-/**
- *
- * @author Aurelien
- */
 public class EAttributeVertex extends ENamedElementVertex {
 
     public EAttributeVertex(ENamedElement element) {

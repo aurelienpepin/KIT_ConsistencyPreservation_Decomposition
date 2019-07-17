@@ -1,9 +1,8 @@
 package main;
 
-import metamodels.vertices.ENamedElementVertex;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
+import metamodels.Metagraph;
 import parsers.MetamodelParser;
+import parsers.TransformationParser;
 
 public class Main {
     
@@ -11,7 +10,10 @@ public class Main {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
         
         String ecoreFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_to_ecore\\ecore\\student.ecore";
-        Graph<ENamedElementVertex, DefaultEdge> g = MetamodelParser.generateGraphFrom(ecoreFile);
+        String qvtrFile = "";
+        
+        Metagraph g = MetamodelParser.generateGraphFrom(ecoreFile);
+        TransformationParser.fillGraphWith(g, qvtrFile);
         
         System.out.println(g);
     }

@@ -1,5 +1,6 @@
 package parsers;
 
+import metamodels.Metagraph;
 import metamodels.vertices.EAttributeVertex;
 import metamodels.vertices.ENamedElementVertex;
 import metamodels.vertices.EPackageVertex;
@@ -8,19 +9,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
 
 public class MetamodelParser {
     
@@ -29,8 +23,8 @@ public class MetamodelParser {
      * @param ecoreFilePath File path to the Ecore metamodel
      * @return A graph filled with elements of the metamodel
      */
-    public static Graph<ENamedElementVertex, DefaultEdge> generateGraphFrom(String ecoreFilePath) {
-        Graph<ENamedElementVertex, DefaultEdge> graph = GraphTypeBuilder.<ENamedElementVertex, DefaultEdge> undirected().buildGraph();
+    public static Metagraph generateGraphFrom(String ecoreFilePath) {
+        Metagraph graph = new Metagraph();
         
         ResourceSet resourceSet = new ResourceSetImpl();
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
@@ -46,7 +40,7 @@ public class MetamodelParser {
      * @param resource
      * @param graph 
      */
-    private static void parseFromRoot(Resource resource, Graph<ENamedElementVertex, DefaultEdge> graph) {
+    private static void parseFromRoot(Resource resource, Metagraph graph) {
         if (!beginsWithEPackage(resource))
             throw new RuntimeException("The following metamodel does not begin with an EPackage: " + resource.getURI());
         
@@ -56,7 +50,7 @@ public class MetamodelParser {
         MetamodelParser.parseFromPackage(rootPackage, graph);
     }
     
-    private static void parseFromPackage(EPackage ePackage, Graph<ENamedElementVertex, DefaultEdge> graph) {
+    private static void parseFromPackage(EPackage ePackage, Metagraph graph) {
         for (EPackage subPackage : ePackage.getESubpackages()) {
             graph.addVertex(new EPackageVertex(subPackage));
             MetamodelParser.parseFromPackage(subPackage, graph);
@@ -68,7 +62,7 @@ public class MetamodelParser {
         }
     }
     
-    private static void parseFromClassifier(EClassifier eClassifier, Graph<ENamedElementVertex, DefaultEdge> graph) {
+    private static void parseFromClassifier(EClassifier eClassifier, Metagraph graph) {
         switch (eClassifier.eClass().getName()) {
             case "EClass":
                 MetamodelParser.parseFromClass((EClass) eClassifier, graph);
@@ -78,7 +72,7 @@ public class MetamodelParser {
         }
     }
     
-    private static void parseFromClass(EClass eClass, Graph<ENamedElementVertex, DefaultEdge> graph) {
+    private static void parseFromClass(EClass eClass, Metagraph graph) {
         for (EAttribute attribute : eClass.getEAttributes()) {
             graph.addVertex(new EAttributeVertex(attribute));
         }

@@ -4,7 +4,6 @@ import metamodels.vertices.EClassVertex;
 import metamodels.vertices.EClassifierVertex;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.ENamedElement;
 
 public class MetamodelVertexFactory {
     
