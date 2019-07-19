@@ -10,7 +10,7 @@ public class Main {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
         
         String ecoreFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_to_ecore\\ecore\\student.ecore";
-        String qvtrFile = "";
+        String qvtrFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\some2some\\some2some.qvtr";
         
         Metagraph g = MetamodelParser.generateGraphFrom(ecoreFile);
         TransformationParser.fillGraphWith(g, qvtrFile);

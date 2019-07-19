@@ -34,9 +34,6 @@ public abstract class ENamedElementVertex {
             return false;
         }
         final ENamedElementVertex other = (ENamedElementVertex) obj;
-        if (!Objects.equals(this.element, other.element)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.element, other.element);
     }
 }
