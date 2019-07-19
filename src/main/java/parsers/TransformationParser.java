@@ -91,4 +91,5 @@ public class TransformationParser {
     }
 }
 
+// CF. https://www.eclipse.org/forums/index.php?t=msg&th=491160&goto=1110495&
 // CF. https://github.com/haslab/echo/blob/6c35e510204fc71dcd2996fe1e084ed049408bb3/plugins/pt.uminho.haslab.echo/src/pt/uminho/haslab/mde/EMFParser.java
