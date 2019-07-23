@@ -32,4 +32,8 @@ public class QVTRelation {
     public String toString() {
         return relation.toString();
     }
+
+    public List<QVTDomain> getDomains() {
+        return domains;
+    }    
 }

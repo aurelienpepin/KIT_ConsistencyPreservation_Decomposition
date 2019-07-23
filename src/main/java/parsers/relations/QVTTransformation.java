@@ -52,4 +52,8 @@ public class QVTTransformation {
     public String toString() {
         return transformation.getName() + ": " + relations;
     }
+
+    public List<QVTRelation> getRelations() {
+        return relations;
+    }
 }

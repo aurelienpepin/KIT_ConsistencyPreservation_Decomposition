@@ -12,7 +12,7 @@ public class QVTDomain {
     /**
      * Corresponding QVT-R domain element.
      */
-    private final RelationDomain domain;
+    public final RelationDomain domain;
     
     public QVTDomain(RelationDomain domain) {
         this.domain = domain;

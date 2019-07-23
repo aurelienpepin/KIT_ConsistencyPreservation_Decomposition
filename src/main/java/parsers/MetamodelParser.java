@@ -66,7 +66,7 @@ public class MetamodelParser {
         MetamodelParser.parseFromPackage(rootPackage, graph);
     }
     
-    private static void parseFromPackage(EPackage ePackage, Metagraph graph) {
+    public static void parseFromPackage(EPackage ePackage, Metagraph graph) {
         for (EPackage subPackage : ePackage.getESubpackages()) {
             graph.addVertex(new EPackageVertex(subPackage));
             MetamodelParser.parseFromPackage(subPackage, graph);

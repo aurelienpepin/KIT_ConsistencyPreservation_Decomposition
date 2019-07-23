@@ -1,7 +1,9 @@
 package parsers;
 
 import metamodels.Metagraph;
+import metamodels.vertices.EPackageVertex;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -33,6 +35,11 @@ public class TransformationParser {
         TopLevelCS root = (TopLevelCS) metamodelResource.getContents().get(0);
         RelationModel rm = (RelationModel) root.getPivot();
         
+        Metagraph gr = new Metagraph();
+        gr.addVertex(new EPackageVertex((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject()));
+        MetamodelParser.parseFromPackage((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject(), gr);
+        System.out.println(gr);
+        
         for (TransformationCS transfCS : root.getOwnedTransformations()) {
             TransformationParser.parseTransformation(graph, (RelationalTransformation) transfCS.getPivot());
         }
@@ -50,6 +57,9 @@ public class TransformationParser {
         QVTTransformation transf = new QVTTransformation(rt);
         System.out.println(graph.getVertices());
         System.out.println(transf);
+        
+        System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain);
+        System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain.getRootVariable().get(0).getType().getESObject());
         
 //        System.out.println("Name: " + rt.getName());
 //        System.out.println("ModelParameter: " + rt.getModelParameter());
@@ -76,148 +86,7 @@ public class TransformationParser {
 //        RelationDomain rd = (RelationDomain) r.getDomain().get(0);
 //        System.out.println("R/RelationDomain: " + rd.getPattern().get(0).getTemplateExpression());
 //        System.out.println("R/RelationDomain: " + rd.getOwnedComments());
-//        
-//        OCLExpression o = new OCLExpression() {
-//            @Override
-//            public String getName() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public Object getType() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void setName(String string) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void setType(Object c) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EClass eClass() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public Resource eResource() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EObject eContainer() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EStructuralFeature eContainingFeature() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EReference eContainmentFeature() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EList<EObject> eContents() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public TreeIterator<EObject> eAllContents() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public boolean eIsProxy() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EList<EObject> eCrossReferences() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public Object eGet(EStructuralFeature feature) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public Object eGet(EStructuralFeature feature, boolean resolve) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void eSet(EStructuralFeature feature, Object newValue) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public boolean eIsSet(EStructuralFeature feature) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void eUnset(EStructuralFeature feature) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public Object eInvoke(EOperation operation, EList<?> arguments) throws InvocationTargetException {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public EList<Adapter> eAdapters() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public boolean eDeliver() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void eSetDeliver(boolean deliver) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void eNotify(Notification notification) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public <T, U extends Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(U u) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public int getStartPosition() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void setStartPosition(int i) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public int getEndPosition() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//            @Override
-//            public void setEndPosition(int i) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//        };
+
         // ObjectTemplateExp otexp = (ObjectTemplateExp) rd.getPattern().get(0).getTemplateExpression();
         // System.out.println("otexp inside: " + otexp.getPart().get(0).getResolvedProperty());
         // System.out.println("otexp inside: " + otexp.getPart().get(0));

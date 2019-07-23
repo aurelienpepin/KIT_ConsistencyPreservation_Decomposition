@@ -13,6 +13,19 @@ public abstract class EClassifierVertex extends ENamedElementVertex {
         super(element);
     }
 
+//    @Override
+//    public String getFullName() {
+//        EClassifier classifElem = (EClassifier) element;
+//        StringBuilder sb = new StringBuilder();
+//        
+//        if (classifElem.getEPackage() != null) {
+//            sb.append(classifElem.getEPackage().getName()).append("::");
+//        }
+//        
+//        sb.append(element.getName());
+//        return sb.toString();
+//    }
+    
     @Override
     public EClassifier getElement() {
         return (EClassifier) element;
