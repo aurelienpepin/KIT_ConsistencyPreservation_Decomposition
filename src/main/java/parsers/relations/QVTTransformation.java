@@ -47,4 +47,9 @@ public class QVTTransformation {
             modelParams.put(tm.getName(), new QVTModelParam(tm));
         }
     }
+
+    @Override
+    public String toString() {
+        return transformation.getName() + ": " + relations;
+    }
 }

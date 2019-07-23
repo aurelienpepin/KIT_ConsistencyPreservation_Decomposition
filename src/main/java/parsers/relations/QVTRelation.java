@@ -27,4 +27,9 @@ public class QVTRelation {
             this.domains.add(new QVTDomain((RelationDomain) rd));
         }
     }
+
+    @Override
+    public String toString() {
+        return relation.toString();
+    }
 }

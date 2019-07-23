@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.jgrapht.Graphs;
 
 public class MetamodelParser {
     
@@ -23,7 +24,7 @@ public class MetamodelParser {
      * @param ecoreFilePath File path to the Ecore metamodel
      * @return A graph filled with elements of the metamodel
      */
-    public static Metagraph generateGraphFrom(String ecoreFilePath) {
+    private static Metagraph generateGraphFrom(String ecoreFilePath) {
         Metagraph graph = new Metagraph();
         
         ResourceSet resourceSet = new ResourceSetImpl();
@@ -32,6 +33,21 @@ public class MetamodelParser {
         
         Resource metamodelResource = resourceSet.getResource(ecoreURI, true);        
         MetamodelParser.parseFromRoot(metamodelResource, graph);
+        return graph;
+    }
+    
+    /**
+     * Generate a graph from an arbitrary number of metamodels
+     * @param ecoreFilePaths List of file paths to Ecore metamodels
+     * @return A graph filled with elements of the metamodel
+     */
+    public static Metagraph generateGraphFrom(String... ecoreFilePaths) {
+        Metagraph graph = new Metagraph();
+        
+        for (String ecoreFilePath : ecoreFilePaths) {
+            Graphs.addGraph(graph, generateGraphFrom(ecoreFilePath));
+        }
+        
         return graph;
     }
     
