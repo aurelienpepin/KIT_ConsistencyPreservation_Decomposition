@@ -52,6 +52,37 @@ public class MetamodelParser {
     }
     
     /**
+     * Generate graph from the root EPackage of an Ecore metamodel.
+     * @param rootPackage
+     * @return 
+     */
+    private static Metagraph generateGraphFrom(EPackage rootPackage) {
+        if (rootPackage == null)
+            throw new RuntimeException("Root package cannot be null");
+        
+        Metagraph graph = new Metagraph();
+        graph.addVertex(new EPackageVertex(rootPackage));
+        
+        MetamodelParser.parseFromPackage(rootPackage, graph);
+        return graph;
+    }
+    
+    /**
+     * Generate a graph from an arbitrary number of root packages.
+     * @param rootPackages
+     * @return 
+     */
+    public static Metagraph generateGraphFrom(EPackage... rootPackages) {
+        Metagraph graph = new Metagraph();
+        
+        for (EPackage rootPackage : rootPackages) {
+            Graphs.addGraph(graph, generateGraphFrom(rootPackage));
+        }
+        
+        return graph;
+    }
+    
+    /**
      * 
      * @param resource
      * @param graph 
@@ -66,7 +97,7 @@ public class MetamodelParser {
         MetamodelParser.parseFromPackage(rootPackage, graph);
     }
     
-    public static void parseFromPackage(EPackage ePackage, Metagraph graph) {
+    private static void parseFromPackage(EPackage ePackage, Metagraph graph) {
         for (EPackage subPackage : ePackage.getESubpackages()) {
             graph.addVertex(new EPackageVertex(subPackage));
             MetamodelParser.parseFromPackage(subPackage, graph);

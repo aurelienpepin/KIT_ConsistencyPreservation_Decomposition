@@ -13,14 +13,17 @@ public class Main {
         // String bologna = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\studenttobachelor\\bologna.ecore";
         // String qvtrFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\studenttobachelor\\studenttobachelor.qvtr";
         
-        String person = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\person.ecore";
-        String resident = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\resident.ecore";
-        String employee = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\employee.ecore";
-        String qvtrFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        // String person = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\person.ecore";
+        // String resident = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\resident.ecore";
+        // String employee = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\employee.ecore";
         
-        Metagraph g = MetamodelParser.generateGraphFrom(person, resident, employee);
-        TransformationParser.fillGraphWith(g, qvtrFile);
+        String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        String qvtr2 = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simpleBis.qvtr";
         
-        System.out.println(g);
+        // Metagraph g = MetamodelParser.generateGraphFrom(person, resident, employee);
+        // TransformationParser.fillGraphWith(g, qvtrFile);
+        Metagraph graph = TransformationParser.generateGraphFrom(qvtr, qvtr2);
+        
+        System.out.println(graph);
     }
 }

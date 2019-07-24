@@ -1,7 +1,14 @@
 package parsers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.vertices.EPackageVertex;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -14,8 +21,48 @@ import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.relations.QVTTransformation;
+import java.util.logging.Logger;
+import org.eclipse.ocl.pivot.Import;
 
 public class TransformationParser {
+    
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
+    public static Metagraph generateGraphFrom(String... qvtrFilePaths) {
+        ResourceSet resourceSet = new ResourceSetImpl();
+        Set<EPackage> rootPackages = new HashSet<>();
+        
+        // Install QVT-R and OCL components
+        OCLstdlib.install();
+        QVTrelationStandaloneSetup.doSetup();
+        
+        for (String qvtrFilePath : qvtrFilePaths) {
+            URI qvtrURI = URI.createFileURI(qvtrFilePath);
+            Resource transfoResource = resourceSet.getResource(qvtrURI, true);
+            
+            TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
+            rootPackages.addAll(TransformationParser.findMetamodelsInTransfoFile(transfoResource));
+        }
+        
+        System.out.println(rootPackages);
+        
+        Metagraph graph = MetamodelParser.generateGraphFrom(rootPackages.toArray(new EPackage[0]));
+        
+        return graph;
+    }
+    
+    private static Set<EPackage> findMetamodelsInTransfoFile(Resource transfoResource) {
+        Set<EPackage> rootPackages = new HashSet<>();
+        
+        TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
+        RelationModel rm = (RelationModel) root.getPivot();
+                
+        for (Import packageImport : rm.getOwnedImports()) {
+            rootPackages.add((EPackage) packageImport.getImportedNamespace().getESObject());
+        }
+        
+        return rootPackages;
+    }
     
     public static void fillGraphWith(Metagraph graph, String qvtrFilePath) {
         if (graph == null)
@@ -37,7 +84,7 @@ public class TransformationParser {
         
         Metagraph gr = new Metagraph();
         gr.addVertex(new EPackageVertex((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject()));
-        MetamodelParser.parseFromPackage((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject(), gr);
+        // MetamodelParser.parseFromPackage((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject(), gr);
         System.out.println(gr);
         
         for (TransformationCS transfCS : root.getOwnedTransformations()) {
@@ -103,6 +150,16 @@ public class TransformationParser {
         
         // System.out.println(r.allOwnedElements());
         // System.out.println(r.getDomain().get(1).allOwnedElements());
+    }
+
+    private static void manageErrors(EList<Resource.Diagnostic> errors, URI qvtrURI) {
+        if (errors != null && !errors.isEmpty()) {
+            System.out.println("[Parser] The following errors were detected while parsing " + qvtrURI.path());
+            
+            for (Resource.Diagnostic error : errors) {
+                System.out.println("> " + error);
+            }
+        }
     }
 }
 
