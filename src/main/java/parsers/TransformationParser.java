@@ -28,13 +28,24 @@ public class TransformationParser {
     
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
+    /**
+     * Generate graph from an arbitrary number of QVT-R transformation files.
+     * @param qvtrFilePaths
+     * @return 
+     */
     public static Metagraph generateGraphFrom(String... qvtrFilePaths) {
-        ResourceSet resourceSet = new ResourceSetImpl();
-        Set<EPackage> rootPackages = new HashSet<>();
-        
-        // Install QVT-R and OCL components
         OCLstdlib.install();
         QVTrelationStandaloneSetup.doSetup();
+        
+        Metagraph graph = generateGraphVertices(qvtrFilePaths); // Metamodel elements
+        TransformationParser.generateGraphEdges(graph, qvtrFilePaths); // Predicates
+        
+        return graph;
+    }
+    
+    private static Metagraph generateGraphVertices(String... qvtrFilePaths) {
+        ResourceSet resourceSet = new ResourceSetImpl();
+        Set<EPackage> rootPackages = new HashSet<>();
         
         for (String qvtrFilePath : qvtrFilePaths) {
             URI qvtrURI = URI.createFileURI(qvtrFilePath);
@@ -44,9 +55,19 @@ public class TransformationParser {
             rootPackages.addAll(TransformationParser.findMetamodelsInTransfoFile(transfoResource));
         }
         
-        System.out.println(rootPackages);
+        return MetamodelParser.generateGraphFrom(rootPackages.toArray(new EPackage[0]));
+    }
+    
+    private static Metagraph generateGraphEdges(Metagraph graph, String... qvtrFilePaths) {
+        ResourceSet resourceSet = new ResourceSetImpl();
         
-        Metagraph graph = MetamodelParser.generateGraphFrom(rootPackages.toArray(new EPackage[0]));
+        for (String qvtrFilePath : qvtrFilePaths) {
+            URI qvtrURI = URI.createFileURI(qvtrFilePath);
+            Resource transfoResource = resourceSet.getResource(qvtrURI, true);
+            
+            TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
+            // TODO.
+        }
         
         return graph;
     }
@@ -64,6 +85,7 @@ public class TransformationParser {
         return rootPackages;
     }
     
+    // TO REMOVE
     public static void fillGraphWith(Metagraph graph, String qvtrFilePath) {
         if (graph == null)
             throw new RuntimeException("The metagraph object cannot be null");
@@ -97,6 +119,7 @@ public class TransformationParser {
         // System.out.println(rt.getOwnedSignature());
     }
     
+    // TO REMOVE
     private static void parseTransformation(Metagraph graph, RelationalTransformation rt) {
         if (graph == null || rt == null)
             throw new RuntimeException("The RelationalTransformation cannot be null");
@@ -162,18 +185,6 @@ public class TransformationParser {
         }
     }
 }
-
-//        System.out.println(rm.getOwnedConstraints());
-//        System.out.println(rm.getOwnedPackages());
-//        System.out.println(rm.getESObject());
-//        
-//        System.out.println(rm.getExternalURI());
-//        System.out.println(rm.getName());
-//        System.out.println(rm.eResource());
-//        
-//        System.out.println(rm.getOwnedExtensions());
-//        System.out.println(rm.eContents());
-//        System.out.println(rm.eAllContents());
 
 // CF. https://www.eclipse.org/forums/index.php?t=msg&th=491160&goto=1110495&
 // CF. https://github.com/haslab/echo/blob/6c35e510204fc71dcd2996fe1e084ed049408bb3/plugins/pt.uminho.haslab.echo/src/pt/uminho/haslab/mde/EMFParser.java
