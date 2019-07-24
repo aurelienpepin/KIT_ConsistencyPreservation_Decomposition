@@ -18,11 +18,11 @@ public class Main {
         // String employee = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\employee.ecore";
         
         String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
-        String qvtr2 = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simpleBis.qvtr";
+        // String qvtr2 = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simpleBis.qvtr";
         
         // Metagraph g = MetamodelParser.generateGraphFrom(person, resident, employee);
         // TransformationParser.fillGraphWith(g, qvtrFile);
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtr, qvtr2);
+        Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
         
         System.out.println(graph);
     }

@@ -1,10 +1,6 @@
 package parsers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.vertices.EPackageVertex;
@@ -52,7 +48,7 @@ public class TransformationParser {
             Resource transfoResource = resourceSet.getResource(qvtrURI, true);
             
             TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
-            rootPackages.addAll(TransformationParser.findMetamodelsInTransfoFile(transfoResource));
+            rootPackages.addAll(TransformationParser.findMetamodelsInFile(transfoResource));
         }
         
         return MetamodelParser.generateGraphFrom(rootPackages.toArray(new EPackage[0]));
@@ -60,19 +56,21 @@ public class TransformationParser {
     
     private static Metagraph generateGraphEdges(Metagraph graph, String... qvtrFilePaths) {
         ResourceSet resourceSet = new ResourceSetImpl();
+        Set<QVTTransformation> transformations = new HashSet<>();
         
         for (String qvtrFilePath : qvtrFilePaths) {
             URI qvtrURI = URI.createFileURI(qvtrFilePath);
             Resource transfoResource = resourceSet.getResource(qvtrURI, true);
             
             TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
-            // TODO.
+            transformations.addAll(TransformationParser.findTransformationsInFile(transfoResource));
         }
         
+        System.out.println(transformations);
         return graph;
     }
     
-    private static Set<EPackage> findMetamodelsInTransfoFile(Resource transfoResource) {
+    private static Set<EPackage> findMetamodelsInFile(Resource transfoResource) {
         Set<EPackage> rootPackages = new HashSet<>();
         
         TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
@@ -83,6 +81,17 @@ public class TransformationParser {
         }
         
         return rootPackages;
+    }
+    
+    private static Set<QVTTransformation> findTransformationsInFile(Resource transfoResource) {
+        Set<QVTTransformation> transformations = new HashSet<>();
+        TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
+        
+        for (TransformationCS transfCS : root.getOwnedTransformations()) {
+            transformations.add(new QVTTransformation((RelationalTransformation) transfCS.getPivot()));
+        }
+        
+        return transformations;
     }
     
     // TO REMOVE
