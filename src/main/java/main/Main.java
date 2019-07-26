@@ -1,7 +1,6 @@
 package main;
 
 import metamodels.Metagraph;
-import parsers.MetamodelParser;
 import parsers.TransformationParser;
 
 public class Main {

@@ -256,6 +256,11 @@
             <artifactId>org.eclipse.equinox.common</artifactId>
             <version>3.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.ocl</groupId>
+            <artifactId>ecore</artifactId>
+            <version>3.3.0-v20130520-1222</version>
+        </dependency>
         <!-- <dependency>
             <groupId>org.eclipse.xtend</groupId>
             <artifactId>xtend-maven-plugin</artifactId>
