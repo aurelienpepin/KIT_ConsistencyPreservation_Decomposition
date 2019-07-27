@@ -29,7 +29,6 @@ import org.eclipse.ocl.pivot.model.OCLstdlib;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.utilities.ParserException;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationCallExp;
-import procedure.translators.ToRemoveTransformationTranslator;
 /**
  * 
  * @author Aurélien Pepin
@@ -39,16 +38,20 @@ public class QVTDomain {
     /**
      * Corresponding QVT-R domain element.
      */
-    public final RelationDomain domain;
+    private final RelationDomain domain;
     
-    public final List<DomainPattern> patterns;
+    private final List<DomainPattern> patterns;
+    
+    private final List<PropertyTemplateItem> parts;
     
     public QVTDomain(RelationDomain domain) {
         this.domain = domain;
         this.patterns = new ArrayList<>();
+        this.parts = new ArrayList<>();
         
         for (DomainPattern dp : domain.getPattern()) {
             this.patterns.add(dp);
+            this.parts.addAll(((ObjectTemplateExp) dp.getTemplateExpression()).getPart());
         }
         
 //        System.out.println("domain: " + domain);
@@ -93,5 +96,9 @@ public class QVTDomain {
     
     public List<DomainPattern> getPatterns() {
         return patterns;
+    }
+
+    public List<PropertyTemplateItem> getParts() {
+        return parts;
     }
 }

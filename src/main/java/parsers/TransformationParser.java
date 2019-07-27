@@ -19,6 +19,12 @@ import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.relations.QVTTransformation;
 import java.util.logging.Logger;
 import org.eclipse.ocl.pivot.Import;
+import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
+import parsers.relations.QVTDomain;
+import parsers.relations.QVTRelation;
+import procedure.translators.TransformationTranslator;
+import procedure.translators.TransformationVisitor;
+import procedure.translators.TranslatorContext;
 
 public class TransformationParser {
     
@@ -66,7 +72,32 @@ public class TransformationParser {
             transformations.addAll(TransformationParser.findTransformationsInFile(transfoResource));
         }
         
-        System.out.println(transformations);
+        TransformationTranslator.translate(transformations, graph);
+        
+        // HERE, DO THE TRANSFORMATION !!! OCL > LOGIC
+//        for (QVTTransformation transformation : transformations) {
+//            System.out.println("MODEL PARAMETERS: " + transformation.getModelParams());
+//            for (QVTRelation relation : transformation.getRelations()) {
+//                for (QVTDomain domain : relation.getDomains()) {
+//                    for (PropertyTemplateItem pti : domain.getParts()) {
+//                        System.out.println(pti.getObjContainer());
+//                        
+//                        TransformationVisitor tv = new TransformationVisitor(new TranslatorContext(graph));
+//                        pti.getValue().accept(tv);
+//                        
+//                        // ALORS LA REGARDER TTES LES VARIABLES QUI REMONTENT
+//                        // SI VAR EN COMMUN: faire un arc avec les conditions des deux domaines
+//                        // (Faire remonter les variables)
+//                        
+//                        // Exemple:
+//                        // d1 {propA = 'a' + var}
+//                        // d2 {propB = 'b' + var}
+//                        // RESULTAT CONDITION propA <-> propB : (propA = 'a' + var) AND (propB = 'b' + var)
+//                    }
+//                }
+//            }
+//        }
+        
         return graph;
     }
     
@@ -137,8 +168,8 @@ public class TransformationParser {
         System.out.println(graph.getVertices());
         System.out.println(transf);
         
-        System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain);
-        System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain.getRootVariable().get(0).getType().getESObject());
+        // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain);
+        // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain.getRootVariable().get(0).getType().getESObject());
         
 //        System.out.println("Name: " + rt.getName());
 //        System.out.println("ModelParameter: " + rt.getModelParameter());

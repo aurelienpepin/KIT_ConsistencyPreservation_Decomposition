@@ -490,6 +490,14 @@ public class TransformationVisitor extends AbstractVisitor<Object, TranslatorCon
 
     @Override
     public Object visitOperationCallExp(OperationCallExp oce) {
+        System.out.println("[VISIT@OperationCallExp] " + oce);
+        System.out.println(oce.getReferredOperation().getOperationId());
+        System.out.println(oce.getReferredOperation().getOperationId().getGeneralizedId());
+        System.out.println(oce.getReferredOperation().getOperationId().getParametersId());
+        System.out.println(oce.getReferredOperation().getOperationId().getParent());
+        System.out.println(oce.getReferredOperation().getOperationId().getName());
+        System.out.println(oce.getReferredOperation().getOperationId().getDisplayName());
+        System.out.println(oce.getReferredOperation().getOperationId().getLiteralName());
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -750,7 +758,9 @@ public class TransformationVisitor extends AbstractVisitor<Object, TranslatorCon
 
     @Override
     public Object visitVariableExp(VariableExp ve) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("[VISIT@VariableExp] " + ve);
+        return null;
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -767,5 +777,4 @@ public class TransformationVisitor extends AbstractVisitor<Object, TranslatorCon
     public Object visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

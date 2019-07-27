@@ -13,7 +13,7 @@ import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
  * 
  * @author Aurélien Pepin
  */
-public class QVTTransformation {
+public class QVTTransformation implements QVTTranslatable {
     
     /**
      * Corresponding QVT-R transformation element.
@@ -46,6 +46,16 @@ public class QVTTransformation {
         for (TypedModel tm : transformation.getModelParameter()) {
             modelParams.put(tm.getName(), new QVTModelParam(tm));
         }
+        
+        // TODO: handle keys
+        if (!transformation.getOwnedKey().isEmpty())
+            throw new RuntimeException("TODO: support the use of keys in transformations");
+    }
+    @Override
+    public void translate() {
+        for (QVTRelation relation : relations) {
+            relation.translate();
+        }
     }
 
     @Override
@@ -55,5 +65,9 @@ public class QVTTransformation {
 
     public List<QVTRelation> getRelations() {
         return relations;
+    }
+
+    public Map<String, QVTModelParam> getModelParams() {
+        return modelParams;
     }
 }
