@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import metamodels.Metagraph;
+import metamodels.edges.PredicateEdge;
 import metamodels.vertices.EAttributeVertex;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.pivot.Variable;
@@ -82,7 +83,7 @@ public class QVTRelation implements QVTTranslatable {
                     ENamedElement elem1 = (ENamedElement) classes.get(dep).get(i).getResolvedProperty().getESObject();
                     ENamedElement elem2 = (ENamedElement) classes.get(dep).get(j).getResolvedProperty().getESObject();
                     
-                    graph.addEdge(new EAttributeVertex(elem1), new EAttributeVertex(elem2));
+                    graph.addEdge(new EAttributeVertex(elem1), new EAttributeVertex(elem2), new PredicateEdge());
                 }
             }
         }

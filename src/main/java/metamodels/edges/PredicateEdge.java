@@ -8,4 +8,7 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class PredicateEdge extends DefaultEdge {
     
+    public PredicateEdge() {
+        throw new RuntimeException("Constructor of PredicateEdge");
+    }
 }

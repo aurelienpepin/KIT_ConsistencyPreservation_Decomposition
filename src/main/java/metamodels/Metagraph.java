@@ -23,10 +23,10 @@ public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, Predi
         this.elementsAsVertices = new HashMap<>();
     }
 
-    public Metagraph(Supplier<ENamedElementVertex> vertexSupplier, Supplier<PredicateEdge> edgeSupplier, boolean weighted) {
-        super(vertexSupplier, edgeSupplier, weighted);
-        this.elementsAsVertices = new HashMap<>();
-    }
+    // public Metagraph(Supplier<ENamedElementVertex> vertexSupplier, Supplier<PredicateEdge> edgeSupplier, boolean weighted) {
+    //     super(vertexSupplier, edgeSupplier, weighted);
+    //     this.elementsAsVertices = new HashMap<>();
+    // }
 
     @Override
     public boolean addVertex(ENamedElementVertex v) {
