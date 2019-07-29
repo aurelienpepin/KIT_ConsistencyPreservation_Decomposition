@@ -1,10 +1,12 @@
 package parsers.relations;
 
+import metamodels.Metagraph;
+
 /**
  *
  * @author Aurelien
  */
 public interface QVTTranslatable {
     
-    public void translate();
+    public void translate(Metagraph graph);
 }

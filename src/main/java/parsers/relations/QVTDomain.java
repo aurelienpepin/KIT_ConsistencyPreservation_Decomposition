@@ -101,4 +101,8 @@ public class QVTDomain {
     public List<PropertyTemplateItem> getParts() {
         return parts;
     }
+
+    public RelationDomain getDomain() {
+        return domain;
+    }
 }

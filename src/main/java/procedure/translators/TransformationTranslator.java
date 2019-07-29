@@ -12,7 +12,7 @@ public class TransformationTranslator {
     
     public static void translate(Set<QVTTransformation> transformations, Metagraph graph) {
         for (QVTTransformation transformation : transformations) {
-            transformation.translate();
+            transformation.translate(graph);
         }
     }
 }

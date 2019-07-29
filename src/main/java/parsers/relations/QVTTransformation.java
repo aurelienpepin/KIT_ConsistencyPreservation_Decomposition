@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import metamodels.Metagraph;
 import org.eclipse.qvtd.pivot.qvtbase.Rule;
 import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
@@ -52,9 +53,9 @@ public class QVTTransformation implements QVTTranslatable {
             throw new RuntimeException("TODO: support the use of keys in transformations");
     }
     @Override
-    public void translate() {
+    public void translate(Metagraph graph) {
         for (QVTRelation relation : relations) {
-            relation.translate();
+            relation.translate(graph);
         }
     }
 

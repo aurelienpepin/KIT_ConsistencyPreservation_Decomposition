@@ -1,5 +1,9 @@
 package procedure.translators;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.eclipse.ocl.pivot.Annotation;
 import org.eclipse.ocl.pivot.AnyType;
 import org.eclipse.ocl.pivot.AssociationClass;
@@ -129,657 +133,654 @@ import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
 
 /**
- * A visitor to transform OCL expressions into logic formulas.
- * @author Aurélien Pepin
+ *
+ * @author Aurelien
  */
-public class TransformationVisitor extends AbstractVisitor<Object, TranslatorContext> {
+public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
 
-    public TransformationVisitor(TranslatorContext context) {
+    public DependencyVisitor(TranslatorContext context) {
         super(context);
     }
     
     @Override
-    public Object visiting(Visitable vstbl) {
+    public Set<Variable> visiting(Visitable vstbl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitAnnotation(Annotation antn) {
+    public Set<Variable> visitAnnotation(Annotation antn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitAnyType(AnyType at) {
+    public Set<Variable> visitAnyType(AnyType at) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitAssociationClass(AssociationClass ac) {
+    public Set<Variable> visitAssociationClass(AssociationClass ac) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitAssociationClassCallExp(AssociationClassCallExp acce) {
+    public Set<Variable> visitAssociationClassCallExp(AssociationClassCallExp acce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitBagType(BagType bt) {
+    public Set<Variable> visitBagType(BagType bt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitBehavior(Behavior bhvr) {
+    public Set<Variable> visitBehavior(Behavior bhvr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitBooleanLiteralExp(BooleanLiteralExp ble) {
+    public Set<Variable> visitBooleanLiteralExp(BooleanLiteralExp ble) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCallExp(CallExp ce) {
+    public Set<Variable> visitCallExp(CallExp ce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCallOperationAction(CallOperationAction action) {
+    public Set<Variable> visitCallOperationAction(CallOperationAction action) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitClass(Class type) {
+    public Set<Variable> visitClass(Class type) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCollectionItem(CollectionItem ci) {
+    public Set<Variable> visitCollectionItem(CollectionItem ci) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCollectionLiteralExp(CollectionLiteralExp cle) {
+    public Set<Variable> visitCollectionLiteralExp(CollectionLiteralExp cle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCollectionLiteralPart(CollectionLiteralPart clp) {
+    public Set<Variable> visitCollectionLiteralPart(CollectionLiteralPart clp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCollectionRange(CollectionRange cr) {
+    public Set<Variable> visitCollectionRange(CollectionRange cr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCollectionType(CollectionType ct) {
+    public Set<Variable> visitCollectionType(CollectionType ct) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitComment(Comment cmnt) {
+    public Set<Variable> visitComment(Comment cmnt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCompleteClass(CompleteClass cc) {
+    public Set<Variable> visitCompleteClass(CompleteClass cc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCompleteEnvironment(CompleteEnvironment ce) {
+    public Set<Variable> visitCompleteEnvironment(CompleteEnvironment ce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCompleteModel(CompleteModel cm) {
+    public Set<Variable> visitCompleteModel(CompleteModel cm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCompletePackage(CompletePackage cp) {
+    public Set<Variable> visitCompletePackage(CompletePackage cp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitConnectionPointReference(ConnectionPointReference cpr) {
+    public Set<Variable> visitConnectionPointReference(ConnectionPointReference cpr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitConstraint(Constraint c) {
+    public Set<Variable> visitConstraint(Constraint c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDataType(DataType dt) {
+    public Set<Variable> visitDataType(DataType dt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDetail(Detail detail) {
+    public Set<Variable> visitDetail(Detail detail) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDynamicBehavior(DynamicBehavior db) {
+    public Set<Variable> visitDynamicBehavior(DynamicBehavior db) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDynamicElement(DynamicElement de) {
+    public Set<Variable> visitDynamicElement(DynamicElement de) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDynamicProperty(DynamicProperty dp) {
+    public Set<Variable> visitDynamicProperty(DynamicProperty dp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDynamicType(DynamicType dt) {
+    public Set<Variable> visitDynamicType(DynamicType dt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDynamicValueSpecification(DynamicValueSpecification dvs) {
+    public Set<Variable> visitDynamicValueSpecification(DynamicValueSpecification dvs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitElement(Element elmnt) {
+    public Set<Variable> visitElement(Element elmnt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitElementExtension(ElementExtension ee) {
+    public Set<Variable> visitElementExtension(ElementExtension ee) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitEnumLiteralExp(EnumLiteralExp ele) {
+    public Set<Variable> visitEnumLiteralExp(EnumLiteralExp ele) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitEnumeration(Enumeration enmrtn) {
+    public Set<Variable> visitEnumeration(Enumeration enmrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitEnumerationLiteral(EnumerationLiteral el) {
+    public Set<Variable> visitEnumerationLiteral(EnumerationLiteral el) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitExpressionInOCL(ExpressionInOCL eiocl) {
+    public Set<Variable> visitExpressionInOCL(ExpressionInOCL eiocl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitFeature(Feature ftr) {
+    public Set<Variable> visitFeature(Feature ftr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitFeatureCallExp(FeatureCallExp fce) {
+    public Set<Variable> visitFeatureCallExp(FeatureCallExp fce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitFinalState(FinalState fs) {
+    public Set<Variable> visitFinalState(FinalState fs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIfExp(IfExp ifexp) {
+    public Set<Variable> visitIfExp(IfExp ifexp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitImport(Import i) {
+    public Set<Variable> visitImport(Import i) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitInstanceSpecification(InstanceSpecification is) {
+    public Set<Variable> visitInstanceSpecification(InstanceSpecification is) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIntegerLiteralExp(IntegerLiteralExp ile) {
+    public Set<Variable> visitIntegerLiteralExp(IntegerLiteralExp ile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitInvalidLiteralExp(InvalidLiteralExp ile) {
+    public Set<Variable> visitInvalidLiteralExp(InvalidLiteralExp ile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitInvalidType(InvalidType it) {
+    public Set<Variable> visitInvalidType(InvalidType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIterableType(IterableType it) {
+    public Set<Variable> visitIterableType(IterableType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIterateExp(IterateExp ie) {
+    public Set<Variable> visitIterateExp(IterateExp ie) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIteration(Iteration itrtn) {
+    public Set<Variable> visitIteration(Iteration itrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIteratorExp(IteratorExp ie) {
+    public Set<Variable> visitIteratorExp(IteratorExp ie) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitIteratorVariable(IteratorVariable iv) {
+    public Set<Variable> visitIteratorVariable(IteratorVariable iv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLambdaType(LambdaType lt) {
+    public Set<Variable> visitLambdaType(LambdaType lt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLanguageExpression(LanguageExpression le) {
+    public Set<Variable> visitLanguageExpression(LanguageExpression le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLetExp(LetExp letexp) {
+    public Set<Variable> visitLetExp(LetExp letexp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLetVariable(LetVariable lv) {
+    public Set<Variable> visitLetVariable(LetVariable lv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLibrary(Library lbr) {
+    public Set<Variable> visitLibrary(Library lbr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLiteralExp(LiteralExp le) {
+    public Set<Variable> visitLiteralExp(LiteralExp le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitLoopExp(LoopExp le) {
+    public Set<Variable> visitLoopExp(LoopExp le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitMapLiteralExp(MapLiteralExp mle) {
+    public Set<Variable> visitMapLiteralExp(MapLiteralExp mle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitMapLiteralPart(MapLiteralPart mlp) {
+    public Set<Variable> visitMapLiteralPart(MapLiteralPart mlp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitMapType(MapType mt) {
+    public Set<Variable> visitMapType(MapType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitMessageExp(MessageExp me) {
+    public Set<Variable> visitMessageExp(MessageExp me) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitMessageType(MessageType mt) {
+    public Set<Variable> visitMessageType(MessageType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitModel(Model model) {
+    public Set<Variable> visitModel(Model model) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitNamedElement(NamedElement ne) {
+    public Set<Variable> visitNamedElement(NamedElement ne) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitNamespace(Namespace nmspc) {
+    public Set<Variable> visitNamespace(Namespace nmspc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitNavigationCallExp(NavigationCallExp nce) {
+    public Set<Variable> visitNavigationCallExp(NavigationCallExp nce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitNullLiteralExp(NullLiteralExp nle) {
+    public Set<Variable> visitNullLiteralExp(NullLiteralExp nle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitNumericLiteralExp(NumericLiteralExp nle) {
+    public Set<Variable> visitNumericLiteralExp(NumericLiteralExp nle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitOCLExpression(OCLExpression ocle) {
+    public Set<Variable> visitOCLExpression(OCLExpression ocle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitOperation(Operation oprtn) {
+    public Set<Variable> visitOperation(Operation oprtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitOperationCallExp(OperationCallExp oce) {
-        System.out.println("[VISIT@OperationCallExp] " + oce);
-        System.out.println(oce.getReferredOperation().getOperationId());
-        System.out.println(oce.getReferredOperation().getOperationId().getGeneralizedId());
-        System.out.println(oce.getReferredOperation().getOperationId().getParametersId());
-        System.out.println(oce.getReferredOperation().getOperationId().getParent());
-        System.out.println(oce.getReferredOperation().getOperationId().getName());
-        System.out.println(oce.getReferredOperation().getOperationId().getDisplayName());
-        System.out.println(oce.getReferredOperation().getOperationId().getLiteralName());
-        System.out.println(oce.getOwnedArguments());
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitOrderedSetType(OrderedSetType ost) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitOrphanCompletePackage(OrphanCompletePackage ocp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackage(Package pckg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitParameter(Parameter prmtr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitParameterVariable(ParameterVariable pv) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrecedence(Precedence prcdnc) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrimitiveCompletePackage(PrimitiveCompletePackage pcp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrimitiveType(PrimitiveType pt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitProfile(Profile prfl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitProfileApplication(ProfileApplication pa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitProperty(Property prprt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPropertyCallExp(PropertyCallExp pce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPseudostate(Pseudostate psdst) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitRealLiteralExp(RealLiteralExp rle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitRegion(Region region) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitResultVariable(ResultVariable rv) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSelfType(SelfType st) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSendSignalAction(SendSignalAction action) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequenceType(SequenceType st) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSetType(SetType st) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitShadowExp(ShadowExp se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitShadowPart(ShadowPart sp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSignal(Signal signal) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSlot(Slot slot) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStandardLibrary(StandardLibrary sl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitState(State state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStateExp(StateExp se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStateMachine(StateMachine sm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStereotype(Stereotype strtp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStereotypeExtender(StereotypeExtender se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitStringLiteralExp(StringLiteralExp sle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTemplateBinding(TemplateBinding tb) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTemplateParameter(TemplateParameter tp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTemplateParameterSubstitution(TemplateParameterSubstitution tps) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTemplateSignature(TemplateSignature ts) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTemplateableElement(TemplateableElement te) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTransition(Transition trnstn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTrigger(Trigger trgr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTupleLiteralExp(TupleLiteralExp tle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTupleLiteralPart(TupleLiteralPart tlp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTupleType(TupleType tt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitType(Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTypeExp(TypeExp te) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitTypedElement(TypedElement te) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitValueSpecification(ValueSpecification vs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitVariable(Variable vrbl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitVariableDeclaration(VariableDeclaration vd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitVariableExp(VariableExp ve) {
-        System.out.println("[VISIT@VariableExp] " + ve);
-        System.out.println(ve.getReferredElement());               // lstn : String[1]
-        System.out.println(ve.getReferredElement().getESObject()); // null
-        System.out.println(ve.getReferredElement() instanceof Variable);    // SharedVariableImpl
+    public Set<Variable> visitOperationCallExp(OperationCallExp oce) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Variable> sourceSet = oce.getOwnedSource().accept(this);
+        Set<Variable> argumentsSet = new HashSet<>();
         
-        return ve.getReferredElement();
+        for (OCLExpression expr : oce.getOwnedArguments()) {
+            argumentsSet.addAll(expr.accept(this));
+        }
+        
+        sourceSet.addAll(argumentsSet);
+        return sourceSet;
+    }
+
+    @Override
+    public Set<Variable> visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitOrderedSetType(OrderedSetType ost) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitOrphanCompletePackage(OrphanCompletePackage ocp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPackage(Package pckg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitParameter(Parameter prmtr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitParameterVariable(ParameterVariable pv) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPrecedence(Precedence prcdnc) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPrimitiveCompletePackage(PrimitiveCompletePackage pcp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPrimitiveType(PrimitiveType pt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitProfile(Profile prfl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitProfileApplication(ProfileApplication pa) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitProperty(Property prprt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPropertyCallExp(PropertyCallExp pce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPseudostate(Pseudostate psdst) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRealLiteralExp(RealLiteralExp rle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRegion(Region region) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitResultVariable(ResultVariable rv) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSelfType(SelfType st) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSendSignalAction(SendSignalAction action) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSequenceType(SequenceType st) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSetType(SetType st) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitShadowExp(ShadowExp se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitShadowPart(ShadowPart sp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSignal(Signal signal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSlot(Slot slot) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStandardLibrary(StandardLibrary sl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitState(State state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStateExp(StateExp se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStateMachine(StateMachine sm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStereotype(Stereotype strtp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStereotypeExtender(StereotypeExtender se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStringLiteralExp(StringLiteralExp sle) {
+        return new HashSet<>();
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitVertex(Vertex vertex) {
+    public Set<Variable> visitTemplateBinding(TemplateBinding tb) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitVoidType(VoidType vt) {
+    public Set<Variable> visitTemplateParameter(TemplateParameter tp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitWildcardType(WildcardType wt) {
+    public Set<Variable> visitTemplateParameterSubstitution(TemplateParameterSubstitution tps) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Set<Variable> visitTemplateSignature(TemplateSignature ts) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTemplateableElement(TemplateableElement te) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTransition(Transition trnstn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTrigger(Trigger trgr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTupleLiteralExp(TupleLiteralExp tle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTupleLiteralPart(TupleLiteralPart tlp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTupleType(TupleType tt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitType(Type type) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTypeExp(TypeExp te) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTypedElement(TypedElement te) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitValueSpecification(ValueSpecification vs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitVariable(Variable vrbl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitVariableDeclaration(VariableDeclaration vd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitVariableExp(VariableExp ve) {
+        return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitVertex(Vertex vertex) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitVoidType(VoidType vt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitWildcardType(WildcardType wt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
