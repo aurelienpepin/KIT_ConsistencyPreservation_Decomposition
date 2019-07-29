@@ -17,11 +17,11 @@ public class Main {
         String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
         Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
         
-        // Map<String, String> cfg = new HashMap<>();
-        // cfg.put("model", "true");
+        Map<String, String> cfg = new HashMap<>();
+        cfg.put("model", "true");
         
-        // Context context = new Context(cfg);
-        // Solver s = context.mkSolver();
+        Context context = new Context(cfg);
+        Solver s = context.mkSolver();
         
         System.out.println(graph);
     }

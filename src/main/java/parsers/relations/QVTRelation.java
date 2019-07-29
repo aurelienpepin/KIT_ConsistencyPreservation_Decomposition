@@ -1,7 +1,8 @@
 package parsers.relations;
 
+import com.microsoft.z3.BoolExpr;
+import com.microsoft.z3.Expr;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,13 +78,23 @@ public class QVTRelation implements QVTTranslatable {
         System.out.println("Classes: " + classes);
         
         // TEMP. Predicates via subsets (all distinct pairs)
+        TranslatorContext tc = new TranslatorContext(graph);
+        
         for (Variable dep : classes.keySet()) {
             for (int i = 0; i < classes.get(dep).size(); ++i) {
                 for (int j = i + 1; j < classes.get(dep).size(); ++j) {
                     ENamedElement elem1 = (ENamedElement) classes.get(dep).get(i).getResolvedProperty().getESObject();
                     ENamedElement elem2 = (ENamedElement) classes.get(dep).get(j).getResolvedProperty().getESObject();
                     
-                    graph.addEdge(new EAttributeVertex(elem1), new EAttributeVertex(elem2), new PredicateEdge());
+                    EAttributeVertex eav1 = new EAttributeVertex(elem1);
+                    EAttributeVertex eav2 = new EAttributeVertex(elem2);
+                    
+                    // WE ONLY WORK WITH EQUALITY HERE.......................
+                    
+                    Expr eq1 = tc.getZ3Ctx().mkConst(eav1.getFullName(), tc.getZ3Ctx().mkStringSort());
+                    Expr eq2 = tc.getZ3Ctx().mkConst(eav2.getFullName(), tc.getZ3Ctx().mkStringSort());
+                    BoolExpr predicate = tc.getZ3Ctx().mkEq(eq1, eq2);
+                    graph.addEdge(eav1, eav2, new PredicateEdge(predicate));                   
                 }
             }
         }

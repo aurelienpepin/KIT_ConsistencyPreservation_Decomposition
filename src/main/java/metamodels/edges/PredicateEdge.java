@@ -1,5 +1,6 @@
 package metamodels.edges;
 
+import com.microsoft.z3.BoolExpr;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -8,7 +9,9 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class PredicateEdge extends DefaultEdge {
     
-    public PredicateEdge() {
-        throw new RuntimeException("Constructor of PredicateEdge");
+    private final BoolExpr predicate;
+    
+    public PredicateEdge(BoolExpr predicate) {
+        this.predicate = predicate;
     }
 }
