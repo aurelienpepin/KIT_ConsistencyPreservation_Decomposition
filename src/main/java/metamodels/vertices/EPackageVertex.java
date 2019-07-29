@@ -24,7 +24,7 @@ public class EPackageVertex extends ENamedElementVertex {
 
     @Override
     public String toString() {
-        return "Package{" + element.getName() + "}";
+        return "Package{" + this.getFullName() + "}";
     }
     
     @Override

@@ -28,7 +28,7 @@ public class EReferenceVertex extends ENamedElementVertex {
 
     @Override
     public String toString() {
-        return "Ref{" + element.getName() + "}";
+        return "Ref{" + this.getFullName() + "}";
     }
     
     @Override

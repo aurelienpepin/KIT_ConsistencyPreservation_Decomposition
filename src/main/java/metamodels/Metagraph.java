@@ -5,25 +5,25 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import metamodels.edges.PredicateEdge;
 import metamodels.vertices.ENamedElementVertex;
 import org.eclipse.emf.ecore.ENamedElement;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
 /**
  *
  * @author Aurelien
  */
-public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, DefaultEdge> {
+public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, PredicateEdge> {
     
     private final Map<ENamedElement, ENamedElementVertex> elementsAsVertices;
     
     public Metagraph() {
-        super(DefaultEdge.class);
+        super(PredicateEdge.class);
         this.elementsAsVertices = new HashMap<>();
     }
 
-    public Metagraph(Supplier<ENamedElementVertex> vertexSupplier, Supplier<DefaultEdge> edgeSupplier, boolean weighted) {
+    public Metagraph(Supplier<ENamedElementVertex> vertexSupplier, Supplier<PredicateEdge> edgeSupplier, boolean weighted) {
         super(vertexSupplier, edgeSupplier, weighted);
         this.elementsAsVertices = new HashMap<>();
     }

@@ -11,7 +11,7 @@ public class EClassVertex extends EClassifierVertex {
 
     @Override
     public String toString() {
-        return "Class{" + element.getName() + "}";
+        return "Class{" + this.getFullName() + "}";
     }
     
     @Override

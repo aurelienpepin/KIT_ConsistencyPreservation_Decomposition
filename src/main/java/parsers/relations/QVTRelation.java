@@ -82,16 +82,11 @@ public class QVTRelation implements QVTTranslatable {
                     ENamedElement elem1 = (ENamedElement) classes.get(dep).get(i).getResolvedProperty().getESObject();
                     ENamedElement elem2 = (ENamedElement) classes.get(dep).get(j).getResolvedProperty().getESObject();
                     
-                    System.out.println("e1: " + elem1);
-                    System.out.println("e2: " + elem2);
-                    // System.out.println(classes.get(dep).get(i).getReferredElement().getESObject());
-                    
-                    System.out.println(graph.elementsInVertices());
-                    
                     graph.addEdge(new EAttributeVertex(elem1), new EAttributeVertex(elem2));
                 }
             }
         }
+        
         // Q: deux visiteurs ou un seul?
         // ici on a les classes de dépendances
         // pour chaque elem de dépendance

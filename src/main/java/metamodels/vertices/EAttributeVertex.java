@@ -24,7 +24,7 @@ public class EAttributeVertex extends ENamedElementVertex {
     
     @Override
     public String toString() {
-        return "Attr{" + element.getName() + "}";
+        return "Attr{" + this.getFullName() + "}";
     }
     
     @Override
