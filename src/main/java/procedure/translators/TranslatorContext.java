@@ -8,10 +8,7 @@ import metamodels.Metagraph;
  */
 public class TranslatorContext {
     
-    /**
-     * The graph representing the QVT-R input files.
-     */
-    private final Metagraph graph;
+    private static final TranslatorContext INSTANCE = new TranslatorContext();
     
     /**
      * The context for Z3 transformations.
@@ -19,12 +16,16 @@ public class TranslatorContext {
      */
     private final com.microsoft.z3.Context z3Context;
     
-    public TranslatorContext(Metagraph graph) {
-        if (graph == null)
-            throw new RuntimeException("The metagraph cannot be null");
-        
-        this.graph = graph;
+    private TranslatorContext() {
         this.z3Context = new com.microsoft.z3.Context();
+    }
+    
+    /**
+     * TranslatorContext Singleton.
+     * @return 
+     */
+    public static final TranslatorContext getInstance() {
+        return INSTANCE;
     }
     
     public com.microsoft.z3.Context getZ3Ctx() {

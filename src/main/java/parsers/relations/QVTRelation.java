@@ -60,7 +60,7 @@ public class QVTRelation implements QVTTranslatable {
     }
     
     private void computeDependencyClasses(Metagraph graph) {
-        DependencyVisitor tv = new DependencyVisitor(new TranslatorContext(graph));
+        DependencyVisitor tv = new DependencyVisitor(TranslatorContext.getInstance());
         
         for (QVTDomain domain : domains) {
             System.out.println("ROOTVAR DU DOMAIN: " + domain.getDomain().getRootVariable());
@@ -78,7 +78,7 @@ public class QVTRelation implements QVTTranslatable {
         System.out.println("Classes: " + classes);
         
         // TEMP. Predicates via subsets (all distinct pairs)
-        TranslatorContext tc = new TranslatorContext(graph);
+        TranslatorContext tc = TranslatorContext.getInstance();
         
         for (Variable dep : classes.keySet()) {
             for (int i = 0; i < classes.get(dep).size(); ++i) {

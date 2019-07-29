@@ -14,4 +14,14 @@ public class PredicateEdge extends DefaultEdge {
     public PredicateEdge(BoolExpr predicate) {
         this.predicate = predicate;
     }
+
+    @Override
+    public String toString() {
+        // return super.toString() + "!!" + predicate + "!!"; //To change body of generated methods, choose Tools | Templates.
+        return "!!" + predicate + "!!";
+    }
+    
+    public BoolExpr getPredicate() {
+        return predicate;
+    }
 }
