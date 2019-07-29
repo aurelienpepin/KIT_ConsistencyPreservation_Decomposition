@@ -18,9 +18,11 @@ import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.relations.QVTTransformation;
 import java.util.logging.Logger;
+import metamodels.vertices.ENamedElementVertex;
 import org.eclipse.ocl.pivot.Import;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import parsers.relations.QVTDomain;
+import parsers.relations.QVTModelParam;
 import parsers.relations.QVTRelation;
 import procedure.translators.TransformationTranslator;
 import procedure.translators.TransformationVisitor;
@@ -68,9 +70,25 @@ public class TransformationParser {
             URI qvtrURI = URI.createFileURI(qvtrFilePath);
             Resource transfoResource = resourceSet.getResource(qvtrURI, true);
             
-            TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
+            TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);            
             transformations.addAll(TransformationParser.findTransformationsInFile(transfoResource));
         }
+        
+        // EQUAL PACKAGES TEST
+//        System.out.println("--- BEGIN TEST");
+//        for (ENamedElementVertex v : graph.vertexSet()) {
+//            for (QVTTransformation transfo : transformations) {
+//                for (QVTModelParam mp : transfo.getModelParams().values()) {
+//                    for (org.eclipse.ocl.pivot.Package p : mp.getModel().getUsedPackage()) {
+//                        // System.out.println(p.getEPackage());
+//                        // System.out.println(p.getImportedPackages());
+//                        System.out.println(new EPackageVertex(v.getElement()).equals(new EPackageVertex(p.getEPackage())));
+//                    }
+//                }
+//            }
+//        }
+//        
+//        System.out.println("--- END TEST");
         
         TransformationTranslator.translate(transformations, graph);
         
@@ -106,7 +124,9 @@ public class TransformationParser {
         
         TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
         RelationModel rm = (RelationModel) root.getPivot();
-                
+        
+        // System.out.println("PACKAGES: " + rm.getOwnedImports().get(0).getgetESObject());
+        
         for (Import packageImport : rm.getOwnedImports()) {
             rootPackages.add((EPackage) packageImport.getImportedNamespace().getESObject());
         }
@@ -165,8 +185,8 @@ public class TransformationParser {
             throw new RuntimeException("The RelationalTransformation cannot be null");
         
         QVTTransformation transf = new QVTTransformation(rt);
-        System.out.println(graph.getVertices());
-        System.out.println(transf);
+        // System.out.println(graph.getVertices());
+        // System.out.println(transf);
         
         // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain);
         // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain.getRootVariable().get(0).getType().getESObject());

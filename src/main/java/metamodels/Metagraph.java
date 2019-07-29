@@ -1,10 +1,12 @@
 package metamodels;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import metamodels.vertices.ENamedElementVertex;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 
@@ -14,7 +16,7 @@ import org.jgrapht.graph.DefaultUndirectedGraph;
  */
 public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, DefaultEdge> {
     
-    private final Map<String, ENamedElementVertex> elementsAsVertices;
+    private final Map<ENamedElement, ENamedElementVertex> elementsAsVertices;
     
     public Metagraph() {
         super(DefaultEdge.class);
@@ -28,11 +30,21 @@ public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, Defau
 
     @Override
     public boolean addVertex(ENamedElementVertex v) {
-        this.elementsAsVertices.put(v.getFullName(), v);
+        this.elementsAsVertices.put(v.getElement(), v);
         return super.addVertex(v);
     }
     
-    public Set<String> getVertices() {
-        return this.elementsAsVertices.keySet();
+    public Set<ENamedElement> elementsInVertices() {
+        Set<ENamedElement> elements = new HashSet<>();
+        
+        for (ENamedElementVertex vertex : this.vertexSet()) {
+            elements.add(vertex.getElement());
+        }
+        
+        return elements;
+    }
+    
+    public ENamedElementVertex getVerticeFrom(ENamedElement elem) {
+        return this.elementsAsVertices.get(elem);
     }
 }

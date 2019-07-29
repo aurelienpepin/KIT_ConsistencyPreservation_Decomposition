@@ -1,6 +1,8 @@
 package main;
 
 import metamodels.Metagraph;
+import org.eclipse.ocl.pivot.model.OCLstdlib;
+import org.eclipse.qvtd.xtext.qvtrelation.QVTrelationStandaloneSetup;
 import parsers.TransformationParser;
 
 public class Main {

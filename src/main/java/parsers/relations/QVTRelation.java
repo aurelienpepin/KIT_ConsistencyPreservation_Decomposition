@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import metamodels.Metagraph;
+import metamodels.vertices.EAttributeVertex;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
@@ -28,7 +31,7 @@ public class QVTRelation implements QVTTranslatable {
     
     private final List<QVTDomain> domains;
     
-    private final Map<Variable, Collection<PropertyTemplateItem>> classes;
+    private final Map<Variable, List<PropertyTemplateItem>> classes;
     
     public QVTRelation(Relation relation) {
         this.relation = relation;
@@ -40,7 +43,7 @@ public class QVTRelation implements QVTTranslatable {
         }
         
         for (Variable v : relation.getVariable()) {
-            this.classes.put(v, new ArrayList<>());
+            this.classes.put(v, new ArrayList<>()); // !!! it adds useless variables
         }
     }
 
@@ -59,14 +62,36 @@ public class QVTRelation implements QVTTranslatable {
         
         for (QVTDomain domain : domains) {
             System.out.println("ROOTVAR DU DOMAIN: " + domain.getDomain().getRootVariable());
+            Set<Variable> dependencies;
+            
             for (PropertyTemplateItem pti : domain.getParts()) {
-                System.out.println(pti.getValue().accept(tv)); // returns liste de dependances
+                dependencies = pti.getValue().accept(tv); // returns liste de dependances
                 
-                // pour chaque elem de dependance
-                //      classes.get(elem).add(pti.getReferredProp);
+                for (Variable dep : dependencies) {  // pour chaque elem de dependance  //      classes.get(elem).add(pti.getReferredProp);
+                    classes.get(dep).add(pti);
+                }
             }
         }
         
+        System.out.println("Classes: " + classes);
+        
+        // TEMP. Predicates via subsets (all distinct pairs)
+        for (Variable dep : classes.keySet()) {
+            for (int i = 0; i < classes.get(dep).size(); ++i) {
+                for (int j = i + 1; j < classes.get(dep).size(); ++j) {
+                    ENamedElement elem1 = (ENamedElement) classes.get(dep).get(i).getResolvedProperty().getESObject();
+                    ENamedElement elem2 = (ENamedElement) classes.get(dep).get(j).getResolvedProperty().getESObject();
+                    
+                    System.out.println("e1: " + elem1);
+                    System.out.println("e2: " + elem2);
+                    // System.out.println(classes.get(dep).get(i).getReferredElement().getESObject());
+                    
+                    System.out.println(graph.elementsInVertices());
+                    
+                    graph.addEdge(new EAttributeVertex(elem1), new EAttributeVertex(elem2));
+                }
+            }
+        }
         // Q: deux visiteurs ou un seul?
         // ici on a les classes de dépendances
         // pour chaque elem de dépendance

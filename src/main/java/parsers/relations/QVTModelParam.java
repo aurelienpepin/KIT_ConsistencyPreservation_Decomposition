@@ -15,5 +15,11 @@ public class QVTModelParam {
     
     public QVTModelParam(TypedModel modelParam) {
         this.modelParam = modelParam;
+        
+        // System.out.println(modelParam.getUsedPackage().get(0).getEPackage());
+    }
+    
+    public TypedModel getModel() {
+        return modelParam;
     }
 }

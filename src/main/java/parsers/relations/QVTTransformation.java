@@ -71,4 +71,8 @@ public class QVTTransformation implements QVTTranslatable {
     public Map<String, QVTModelParam> getModelParams() {
         return modelParams;
     }
+    
+    public RelationalTransformation getTransformation() {
+        return transformation;
+    }
 }

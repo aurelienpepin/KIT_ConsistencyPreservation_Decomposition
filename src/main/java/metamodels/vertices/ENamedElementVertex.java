@@ -11,15 +11,13 @@ public abstract class ENamedElementVertex {
         this.element = element;
     }
     
-    public String getFullName() {
-        return element.getName();
-    }
+    public abstract String getFullName();
     
     public abstract ENamedElement getElement();
     
     @Override
     public int hashCode() {
-        return element.hashCode();
+        return this.getFullName().hashCode();
     }
 
     @Override
@@ -33,7 +31,8 @@ public abstract class ENamedElementVertex {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        
         final ENamedElementVertex other = (ENamedElementVertex) obj;
-        return Objects.equals(this.element, other.element);
+        return this.getFullName().equals(other.getFullName());
     }
 }

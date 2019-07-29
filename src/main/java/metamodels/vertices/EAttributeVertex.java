@@ -9,18 +9,18 @@ public class EAttributeVertex extends ENamedElementVertex {
         super(element);
     }
 
-//    @Override
-//    public String getFullName() {
-//        EAttribute attrElem = (EAttribute) element;
-//        StringBuilder sb = new StringBuilder();
-//        
-//        if (attrElem.getEContainingClass() != null) {
-//            sb.append(attrElem.getEContainingClass().getName()).append("::");
-//        }
-//        
-//        sb.append(element.getName());
-//        return sb.toString();
-//    }
+    @Override
+    public String getFullName() {
+        EAttribute attrElem = (EAttribute) element;
+        StringBuilder sb = new StringBuilder();
+        
+        if (attrElem.getEContainingClass() != null) {
+            sb.append(new EClassVertex(attrElem.getEContainingClass()).getFullName()).append("::");
+        }
+        
+        sb.append(element.getName());
+        return sb.toString();
+    }
     
     @Override
     public String toString() {
