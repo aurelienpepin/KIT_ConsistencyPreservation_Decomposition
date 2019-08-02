@@ -754,7 +754,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
 
     @Override
     public Set<Variable> visitVariable(Variable vrbl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new HashSet<>(Arrays.asList(vrbl));
     }
 
     @Override
@@ -765,7 +765,6 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     @Override
     public Set<Variable> visitVariableExp(VariableExp ve) {
         return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

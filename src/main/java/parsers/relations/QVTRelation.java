@@ -17,7 +17,6 @@ import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import procedure.translators.DependencyVisitor;
-import procedure.translators.TransformationVisitor;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -63,7 +62,6 @@ public class QVTRelation implements QVTTranslatable {
         DependencyVisitor tv = new DependencyVisitor(TranslatorContext.getInstance());
         
         for (QVTDomain domain : domains) {
-            System.out.println("ROOTVAR DU DOMAIN: " + domain.getDomain().getRootVariable());
             Set<Variable> dependencies;
             
             for (PropertyTemplateItem pti : domain.getParts()) {
@@ -74,8 +72,6 @@ public class QVTRelation implements QVTTranslatable {
                 }
             }
         }
-        
-        System.out.println("Classes: " + classes);
         
         // TEMP. Predicates via subsets (all distinct pairs)
         TranslatorContext tc = TranslatorContext.getInstance();
@@ -89,12 +85,16 @@ public class QVTRelation implements QVTTranslatable {
                     EAttributeVertex eav1 = new EAttributeVertex(elem1);
                     EAttributeVertex eav2 = new EAttributeVertex(elem2);
                     
-                    // WE ONLY WORK WITH EQUALITY HERE.......................
-                    
+                    // Only works for equality relations for now                    
                     Expr eq1 = tc.getZ3Ctx().mkConst(eav1.getFullName(), tc.getZ3Ctx().mkStringSort());
                     Expr eq2 = tc.getZ3Ctx().mkConst(eav2.getFullName(), tc.getZ3Ctx().mkStringSort());
+                    
                     BoolExpr predicate = tc.getZ3Ctx().mkEq(eq1, eq2);
-                    graph.addEdge(eav1, eav2, new PredicateEdge(predicate));                   
+                    PredicateEdge pEdge = new PredicateEdge(predicate);
+                    
+                    pEdge.addDependentPTI(classes.get(dep).get(i));
+                    pEdge.addDependentPTI(classes.get(dep).get(j));
+                    graph.addEdge(eav1, eav2, pEdge);                   
                 }
             }
         }

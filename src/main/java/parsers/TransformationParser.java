@@ -18,15 +18,8 @@ import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.relations.QVTTransformation;
 import java.util.logging.Logger;
-import metamodels.vertices.ENamedElementVertex;
 import org.eclipse.ocl.pivot.Import;
-import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
-import parsers.relations.QVTDomain;
-import parsers.relations.QVTModelParam;
-import parsers.relations.QVTRelation;
 import procedure.translators.TransformationTranslator;
-import procedure.translators.TransformationVisitor;
-import procedure.translators.TranslatorContext;
 
 public class TransformationParser {
     
@@ -139,100 +132,11 @@ public class TransformationParser {
         TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
         
         for (TransformationCS transfCS : root.getOwnedTransformations()) {
+            System.out.println(transfCS.toString());
             transformations.add(new QVTTransformation((RelationalTransformation) transfCS.getPivot()));
         }
         
         return transformations;
-    }
-    
-    // TO REMOVE
-    public static void fillGraphWith(Metagraph graph, String qvtrFilePath) {
-        if (graph == null)
-            throw new RuntimeException("The metagraph object cannot be null");
-        
-        ResourceSet resourceSet = new ResourceSetImpl();
-        
-        // Install QVT-R and OCL components
-        OCLstdlib.install();
-        QVTrelationStandaloneSetup.doSetup();
-        
-        URI qvtrURI = URI.createFileURI(qvtrFilePath);
-        Resource metamodelResource = resourceSet.getResource(qvtrURI, true);
-        System.out.println("DIAGNOSTIC (ERRORS): " + metamodelResource.getErrors());
-
-        // From concrete syntax to model
-        TopLevelCS root = (TopLevelCS) metamodelResource.getContents().get(0);
-        RelationModel rm = (RelationModel) root.getPivot();
-        
-        Metagraph gr = new Metagraph();
-        gr.addVertex(new EPackageVertex((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject()));
-        // MetamodelParser.parseFromPackage((EPackage) rm.getOwnedImports().get(0).getImportedNamespace().getESObject(), gr);
-        System.out.println(gr);
-        
-        for (TransformationCS transfCS : root.getOwnedTransformations()) {
-            TransformationParser.parseTransformation(graph, (RelationalTransformation) transfCS.getPivot());
-        }
-        
-        // TransformationCS tr = (TransformationCS) root.eContents().get(2);
-        // RelationalTransformation rt = (RelationalTransformation) tr.getPivot();
-        
-        // System.out.println(rt.getOwnedSignature());
-    }
-    
-    // TO REMOVE
-    private static void parseTransformation(Metagraph graph, RelationalTransformation rt) {
-        if (graph == null || rt == null)
-            throw new RuntimeException("The RelationalTransformation cannot be null");
-        
-        QVTTransformation transf = new QVTTransformation(rt);
-        // System.out.println(graph.getVertices());
-        // System.out.println(transf);
-        
-        // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain);
-        // System.out.println(": " + transf.getRelations().get(0).getDomains().get(0).domain.getRootVariable().get(0).getType().getESObject());
-        
-//        System.out.println("Name: " + rt.getName());
-//        System.out.println("ModelParameter: " + rt.getModelParameter());
-//        
-//        System.out.println("Extends: " + rt.getExtends());
-//        System.out.println("ICS: " + rt.getInstanceClassName());
-//        System.out.println("MTN: " + rt.getMetaTypeName());
-//        
-//        System.out.println("Constraints: " + rt.getOwnedConstraints());
-//        System.out.println("Context: " + rt.getOwnedContext());
-//        System.out.println("Invariants: " + rt.getOwnedInvariants());
-//        System.out.println("Key: " + rt.getOwnedKey());
-//        System.out.println("Properties: " + rt.getOwnedProperties());
-//        System.out.println("OP: " + rt.getOwningPackage());
-//        
-//        System.out.println("Behaviours: " + rt.getOwnedBehaviors());
-//        System.out.println("Rule: " + rt.getRule());
-//        
-//        Relation r = (Relation) rt.getRule().get(0);
-//        
-//        System.out.println("R/Variable: " + r.getVariable());
-//        System.out.println("R/Domain: " + r.getDomain());
-//        
-//        RelationDomain rd = (RelationDomain) r.getDomain().get(0);
-//        System.out.println("R/RelationDomain: " + rd.getPattern().get(0).getTemplateExpression());
-//        System.out.println("R/RelationDomain: " + rd.getOwnedComments());
-
-        // ObjectTemplateExp otexp = (ObjectTemplateExp) rd.getPattern().get(0).getTemplateExpression();
-        // System.out.println("otexp inside: " + otexp.getPart().get(0).getResolvedProperty());
-        // System.out.println("otexp inside: " + otexp.getPart().get(0));
-        
-        // System.out.println("T, TI, TV: " + otexp.getType() + " " + otexp.getTypeId() + " " + otexp.getTypeValue());
-        
-        // def otexp: pattern associé à un domaine
-        // obtenir le chemin complet via otexp.getType()
-        // savoir que CollectionTemplateExp existe
-        
-        // System.out.println("-------------");
-        // System.out.println("R/OCLInvalid?: " + r.getVariable().get(2));
-        // System.out.println("R/OCLInvalid?: " + r.getDomain().get(0).getPattern());
-        
-        // System.out.println(r.allOwnedElements());
-        // System.out.println(r.getDomain().get(1).allOwnedElements());
     }
 
     private static void manageErrors(EList<Resource.Diagnostic> errors, URI qvtrURI) {

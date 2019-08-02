@@ -108,4 +108,9 @@ public class QVTDomain {
     public RelationDomain getDomain() {
         return domain;
     }
+
+    @Override
+    public String toString() {
+        return domain.toString() + ":" + parts;
+    }
 }
