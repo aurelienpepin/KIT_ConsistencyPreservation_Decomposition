@@ -3,7 +3,6 @@ package parsers;
 import java.util.HashSet;
 import java.util.Set;
 import metamodels.Metagraph;
-import metamodels.vertices.EPackageVertex;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
