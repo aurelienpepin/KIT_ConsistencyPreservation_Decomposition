@@ -10,17 +10,12 @@ import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.edges.PredicateEdge;
 import metamodels.vertices.ENamedElementVertex;
-import org.eclipse.qvtd.pivot.qvtrelation.QVTrelationFactory;
-import org.eclipse.qvtd.pivot.qvtrelation.RelationModel;
-import org.eclipse.qvtd.pivot.qvttemplate.ObjectTemplateExp;
-import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.interfaces.KShortestPathAlgorithm;
 import org.jgrapht.alg.shortestpath.YenKShortestPath;
 import org.jgrapht.graph.AsSubgraph;
-import parsers.relations.QVTTransformation;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -43,42 +38,10 @@ public class Decomposer {
                 List<PredicateEdge> edges = result.getRemovedEdges();
                 
                 results.add(result);
-                System.out.println("RES: " + edges);
-                
-                // on reconstruit théoriquement ici le QVT-R file
-                // RelationModel rm = QVTrelationFactory.eINSTANCE.createRelationModel();
-                // QVTrelationFactory qvtf = QVTrelationFactory.eINSTANCE;
-                // RelationalTransformation rt = qvtf.createRelationalTransformation();
-                
-//                for (PredicateEdge edge : edges) {
-//                    if (edge == null)
-//                        continue;
-//                    
-//                    ENamedElementVertex s = component.getEdgeSource(edge);
-//                    ENamedElementVertex t = component.getEdgeTarget(edge);
-//                    
-//                    for (PropertyTemplateItem pti : edge.getDependentPTIS()) {
-//                        ObjectTemplateExp ote = pti.getObjContainer();
-//                        ote.getPart().remove(pti);
-//                    }
-//                    
-//                    // Relation rel = qvtf.createRelation();
-//                    // rel.setName(s.getElement().getName() + "vs" + t.getElement().getName());
-//                    // rt.getRule().add(qvtf.createRelation());
-//                    // rt.setName(s.getElement().getName() + "vs" + t.getElement().getName());
-//                    // System.out.println(rt);                    
-//                }
+                System.out.println("Result: " + edges);
             }
         }
         
-//        RelationModel rm = QVTrelationFactory.eINSTANCE.createRelationModel();
-//        for (QVTTransformation transfo : graph.getSpec().getTransformations()) {
-//            System.out.println(transfo.getTransformation());
-//            System.out.println(transfo.getRelations().get(0));
-//            System.out.println(transfo.getRelations().get(0).getDomains());
-//        }
-//        
-//        System.out.println(rm.toString());
         return results;
     }
     
