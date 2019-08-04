@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.ENamedElement;
  */
 public abstract class EClassifierVertex extends ENamedElementVertex {
 
-    public EClassifierVertex(ENamedElement element) {
+    public EClassifierVertex(EClassifier element) {
         super(element);
     }
 

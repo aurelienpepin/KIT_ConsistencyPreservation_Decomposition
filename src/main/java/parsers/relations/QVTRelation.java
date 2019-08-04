@@ -10,6 +10,7 @@ import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.edges.PredicateEdge;
 import metamodels.vertices.EAttributeVertex;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
@@ -82,8 +83,8 @@ public class QVTRelation implements QVTTranslatable {
                     ENamedElement elem1 = (ENamedElement) classes.get(dep).get(i).getResolvedProperty().getESObject();
                     ENamedElement elem2 = (ENamedElement) classes.get(dep).get(j).getResolvedProperty().getESObject();
                     
-                    EAttributeVertex eav1 = new EAttributeVertex(elem1);
-                    EAttributeVertex eav2 = new EAttributeVertex(elem2);
+                    EAttributeVertex eav1 = new EAttributeVertex((EAttribute) elem1);
+                    EAttributeVertex eav2 = new EAttributeVertex((EAttribute) elem2);
                     
                     // Only works for equality relations for now                    
                     Expr eq1 = tc.getZ3Ctx().mkConst(eav1.getFullName(), tc.getZ3Ctx().mkStringSort());

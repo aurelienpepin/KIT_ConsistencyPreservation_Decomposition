@@ -12,6 +12,7 @@ public class Main {
 
         // 1. CREATE GRAPH
         String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
         Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
         
         // 2. PERFORM DECOMPOSITION
