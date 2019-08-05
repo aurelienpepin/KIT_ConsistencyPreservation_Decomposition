@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import metamodels.nodes.Metavertex;
+import metamodels.vertices.Metavertex;
 import org.eclipse.ocl.pivot.Annotation;
 import org.eclipse.ocl.pivot.AnyType;
 import org.eclipse.ocl.pivot.AssociationClass;
@@ -133,7 +133,7 @@ import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
 import parsers.VariableVertexFactory;
-import parsers.relations.QVTRelation;
+import parsers.qvtr.QVTRelation;
 
 /**
  *
@@ -796,5 +796,9 @@ public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorCon
     @Override
     public Metavertex visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public VariableVertexFactory getVariableVertexFactory() {
+        return varVertexFactory;
     }
 }

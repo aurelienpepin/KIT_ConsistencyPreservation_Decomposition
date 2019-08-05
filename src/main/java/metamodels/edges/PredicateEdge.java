@@ -23,7 +23,6 @@ public class PredicateEdge extends DefaultEdge {
 
     @Override
     public String toString() {
-        // return super.toString() + "!!" + predicate + "!!"; //To change body of generated methods, choose Tools | Templates.
         return "!!" + predicate + "!!";
     }
     
@@ -37,5 +36,10 @@ public class PredicateEdge extends DefaultEdge {
 
     public List<PropertyTemplateItem> getDependentPTIS() {
         return ptis;
+    }
+    
+    // TO CHANGE, BAD BECAUSE OF LISKOV SP
+    public boolean isLocked() {
+        return false;
     }
 }

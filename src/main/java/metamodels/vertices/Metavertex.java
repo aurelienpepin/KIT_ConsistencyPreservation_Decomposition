@@ -1,4 +1,4 @@
-package metamodels.nodes;
+package metamodels.vertices;
 
 /**
  *
@@ -6,4 +6,5 @@ package metamodels.nodes;
  */
 public abstract class Metavertex {
     
+    public abstract String getFullName();
 }

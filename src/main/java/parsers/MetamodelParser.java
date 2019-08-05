@@ -1,10 +1,10 @@
 package parsers;
 
 import metamodels.Metagraph;
-import metamodels.vertices.EAttributeVertex;
-import metamodels.vertices.ENamedElementVertex;
-import metamodels.vertices.EPackageVertex;
-import metamodels.vertices.EReferenceVertex;
+import metamodels.vertices.ecore.EAttributeVertex;
+import metamodels.vertices.ecore.ENamedElementVertex;
+import metamodels.vertices.ecore.EPackageVertex;
+import metamodels.vertices.ecore.EReferenceVertex;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;

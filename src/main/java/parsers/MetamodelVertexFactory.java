@@ -1,7 +1,7 @@
 package parsers;
 
-import metamodels.vertices.EClassVertex;
-import metamodels.vertices.EClassifierVertex;
+import metamodels.vertices.ecore.EClassVertex;
+import metamodels.vertices.ecore.EClassifierVertex;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 

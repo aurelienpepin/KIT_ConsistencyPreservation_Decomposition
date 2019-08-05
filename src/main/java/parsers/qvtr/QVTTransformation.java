@@ -1,4 +1,4 @@
-package parsers.relations;
+package parsers.qvtr;
 
 import java.util.ArrayList;
 import java.util.HashMap;

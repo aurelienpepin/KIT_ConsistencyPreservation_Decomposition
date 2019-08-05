@@ -3,11 +3,11 @@ package metamodels;
 import java.util.HashMap;
 import java.util.Map;
 import metamodels.edges.PredicateEdge;
-import metamodels.nodes.Metavertex;
-import metamodels.vertices.ENamedElementVertex;
+import metamodels.vertices.Metavertex;
+import metamodels.vertices.ecore.ENamedElementVertex;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.jgrapht.graph.DefaultUndirectedGraph;
-import parsers.relations.QVTSpecification;
+import parsers.qvtr.QVTSpecification;
 
 /**
  *

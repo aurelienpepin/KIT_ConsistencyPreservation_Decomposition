@@ -2,8 +2,8 @@ package procedure.translators;
 
 import java.util.Set;
 import metamodels.Metagraph;
-import parsers.relations.QVTSpecification;
-import parsers.relations.QVTTransformation;
+import parsers.qvtr.QVTSpecification;
+import parsers.qvtr.QVTTransformation;
 
 /**
  *

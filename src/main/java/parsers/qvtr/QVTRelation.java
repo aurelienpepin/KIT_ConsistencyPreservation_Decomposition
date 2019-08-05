@@ -1,4 +1,4 @@
-package parsers.relations;
+package parsers.qvtr;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import metamodels.Metagraph;
+import metamodels.edges.LockedEdge;
 import metamodels.edges.PredicateEdge;
-import metamodels.nodes.Metavertex;
-import metamodels.nodes.VariableVertex;
-import metamodels.vertices.EAttributeVertex;
+import metamodels.vertices.Metavertex;
+import metamodels.vertices.VariableVertex;
+import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.pivot.Variable;
@@ -65,31 +66,46 @@ public class QVTRelation implements QVTTranslatable {
         for (QVTDomain domain : domains) {
             this.transformDomain(graph, domain);
         }
+        
+        TranslatorContext tc = TranslatorContext.getInstance();
+        HashMap<String, List<VariableVertex>> classes = depV.getVariableVertexFactory().getClasses();
+        
+        for (String v : classes.keySet()) {
+            for (int i = 0; i < classes.get(v).size(); ++i) {
+                for (int j = i + 1; j < classes.get(v).size(); ++j) {
+                    VariableVertex v1 = classes.get(v).get(i);
+                    VariableVertex v2 = classes.get(v).get(j);
+                    
+                    Expr eq1 = tc.getZ3Ctx().mkConst(v1.getFullName(), tc.getZ3Ctx().mkStringSort());
+                    Expr eq2 = tc.getZ3Ctx().mkConst(v2.getFullName(), tc.getZ3Ctx().mkStringSort());
+                    
+                    BoolExpr predicate = tc.getZ3Ctx().mkEq(eq1, eq2);
+                    PredicateEdge pEdge = new PredicateEdge(predicate);
+                    graph.addEdge(v1, v2, pEdge);
+                }
+            }
+        }
     }
     
     private void transformDomain(Metagraph graph, QVTDomain domain) {
         for (PropertyTemplateItem pti : domain.getParts()) {
-            // System.out.println("pti " + pti + ": " + (pti.getValue() instanceof VariableExp));
-//            System.out.println(pti.getValue().eClass());
-//            System.out.println(pti.getValue().getClass());
-//            System.out.println(pti.getValue().getType());
-//            System.out.println(pti.getValue().getESObject());
-//            System.out.println(pti.getValue().getName());
-//            
-//            if (pti.getValue() instanceof VariableExp) {    // USE THE DEPENDENCY VISITOR TO DO IT CORRECTLY
-//                // graph.addVertex(new VariableVertex(pti.getValue().getVARIABLE.FACTORY.i, element));
-//                Variable v = (Variable) ((VariableExp) pti.getValue()).getReferredElement();
-//                System.out.println("REPPARAM: " + v.getOwnedInit());
-//            }
-
             Metavertex valueVertex = pti.getValue().accept(depV);
-            System.out.println(valueVertex);
             graph.addVertex(valueVertex);
             
-            // AJOUTER PEUT-ÊTRE LA VAR DE GAUCHE
+            // TODO: write something more general
+            EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
+            graph.addVertex(eav1);
             
             // AJOUTER L'EDGE ENTRE LES DEUX
+            TranslatorContext tc = TranslatorContext.getInstance();
             
+            Expr eq1 = tc.getZ3Ctx().mkConst(eav1.getFullName(), tc.getZ3Ctx().mkStringSort());
+            Expr eq2 = tc.getZ3Ctx().mkConst(valueVertex.getFullName(), tc.getZ3Ctx().mkStringSort());
+
+            BoolExpr predicate = tc.getZ3Ctx().mkEq(eq1, eq2);
+            LockedEdge lEdge = new LockedEdge(predicate);
+            
+            graph.addEdge(eav1, valueVertex, lEdge);
         }
     }
     

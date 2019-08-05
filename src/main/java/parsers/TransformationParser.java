@@ -15,7 +15,7 @@ import org.eclipse.qvtd.pivot.qvtrelation.RelationModel;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
-import parsers.relations.QVTTransformation;
+import parsers.qvtr.QVTTransformation;
 import java.util.logging.Logger;
 import org.eclipse.ocl.pivot.Import;
 import procedure.translators.TransformationTranslator;
@@ -40,22 +40,6 @@ public class TransformationParser {
         return graph;
     }
     
-    /**
-    private static Metagraph generateGraphVertices(String... qvtrFilePaths) {
-        ResourceSet resourceSet = new ResourceSetImpl();
-        Set<EPackage> rootPackages = new HashSet<>();
-        
-        for (String qvtrFilePath : qvtrFilePaths) {
-            URI qvtrURI = URI.createFileURI(qvtrFilePath);
-            Resource transfoResource = resourceSet.getResource(qvtrURI, true);
-            
-            TransformationParser.manageErrors(transfoResource.getErrors(), qvtrURI);
-            rootPackages.addAll(TransformationParser.findMetamodelsInFile(transfoResource));
-        }
-        
-        return MetamodelParser.generateGraphFrom(rootPackages.toArray(new EPackage[0]));
-    } */
-    
     private static Metagraph generateGraphEdges(Metagraph graph, String... qvtrFilePaths) {
         ResourceSet resourceSet = new ResourceSetImpl();
         Set<QVTTransformation> transformations = new HashSet<>();
@@ -73,29 +57,12 @@ public class TransformationParser {
         return graph;
     }
     
-    /**
-    private static Set<EPackage> findMetamodelsInFile(Resource transfoResource) {
-        Set<EPackage> rootPackages = new HashSet<>();
-        
-        TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
-        RelationModel rm = (RelationModel) root.getPivot();
-        
-        // System.out.println("PACKAGES: " + rm.getOwnedImports().get(0).getgetESObject());
-        
-        for (Import packageImport : rm.getOwnedImports()) {
-            rootPackages.add((EPackage) packageImport.getImportedNamespace().getESObject());
-        }
-        
-        return rootPackages;
-    }
-    */
-    
     private static Set<QVTTransformation> findTransformationsInFile(Resource transfoResource) {
         Set<QVTTransformation> transformations = new HashSet<>();
         TopLevelCS root = (TopLevelCS) transfoResource.getContents().get(0);
         
         for (TransformationCS transfCS : root.getOwnedTransformations()) {
-            System.out.println(transfCS.toString());
+            // System.out.println(transfCS.toString());
             transformations.add(new QVTTransformation((RelationalTransformation) transfCS.getPivot()));
         }
         

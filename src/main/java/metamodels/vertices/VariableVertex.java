@@ -1,8 +1,7 @@
-package metamodels.nodes;
+package metamodels.vertices;
 
-import metamodels.vertices.ENamedElementVertex;
 import org.eclipse.ocl.pivot.Variable;
-import parsers.relations.QVTRelation;
+import parsers.qvtr.QVTRelation;
 
 /**
  *
@@ -35,5 +34,14 @@ public class VariableVertex extends SimpleMetavertex {
     @Override
     public String toString() {
         return "Var(" + this.relation.getName() + "){" + this.variable + " " + this.id + "}";
+    }
+
+    @Override
+    public String getFullName() {
+        return "Var(" + this.relation.getName() + "){" + this.variable.getName() + " " + this.id + "}";
+    }
+
+    public Variable getVariable() {
+        return variable;
     }
 }

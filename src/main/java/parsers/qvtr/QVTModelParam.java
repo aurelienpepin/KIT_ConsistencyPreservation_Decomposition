@@ -1,4 +1,4 @@
-package parsers.relations;
+package parsers.qvtr;
 
 import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
 
