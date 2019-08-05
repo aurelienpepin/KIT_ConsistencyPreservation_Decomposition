@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import metamodels.nodes.Metavertex;
 import org.eclipse.ocl.pivot.Annotation;
 import org.eclipse.ocl.pivot.AnyType;
 import org.eclipse.ocl.pivot.AssociationClass;
@@ -131,115 +132,126 @@ import org.eclipse.ocl.pivot.VoidType;
 import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
+import parsers.VariableVertexFactory;
+import parsers.relations.QVTRelation;
 
 /**
  *
  * @author Aurelien
  */
-public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
+public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorContext>  {
 
-    public DependencyVisitor(TranslatorContext context) {
+    /**
+     * A factory to instantiate unique variables vertices.
+     * This is important to distinguish variables with the same name from different relations.
+     */
+    private final VariableVertexFactory varVertexFactory;
+    
+    public DependencyVisitor(VariableVertexFactory varVertexFactory, TranslatorContext context) {
         super(context);
+        this.varVertexFactory = varVertexFactory;
     }
     
     @Override
-    public Set<Variable> visitAssociationClassCallExp(AssociationClassCallExp acce) {
+    public Metavertex visitAssociationClassCallExp(AssociationClassCallExp acce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitBooleanLiteralExp(BooleanLiteralExp ble) {
-        return new HashSet<>();
+    public Metavertex visitBooleanLiteralExp(BooleanLiteralExp ble) {
+        return null; // return new HashSet<>();
     }
 
     @Override
-    public Set<Variable> visitCallExp(CallExp ce) {
+    public Metavertex visitCallExp(CallExp ce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCollectionLiteralExp(CollectionLiteralExp cle) {
+    public Metavertex visitCollectionLiteralExp(CollectionLiteralExp cle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitEnumLiteralExp(EnumLiteralExp ele) {
+    public Metavertex visitEnumLiteralExp(EnumLiteralExp ele) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitFeatureCallExp(FeatureCallExp fce) {
+    public Metavertex visitFeatureCallExp(FeatureCallExp fce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitIfExp(IfExp ifexp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override // OK
-    public Set<Variable> visitIntegerLiteralExp(IntegerLiteralExp ile) {
-        return new HashSet<>();
-    }
-
-    @Override
-    public Set<Variable> visitInvalidLiteralExp(InvalidLiteralExp ile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitIterateExp(IterateExp ie) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitIteratorExp(IteratorExp ie) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitLetExp(LetExp letexp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitLiteralExp(LiteralExp le) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitLoopExp(LoopExp le) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitMapLiteralExp(MapLiteralExp mle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitMessageExp(MessageExp me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitNavigationCallExp(NavigationCallExp nce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitNullLiteralExp(NullLiteralExp nle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitNumericLiteralExp(NumericLiteralExp nle) {
+    public Metavertex visitIfExp(IfExp ifexp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitOperationCallExp(OperationCallExp oce) {
-        Set<Variable> sourceSet = oce.getOwnedSource().accept(this);
+    public Metavertex visitIntegerLiteralExp(IntegerLiteralExp ile) {
+        return null; // return new HashSet<>();
+    }
+
+    @Override
+    public Metavertex visitInvalidLiteralExp(InvalidLiteralExp ile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitIterateExp(IterateExp ie) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitIteratorExp(IteratorExp ie) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitLetExp(LetExp letexp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitLiteralExp(LiteralExp le) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitLoopExp(LoopExp le) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitMapLiteralExp(MapLiteralExp mle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitMessageExp(MessageExp me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitNavigationCallExp(NavigationCallExp nce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitNullLiteralExp(NullLiteralExp nle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitNumericLiteralExp(NumericLiteralExp nle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Metavertex visitOperationCallExp(OperationCallExp oce) {
+        return null;
+        
+        /* Set<Variable> sourceSet = oce.getOwnedSource().accept(this);
         Set<Variable> argumentsSet = new HashSet<>();
         
         for (OCLExpression expr : oce.getOwnedArguments()) {
@@ -247,67 +259,68 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
         }
         
         sourceSet.addAll(argumentsSet);
-        return sourceSet;
+        return sourceSet; */
     }
 
     @Override
-    public Set<Variable> visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
+    public Metavertex visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
-        return new HashSet<>();
+    public Metavertex visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
+        return null; // return new HashSet<>();
     }
 
     @Override
-    public Set<Variable> visitPropertyCallExp(PropertyCallExp pce) {
+    public Metavertex visitPropertyCallExp(PropertyCallExp pce) {
+        return null; // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Metavertex visitRealLiteralExp(RealLiteralExp rle) {
+        return null; // return new HashSet<>();
+    }
+
+    @Override
+    public Metavertex visitShadowExp(ShadowExp se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metavertex visitStateExp(StateExp se) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitRealLiteralExp(RealLiteralExp rle) {
-        return new HashSet<>();
+    public Metavertex visitStringLiteralExp(StringLiteralExp sle) {
+        return null; // return new HashSet<>();
     }
 
     @Override
-    public Set<Variable> visitShadowExp(ShadowExp se) {
+    public Metavertex visitTupleLiteralExp(TupleLiteralExp tle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitStateExp(StateExp se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override // OK
-    public Set<Variable> visitStringLiteralExp(StringLiteralExp sle) {
-        return new HashSet<>();
-    }
-
-    @Override
-    public Set<Variable> visitTupleLiteralExp(TupleLiteralExp tle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitTypeExp(TypeExp te) {
+    public Metavertex visitTypeExp(TypeExp te) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
-        return new HashSet<>();
+    public Metavertex visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
+        return null; // return new HashSet<>();
     }
 
     @Override
-    public Set<Variable> visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
+    public Metavertex visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override // OK
-    public Set<Variable> visitVariableExp(VariableExp ve) {
-        return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
+    public Metavertex visitVariableExp(VariableExp ve) {
+        return varVertexFactory.getNewVariableVertex((Variable) ve.getReferredElement());
+        // return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
     }
     
     /* **********************************************************
@@ -316,472 +329,472 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
      */
     
     @Override
-    public Set<Variable> visiting(Visitable vstbl) {
+    public Metavertex visiting(Visitable vstbl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitAnnotation(Annotation antn) {
+    public Metavertex visitAnnotation(Annotation antn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitAnyType(AnyType at) {
+    public Metavertex visitAnyType(AnyType at) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitAssociationClass(AssociationClass ac) {
+    public Metavertex visitAssociationClass(AssociationClass ac) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitBagType(BagType bt) {
+    public Metavertex visitBagType(BagType bt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitBehavior(Behavior bhvr) {
+    public Metavertex visitBehavior(Behavior bhvr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitCallOperationAction(CallOperationAction action) {
+    public Metavertex visitCallOperationAction(CallOperationAction action) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitClass(Class type) {
+    public Metavertex visitClass(Class type) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCollectionItem(CollectionItem ci) {
+    public Metavertex visitCollectionItem(CollectionItem ci) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitCollectionLiteralPart(CollectionLiteralPart clp) {
+    public Metavertex visitCollectionLiteralPart(CollectionLiteralPart clp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCollectionRange(CollectionRange cr) {
+    public Metavertex visitCollectionRange(CollectionRange cr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCollectionType(CollectionType ct) {
+    public Metavertex visitCollectionType(CollectionType ct) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitComment(Comment cmnt) {
+    public Metavertex visitComment(Comment cmnt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCompleteClass(CompleteClass cc) {
+    public Metavertex visitCompleteClass(CompleteClass cc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCompleteEnvironment(CompleteEnvironment ce) {
+    public Metavertex visitCompleteEnvironment(CompleteEnvironment ce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCompleteModel(CompleteModel cm) {
+    public Metavertex visitCompleteModel(CompleteModel cm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitCompletePackage(CompletePackage cp) {
+    public Metavertex visitCompletePackage(CompletePackage cp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitConnectionPointReference(ConnectionPointReference cpr) {
+    public Metavertex visitConnectionPointReference(ConnectionPointReference cpr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitConstraint(Constraint c) {
+    public Metavertex visitConstraint(Constraint c) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDataType(DataType dt) {
+    public Metavertex visitDataType(DataType dt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDetail(Detail detail) {
+    public Metavertex visitDetail(Detail detail) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDynamicBehavior(DynamicBehavior db) {
+    public Metavertex visitDynamicBehavior(DynamicBehavior db) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDynamicElement(DynamicElement de) {
+    public Metavertex visitDynamicElement(DynamicElement de) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDynamicProperty(DynamicProperty dp) {
+    public Metavertex visitDynamicProperty(DynamicProperty dp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDynamicType(DynamicType dt) {
+    public Metavertex visitDynamicType(DynamicType dt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitDynamicValueSpecification(DynamicValueSpecification dvs) {
+    public Metavertex visitDynamicValueSpecification(DynamicValueSpecification dvs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitElement(Element elmnt) {
+    public Metavertex visitElement(Element elmnt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitElementExtension(ElementExtension ee) {
+    public Metavertex visitElementExtension(ElementExtension ee) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitEnumeration(Enumeration enmrtn) {
+    public Metavertex visitEnumeration(Enumeration enmrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitEnumerationLiteral(EnumerationLiteral el) {
+    public Metavertex visitEnumerationLiteral(EnumerationLiteral el) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitExpressionInOCL(ExpressionInOCL eiocl) {
+    public Metavertex visitExpressionInOCL(ExpressionInOCL eiocl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitFeature(Feature ftr) {
+    public Metavertex visitFeature(Feature ftr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitFinalState(FinalState fs) {
+    public Metavertex visitFinalState(FinalState fs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitImport(Import i) {
+    public Metavertex visitImport(Import i) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitInstanceSpecification(InstanceSpecification is) {
+    public Metavertex visitInstanceSpecification(InstanceSpecification is) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitInvalidType(InvalidType it) {
+    public Metavertex visitInvalidType(InvalidType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitIterableType(IterableType it) {
+    public Metavertex visitIterableType(IterableType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitIteration(Iteration itrtn) {
+    public Metavertex visitIteration(Iteration itrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitIteratorVariable(IteratorVariable iv) {
+    public Metavertex visitIteratorVariable(IteratorVariable iv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitLambdaType(LambdaType lt) {
+    public Metavertex visitLambdaType(LambdaType lt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitLanguageExpression(LanguageExpression le) {
+    public Metavertex visitLanguageExpression(LanguageExpression le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitLetVariable(LetVariable lv) {
+    public Metavertex visitLetVariable(LetVariable lv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitLibrary(Library lbr) {
+    public Metavertex visitLibrary(Library lbr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitMapLiteralPart(MapLiteralPart mlp) {
+    public Metavertex visitMapLiteralPart(MapLiteralPart mlp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitMapType(MapType mt) {
+    public Metavertex visitMapType(MapType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitMessageType(MessageType mt) {
+    public Metavertex visitMessageType(MessageType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitModel(Model model) {
+    public Metavertex visitModel(Model model) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitNamedElement(NamedElement ne) {
+    public Metavertex visitNamedElement(NamedElement ne) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitNamespace(Namespace nmspc) {
+    public Metavertex visitNamespace(Namespace nmspc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitOCLExpression(OCLExpression ocle) {
+    public Metavertex visitOCLExpression(OCLExpression ocle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitOperation(Operation oprtn) {
+    public Metavertex visitOperation(Operation oprtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitOrderedSetType(OrderedSetType ost) {
+    public Metavertex visitOrderedSetType(OrderedSetType ost) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitOrphanCompletePackage(OrphanCompletePackage ocp) {
+    public Metavertex visitOrphanCompletePackage(OrphanCompletePackage ocp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitPackage(Package pckg) {
+    public Metavertex visitPackage(Package pckg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitParameter(Parameter prmtr) {
+    public Metavertex visitParameter(Parameter prmtr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitParameterVariable(ParameterVariable pv) {
+    public Metavertex visitParameterVariable(ParameterVariable pv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitPrecedence(Precedence prcdnc) {
+    public Metavertex visitPrecedence(Precedence prcdnc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitPrimitiveCompletePackage(PrimitiveCompletePackage pcp) {
+    public Metavertex visitPrimitiveCompletePackage(PrimitiveCompletePackage pcp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitPrimitiveType(PrimitiveType pt) {
+    public Metavertex visitPrimitiveType(PrimitiveType pt) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public Set<Variable> visitProfile(Profile prfl) {
+    public Metavertex visitProfile(Profile prfl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitProfileApplication(ProfileApplication pa) {
+    public Metavertex visitProfileApplication(ProfileApplication pa) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitProperty(Property prprt) {
+    public Metavertex visitProperty(Property prprt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitPseudostate(Pseudostate psdst) {
+    public Metavertex visitPseudostate(Pseudostate psdst) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitRegion(Region region) {
+    public Metavertex visitRegion(Region region) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitResultVariable(ResultVariable rv) {
+    public Metavertex visitResultVariable(ResultVariable rv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSelfType(SelfType st) {
+    public Metavertex visitSelfType(SelfType st) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSendSignalAction(SendSignalAction action) {
+    public Metavertex visitSendSignalAction(SendSignalAction action) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSequenceType(SequenceType st) {
+    public Metavertex visitSequenceType(SequenceType st) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSetType(SetType st) {
+    public Metavertex visitSetType(SetType st) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitShadowPart(ShadowPart sp) {
+    public Metavertex visitShadowPart(ShadowPart sp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSignal(Signal signal) {
+    public Metavertex visitSignal(Signal signal) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitSlot(Slot slot) {
+    public Metavertex visitSlot(Slot slot) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitStandardLibrary(StandardLibrary sl) {
+    public Metavertex visitStandardLibrary(StandardLibrary sl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitState(State state) {
+    public Metavertex visitState(State state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitStateMachine(StateMachine sm) {
+    public Metavertex visitStateMachine(StateMachine sm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitStereotype(Stereotype strtp) {
+    public Metavertex visitStereotype(Stereotype strtp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitStereotypeExtender(StereotypeExtender se) {
+    public Metavertex visitStereotypeExtender(StereotypeExtender se) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitTemplateBinding(TemplateBinding tb) {
+    public Metavertex visitTemplateBinding(TemplateBinding tb) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTemplateParameter(TemplateParameter tp) {
+    public Metavertex visitTemplateParameter(TemplateParameter tp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTemplateParameterSubstitution(TemplateParameterSubstitution tps) {
+    public Metavertex visitTemplateParameterSubstitution(TemplateParameterSubstitution tps) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTemplateSignature(TemplateSignature ts) {
+    public Metavertex visitTemplateSignature(TemplateSignature ts) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTemplateableElement(TemplateableElement te) {
+    public Metavertex visitTemplateableElement(TemplateableElement te) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTransition(Transition trnstn) {
+    public Metavertex visitTransition(Transition trnstn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTrigger(Trigger trgr) {
+    public Metavertex visitTrigger(Trigger trgr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitTupleLiteralPart(TupleLiteralPart tlp) {
+    public Metavertex visitTupleLiteralPart(TupleLiteralPart tlp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitTupleType(TupleType tt) {
+    public Metavertex visitTupleType(TupleType tt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitType(Type type) {
+    public Metavertex visitType(Type type) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitTypedElement(TypedElement te) {
+    public Metavertex visitTypedElement(TypedElement te) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitValueSpecification(ValueSpecification vs) {
+    public Metavertex visitValueSpecification(ValueSpecification vs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitVariable(Variable vrbl) {
+    public Metavertex visitVariable(Variable vrbl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitVariableDeclaration(VariableDeclaration vd) {
+    public Metavertex visitVariableDeclaration(VariableDeclaration vd) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Set<Variable> visitVertex(Vertex vertex) {
+    public Metavertex visitVertex(Vertex vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitVoidType(VoidType vt) {
+    public Metavertex visitVoidType(VoidType vt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Set<Variable> visitWildcardType(WildcardType wt) {
+    public Metavertex visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
