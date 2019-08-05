@@ -1,4 +1,4 @@
-package metamodels.vertices;
+package metamodels.vertices.ecore;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;

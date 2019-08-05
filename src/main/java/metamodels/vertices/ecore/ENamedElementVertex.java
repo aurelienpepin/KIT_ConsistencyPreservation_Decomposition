@@ -1,6 +1,6 @@
-package metamodels.vertices;
+package metamodels.vertices.ecore;
 
-import metamodels.nodes.SimpleMetavertex;
+import metamodels.vertices.SimpleMetavertex;
 import org.eclipse.emf.ecore.ENamedElement;
 
 public abstract class ENamedElementVertex extends SimpleMetavertex {
@@ -10,8 +10,6 @@ public abstract class ENamedElementVertex extends SimpleMetavertex {
     public ENamedElementVertex(ENamedElement element) {
         this.element = element;
     }
-    
-    public abstract String getFullName();
     
     public abstract ENamedElement getElement();
     
