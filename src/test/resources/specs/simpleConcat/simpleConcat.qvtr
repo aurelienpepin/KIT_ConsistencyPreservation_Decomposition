@@ -9,7 +9,7 @@ transformation persToEmp(pers:perspack, emp:emppack) {
 		lstn: String;
 		
 		domain pers p:Person {firstname=fstn + ' Junior', name=lstn};
-		domain emp e:Employee {firstname=fstn, name=lstn};
+		domain emp e:Employee {firstname=(fstn), name=lstn}; -- Check that brackets don't matter
 	}
 }
 

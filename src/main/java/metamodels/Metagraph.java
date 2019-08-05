@@ -41,7 +41,7 @@ public class Metagraph extends DefaultUndirectedGraph<Metavertex, PredicateEdge>
 
     @Override
     public boolean addVertex(Metavertex v) {
-        this.elementsAsVertices.put(v.getElement(), v);
+        // this.elementsAsVertices.put(v.getElement(), v);
         return super.addVertex(v);
     }
 }

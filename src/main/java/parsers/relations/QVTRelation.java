@@ -9,10 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.edges.PredicateEdge;
+import metamodels.nodes.VariableVertex;
 import metamodels.vertices.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.pivot.Variable;
+import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
@@ -51,22 +53,33 @@ public class QVTRelation implements QVTTranslatable {
 
     @Override
     public void translate(Metagraph graph) {
-        this.computeDependencyClasses(graph);
-        // System.out.println("I'm about to translate " + this);
-        // System.out.println("TODO: Later, when and where support in QVTRelation");
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
+        for (QVTDomain domain : domains) {
+            this.transformDomain(graph, domain);
+        }
+    }
     
+    private void transformDomain(Metagraph graph, QVTDomain domain) {
+        for (PropertyTemplateItem pti : domain.getParts()) {
+            // System.out.println("pti " + pti + ": " + (pti.getValue() instanceof VariableExp));
+            System.out.println(pti.getValue().eClass());
+            System.out.println(pti.getValue().getClass());
+            System.out.println(pti.getValue().getType());
+            System.out.println(pti.getValue().getESObject());
+            
+            if (pti.getValue() instanceof VariableExp) {    // USE THE DEPENDENCY VISITOR TO DO IT CORRECTLY
+                // graph.addVertex(new VariableVertex(pti.getValue().getVARIABLE.FACTORY.i, element));
+            }
+        }
     }
     
     private void computeDependencyClasses(Metagraph graph) {
-        DependencyVisitor tv = new DependencyVisitor(TranslatorContext.getInstance());
+        DependencyVisitor depV = new DependencyVisitor(TranslatorContext.getInstance());
         
         for (QVTDomain domain : domains) {
             Set<Variable> dependencies;
             
             for (PropertyTemplateItem pti : domain.getParts()) {
-                dependencies = pti.getValue().accept(tv); // returns liste de dependances
+                dependencies = pti.getValue().accept(depV); // returns liste de dependances
                 
                 for (Variable dep : dependencies) {  // pour chaque elem de dependance  //      classes.get(elem).add(pti.getReferredProp);
                     classes.get(dep).add(pti);

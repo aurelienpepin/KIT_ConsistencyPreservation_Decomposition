@@ -143,6 +143,179 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     }
     
     @Override
+    public Set<Variable> visitAssociationClassCallExp(AssociationClassCallExp acce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitBooleanLiteralExp(BooleanLiteralExp ble) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitCallExp(CallExp ce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitCollectionLiteralExp(CollectionLiteralExp cle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitEnumLiteralExp(EnumLiteralExp ele) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitFeatureCallExp(FeatureCallExp fce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitIfExp(IfExp ifexp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitIntegerLiteralExp(IntegerLiteralExp ile) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitInvalidLiteralExp(InvalidLiteralExp ile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitIterateExp(IterateExp ie) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitIteratorExp(IteratorExp ie) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitLetExp(LetExp letexp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitLiteralExp(LiteralExp le) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitLoopExp(LoopExp le) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitMapLiteralExp(MapLiteralExp mle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitMessageExp(MessageExp me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitNavigationCallExp(NavigationCallExp nce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitNullLiteralExp(NullLiteralExp nle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitNumericLiteralExp(NumericLiteralExp nle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitOperationCallExp(OperationCallExp oce) {
+        Set<Variable> sourceSet = oce.getOwnedSource().accept(this);
+        Set<Variable> argumentsSet = new HashSet<>();
+        
+        for (OCLExpression expr : oce.getOwnedArguments()) {
+            argumentsSet.addAll(expr.accept(this));
+        }
+        
+        sourceSet.addAll(argumentsSet);
+        return sourceSet;
+    }
+
+    @Override
+    public Set<Variable> visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitPropertyCallExp(PropertyCallExp pce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitRealLiteralExp(RealLiteralExp rle) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitShadowExp(ShadowExp se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitStateExp(StateExp se) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitStringLiteralExp(StringLiteralExp sle) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitTupleLiteralExp(TupleLiteralExp tle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTypeExp(TypeExp te) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<Variable> visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override // OK
+    public Set<Variable> visitVariableExp(VariableExp ve) {
+        return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
+    }
+    
+    /* **********************************************************
+     * BELOW, VISITOR'S METHODS THAT DON'T MATCH OCL EXPRESSIONS.
+     * **********************************************************
+     */
+    
+    @Override
     public Set<Variable> visiting(Visitable vstbl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -163,11 +336,6 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     }
 
     @Override
-    public Set<Variable> visitAssociationClassCallExp(AssociationClassCallExp acce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Set<Variable> visitBagType(BagType bt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -176,17 +344,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitBehavior(Behavior bhvr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitBooleanLiteralExp(BooleanLiteralExp ble) {
-        return new HashSet<>();
-    }
-
-    @Override
-    public Set<Variable> visitCallExp(CallExp ce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitCallOperationAction(CallOperationAction action) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -201,12 +359,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitCollectionItem(CollectionItem ci) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitCollectionLiteralExp(CollectionLiteralExp cle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitCollectionLiteralPart(CollectionLiteralPart clp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -222,9 +375,9 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override // OK
+    @Override
     public Set<Variable> visitComment(Comment cmnt) {
-        return new HashSet<>();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -301,12 +454,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitElementExtension(ElementExtension ee) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitEnumLiteralExp(EnumLiteralExp ele) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitEnumeration(Enumeration enmrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -328,20 +476,10 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     }
 
     @Override
-    public Set<Variable> visitFeatureCallExp(FeatureCallExp fce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Set<Variable> visitFinalState(FinalState fs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitIfExp(IfExp ifexp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitImport(Import i) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -351,17 +489,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitInstanceSpecification(InstanceSpecification is) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitIntegerLiteralExp(IntegerLiteralExp ile) {
-        return new HashSet<>();
-    }
-
-    @Override
-    public Set<Variable> visitInvalidLiteralExp(InvalidLiteralExp ile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitInvalidType(InvalidType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -371,22 +499,12 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitIterableType(IterableType it) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitIterateExp(IterateExp ie) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitIteration(Iteration itrtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitIteratorExp(IteratorExp ie) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitIteratorVariable(IteratorVariable iv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -401,12 +519,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitLanguageExpression(LanguageExpression le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitLetExp(LetExp letexp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitLetVariable(LetVariable lv) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -416,22 +529,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitLibrary(Library lbr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitLiteralExp(LiteralExp le) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitLoopExp(LoopExp le) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitMapLiteralExp(MapLiteralExp mle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitMapLiteralPart(MapLiteralPart mlp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -441,12 +539,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitMapType(MapType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitMessageExp(MessageExp me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitMessageType(MessageType mt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -466,22 +559,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitNamespace(Namespace nmspc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitNavigationCallExp(NavigationCallExp nce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitNullLiteralExp(NullLiteralExp nle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Set<Variable> visitNumericLiteralExp(NumericLiteralExp nle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitOCLExpression(OCLExpression ocle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -491,25 +569,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitOperation(Operation oprtn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitOperationCallExp(OperationCallExp oce) {
-        Set<Variable> sourceSet = oce.getOwnedSource().accept(this);
-        Set<Variable> argumentsSet = new HashSet<>();
-        
-        for (OCLExpression expr : oce.getOwnedArguments()) {
-            argumentsSet.addAll(expr.accept(this));
-        }
-        
-        sourceSet.addAll(argumentsSet);
-        return sourceSet;
-    }
-
-    @Override
-    public Set<Variable> visitOppositePropertyCallExp(OppositePropertyCallExp opce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitOrderedSetType(OrderedSetType ost) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -544,15 +604,10 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitPrimitiveCompletePackage(PrimitiveCompletePackage pcp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitPrimitiveLiteralExp(PrimitiveLiteralExp ple) {
-        return new HashSet<>();
-    }
-
-    @Override // OK
+    
+    @Override
     public Set<Variable> visitPrimitiveType(PrimitiveType pt) {
-        return new HashSet<>();
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -569,22 +624,12 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitProperty(Property prprt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitPropertyCallExp(PropertyCallExp pce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitPseudostate(Pseudostate psdst) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitRealLiteralExp(RealLiteralExp rle) {
-        return new HashSet<>();
-    }
-
+    
     @Override
     public Set<Variable> visitRegion(Region region) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -614,12 +659,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitSetType(SetType st) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitShadowExp(ShadowExp se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitShadowPart(ShadowPart sp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -644,12 +684,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitState(State state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitStateExp(StateExp se) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitStateMachine(StateMachine sm) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -664,12 +699,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitStereotypeExtender(StereotypeExtender se) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override // OK
-    public Set<Variable> visitStringLiteralExp(StringLiteralExp sle) {
-        return new HashSet<>();
-    }
-
+    
     @Override
     public Set<Variable> visitTemplateBinding(TemplateBinding tb) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -704,12 +734,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitTrigger(Trigger trgr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitTupleLiteralExp(TupleLiteralExp tle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitTupleLiteralPart(TupleLiteralPart tlp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -724,27 +749,12 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitType(Type type) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitTypeExp(TypeExp te) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitTypedElement(TypedElement te) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Set<Variable> visitUnlimitedNaturalLiteralExp(UnlimitedNaturalLiteralExp unle) {
-        return new HashSet<>();
-    }
-
-    @Override
-    public Set<Variable> visitUnspecifiedValueExp(UnspecifiedValueExp uve) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Set<Variable> visitValueSpecification(ValueSpecification vs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -752,32 +762,26 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
 
     @Override
     public Set<Variable> visitVariable(Variable vrbl) {
-        return new HashSet<>(Arrays.asList(vrbl));
-    }
-
-    @Override // OK
-    public Set<Variable> visitVariableDeclaration(VariableDeclaration vd) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override // OK
-    public Set<Variable> visitVariableExp(VariableExp ve) {
-        return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
+    @Override
+    public Set<Variable> visitVariableDeclaration(VariableDeclaration vd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public Set<Variable> visitVertex(Vertex vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override // OK
+    @Override
     public Set<Variable> visitVoidType(VoidType vt) {
-        return new HashSet<>();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Set<Variable> visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }
