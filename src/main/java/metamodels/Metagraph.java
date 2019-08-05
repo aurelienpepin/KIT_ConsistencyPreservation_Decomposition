@@ -3,16 +3,17 @@ package metamodels;
 import java.util.HashMap;
 import java.util.Map;
 import metamodels.edges.PredicateEdge;
-import metamodels.vertices.ENamedElementVertex;
+import metamodels.vertices.Metavertex;
+import metamodels.vertices.ecore.ENamedElementVertex;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.jgrapht.graph.DefaultUndirectedGraph;
-import parsers.relations.QVTSpecification;
+import parsers.qvtr.QVTSpecification;
 
 /**
  *
  * @author Aurelien
  */
-public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, PredicateEdge> {
+public class Metagraph extends DefaultUndirectedGraph<Metavertex, PredicateEdge> {
 
     private final Map<ENamedElement, ENamedElementVertex> elementsAsVertices;
     
@@ -37,29 +38,10 @@ public class Metagraph extends DefaultUndirectedGraph<ENamedElementVertex, Predi
     public QVTSpecification getSpec() {
         return spec;
     }
-    
-    // public Metagraph(Supplier<ENamedElementVertex> vertexSupplier, Supplier<PredicateEdge> edgeSupplier, boolean weighted) {
-    //     super(vertexSupplier, edgeSupplier, weighted);
-    //     this.elementsAsVertices = new HashMap<>();
-    // }
 
     @Override
-    public boolean addVertex(ENamedElementVertex v) {
-        this.elementsAsVertices.put(v.getElement(), v);
+    public boolean addVertex(Metavertex v) {
+        // this.elementsAsVertices.put(v.getElement(), v);
         return super.addVertex(v);
     }
-    
-//    public Set<ENamedElement> elementsInVertices() {
-//        Set<ENamedElement> elements = new HashSet<>();
-//        
-//        for (ENamedElementVertex vertex : this.vertexSet()) {
-//            elements.add(vertex.getElement());
-//        }
-//        
-//        return elements;
-//    }
-//    
-//    public ENamedElementVertex getVerticeFrom(ENamedElement elem) {
-//        return this.elementsAsVertices.get(elem);
-//    }
 }

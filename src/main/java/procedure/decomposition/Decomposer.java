@@ -9,7 +9,8 @@ import java.util.Objects;
 import java.util.Set;
 import metamodels.Metagraph;
 import metamodels.edges.PredicateEdge;
-import metamodels.vertices.ENamedElementVertex;
+import metamodels.vertices.Metavertex;
+import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
@@ -29,10 +30,10 @@ public class Decomposer {
         
         // Get connected components
         BiconnectivityInspector inspector = new BiconnectivityInspector(graph);
-        Set<AsSubgraph<ENamedElementVertex, PredicateEdge>> connectedComponents = inspector.getConnectedComponents();
+        Set<AsSubgraph<Metavertex, PredicateEdge>> connectedComponents = inspector.getConnectedComponents();
         
         // For each component, see what you can remove thanks to simulation
-        for (AsSubgraph<ENamedElementVertex, PredicateEdge> component : connectedComponents) {
+        for (AsSubgraph<Metavertex, PredicateEdge> component : connectedComponents) {
             if (!component.edgeSet().isEmpty()) {
                 DecompositionResult result = Decomposer.reverseDelete(component);
                 List<PredicateEdge> edges = result.getRemovedEdges();
@@ -46,22 +47,22 @@ public class Decomposer {
     }
     
     // TODO: Use the strategy pattern to give the choice of the algorithm
-    private static DecompositionResult reverseDelete(AsSubgraph<ENamedElementVertex, PredicateEdge> component) {
+    private static DecompositionResult reverseDelete(AsSubgraph<Metavertex, PredicateEdge> component) {
         List<PredicateEdge> edges = new ArrayList<>(component.edgeSet());
         List<PredicateEdge> removedEdges = new ArrayList<>();
         int i = 0;
         
         while (i < edges.size()) {           
             PredicateEdge edge = edges.get(i);
-            ENamedElementVertex s = component.getEdgeSource(edge);
-            ENamedElementVertex t = component.getEdgeTarget(edge);
+            Metavertex s = component.getEdgeSource(edge);
+            Metavertex t = component.getEdgeTarget(edge);
             
             // Delete the edge
             component.removeEdge(edge);
             edges.set(i, null);
             
             ConnectivityInspector inspector = new ConnectivityInspector(component);
-            if (!inspector.isConnected() || !simulableThroughCombination(component, edge, s, t)) {	// Cancel deletion
+            if (edge.isLocked() || !inspector.isConnected() || !simulableThroughCombination(component, edge, s, t)) {	// Cancel deletion
                 edges.set(i, edge);
                 component.addEdge(s, t, edge);
             } else {
@@ -75,7 +76,7 @@ public class Decomposer {
         return new DecompositionResult(component, removedEdges, edges);
     }
     
-    private static boolean simulableThroughCombination(AsSubgraph<ENamedElementVertex, PredicateEdge> graph, PredicateEdge edge, ENamedElementVertex source, ENamedElementVertex target) {
+    private static boolean simulableThroughCombination(AsSubgraph<Metavertex, PredicateEdge> graph, PredicateEdge edge, Metavertex source, Metavertex target) {
         KShortestPathAlgorithm algo = new YenKShortestPath(graph);
         // System.out.println("ARB: " + edge + " " + algo.getPaths(source, target, 100));	// arbitrary, for experimentation
 

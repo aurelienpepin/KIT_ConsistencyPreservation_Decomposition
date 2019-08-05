@@ -3,7 +3,8 @@ package procedure.decomposition;
 import java.util.ArrayList;
 import java.util.List;
 import metamodels.edges.PredicateEdge;
-import metamodels.vertices.ENamedElementVertex;
+import metamodels.vertices.Metavertex;
+import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.graph.AsSubgraph;
 
 /**
@@ -15,7 +16,7 @@ public class DecompositionResult {
     /**
      * Component (subgraph of the metagraph) in which edges are simulated.
      */
-    private final AsSubgraph<ENamedElementVertex, PredicateEdge> component;
+    private final AsSubgraph<Metavertex, PredicateEdge> component;
 
     /**
      * Edges that are simulable through a combination of other remaining edges.
@@ -33,7 +34,7 @@ public class DecompositionResult {
      * @param removedEdges
      * @param preservedEdges 
      */
-    public DecompositionResult(AsSubgraph<ENamedElementVertex, PredicateEdge> component, List<PredicateEdge> removedEdges, List<PredicateEdge> preservedEdges) {
+    public DecompositionResult(AsSubgraph<Metavertex, PredicateEdge> component, List<PredicateEdge> removedEdges, List<PredicateEdge> preservedEdges) {
         this.component = component;
         this.removedEdges = new ArrayList<>(removedEdges);
         this.preservedEdges = new ArrayList<>(preservedEdges);

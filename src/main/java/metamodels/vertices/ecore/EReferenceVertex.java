@@ -1,4 +1,4 @@
-package metamodels.vertices;
+package metamodels.vertices.ecore;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EReference;
  */
 public class EReferenceVertex extends ENamedElementVertex {
 
-    public EReferenceVertex(ENamedElement element) {
+    public EReferenceVertex(EReference element) {
         super(element);
     }
     

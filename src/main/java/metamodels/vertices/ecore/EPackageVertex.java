@@ -1,11 +1,10 @@
-package metamodels.vertices;
+package metamodels.vertices.ecore;
 
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 
 public class EPackageVertex extends ENamedElementVertex {
 
-    public EPackageVertex(ENamedElement element) {
+    public EPackageVertex(EPackage element) {
         super(element);
     }
 
