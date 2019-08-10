@@ -1,0 +1,35 @@
+import perspack : 'person.ecore'::Person;
+import respack : 'resident.ecore'::Resident;
+import emppack : 'employee.ecore'::Employee;
+
+transformation persToEmp(pers:perspack, emp:emppack) {
+
+	top relation PersonToEmployee {
+		fstn: String;
+		lstn: String;
+		
+		domain pers p:Person {firstname=fstn, name=lstn};
+		domain emp e:Employee {name=fstn + ' ' + lstn};
+	}
+}
+
+transformation persToRes(pers:perspack, res:respack) {
+
+	top relation PersonToResident {
+		fstn: String;
+		lstn: String;
+		
+		domain pers p:Person {firstname=fstn, name=lstn};
+		domain res r:Resident {name=fstn + ' ' + lstn};
+	}
+}
+
+transformation empToRes(emp:emppack, res:respack) {
+
+	top relation EmployeeToResident {
+		n: String;
+		
+		domain emp e:Employee {name=n};
+		domain res r:Resident {name=n};
+	}
+}
