@@ -9,7 +9,7 @@ transformation persToEmp(pers:perspack, emp:emppack) {
 		lstn: String;
 		
 		domain pers p:Person {firstname=fstn, name=lstn};
-		domain emp e:Employee {firstname=fstn, name=lstn};
+		domain emp e:Employee {name=fstn + ' ' + lstn};
 	}
 }
 
@@ -20,17 +20,16 @@ transformation persToRes(pers:perspack, res:respack) {
 		lstn: String;
 		
 		domain pers p:Person {firstname=fstn, name=lstn};
-		domain res r:Resident {firstname=fstn, name=lstn};
+		domain res r:Resident {name=fstn + ' ' + lstn};
 	}
 }
 
 transformation empToRes(emp:emppack, res:respack) {
 
 	top relation EmployeeToResident {
-		fstn: String;
-		lstn: String;
+		n: String;
 		
-		domain emp e:Employee {firstname=fstn, name=lstn};
-		domain res r:Resident {firstname=fstn, name=lstn};
+		domain emp e:Employee {name=n};
+		domain res r:Resident {name=n};
 	}
 }

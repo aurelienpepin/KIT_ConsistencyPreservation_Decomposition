@@ -96,7 +96,7 @@ public class QVTRelation implements QVTTranslatable {
             EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
             graph.addVertex(eav1);
             
-            // AJOUTER L'EDGE ENTRE LES DEUX
+            // Add the locked edge between the two vertices
             TranslatorContext tc = TranslatorContext.getInstance();
             
             Expr eq1 = tc.getZ3Ctx().mkConst(eav1.getFullName(), tc.getZ3Ctx().mkStringSort());

@@ -320,7 +320,6 @@ public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorCon
     @Override // OK
     public Metavertex visitVariableExp(VariableExp ve) {
         return varVertexFactory.getNewVariableVertex((Variable) ve.getReferredElement());
-        // return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
     }
     
     /* **********************************************************
