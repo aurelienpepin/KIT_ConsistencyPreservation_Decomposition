@@ -8,7 +8,6 @@ transformation persToEmp(pers:perspack, emp:emppack) {
 		fstn: String;
 		lstn: String;
 		
-		-- domain pers p:Person {firstname='aaa' + fstn, name=lstn};
 		domain pers p:Person {firstname=fstn, name=lstn};
 		domain emp e:Employee {firstname=fstn, name=lstn};
 	}
