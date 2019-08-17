@@ -10,6 +10,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import metamodels.Metagraph;
 import metamodels.edges.PredicateEdge;
+import metamodels.hypergraphs.HyperGraph;
+import metamodels.hypergraphs.HyperVertex;
 import metamodels.vertices.Metavertex;
 import org.jgrapht.ext.JGraphXAdapter;
 import parsers.TransformationParser;
@@ -20,7 +22,16 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
-
+        HyperGraph hg = new HyperGraph();
+        hg.addEdge(null);
+        
+//        HyperVertex a = new HyperVertex();
+//        HyperVertex b = new HyperVertex();
+//        System.out.println(hg.addVertex(a));
+//        System.out.println(hg.addVertex(b));
+//        System.out.println(hg.addEdge(a, b));
+//        System.out.println(hg);
+        
         // 1. CREATE GRAPH
         String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
