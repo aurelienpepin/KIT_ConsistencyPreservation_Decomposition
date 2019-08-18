@@ -37,7 +37,7 @@ public class Main {
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
         Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
-        showGraph(graph);
+        // showGraph(graph);
         
         // 2. PERFORM DECOMPOSITION
         Decomposer.decompose(graph);
@@ -45,15 +45,15 @@ public class Main {
         System.out.println(graph);
     }
     
-    public static void showGraph(Metagraph g) throws IOException {
-        JGraphXAdapter<Metavertex, PredicateEdge> graphAdapter = new JGraphXAdapter<>(g);
-        mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
-        
-        mxIGraphLayout layout = circleLayout;
-        layout.execute(graphAdapter.getDefaultParent());
-
-        BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
-        File imgFile = new File("src/test/resources/graph.png");
-        ImageIO.write(image, "PNG", imgFile);
-    }
+//    public static void showGraph(Metagraph g) throws IOException {
+//        JGraphXAdapter<Metavertex, PredicateEdge> graphAdapter = new JGraphXAdapter<>(g);
+//        mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
+//        
+//        mxIGraphLayout layout = circleLayout;
+//        layout.execute(graphAdapter.getDefaultParent());
+//
+//        BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
+//        File imgFile = new File("src/test/resources/graph.png");
+//        ImageIO.write(image, "PNG", imgFile);
+//    }
 }

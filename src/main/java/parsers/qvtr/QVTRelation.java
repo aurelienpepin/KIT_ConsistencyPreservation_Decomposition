@@ -21,7 +21,7 @@ import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
-import parsers.VariableVertexFactory;
+import parsers.VariableIndexer;
 import procedure.translators.DependencyVisitor;
 import procedure.translators.TranslatorContext;
 
@@ -47,7 +47,7 @@ public class QVTRelation implements QVTTranslatable {
         this.domains = new ArrayList<>();
         
         // Each QVTrelation has its own factory so the scope of a VariableVertice is the relation.
-        VariableVertexFactory varVertexFactory = new VariableVertexFactory(this);
+        VariableIndexer varVertexFactory = new VariableIndexer(this);
         this.depV = new DependencyVisitor(varVertexFactory, TranslatorContext.getInstance());
         
         // this.classes = new HashMap<>();
@@ -60,7 +60,13 @@ public class QVTRelation implements QVTTranslatable {
 //            this.classes.put(v, new ArrayList<>()); // !!! it adds useless variables
 //        }
     }
-
+    
+    @Override
+    public void translate(Metagraph graph) {
+        
+    }
+    
+    /*
     @Override
     public void translate(Metagraph graph) {
         for (QVTDomain domain : domains) {
@@ -108,6 +114,7 @@ public class QVTRelation implements QVTTranslatable {
             graph.addEdge(eav1, valueVertex, lEdge);
         }
     }
+    */
     
     /*
     private void computeDependencyClasses(Metagraph graph) {

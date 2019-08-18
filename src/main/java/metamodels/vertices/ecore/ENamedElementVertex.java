@@ -1,9 +1,9 @@
 package metamodels.vertices.ecore;
 
-import metamodels.vertices.SimpleMetavertex;
+import metamodels.vertices.Metavertex;
 import org.eclipse.emf.ecore.ENamedElement;
 
-public abstract class ENamedElementVertex extends SimpleMetavertex {
+public abstract class ENamedElementVertex extends Metavertex {
 
     protected final ENamedElement element;
 

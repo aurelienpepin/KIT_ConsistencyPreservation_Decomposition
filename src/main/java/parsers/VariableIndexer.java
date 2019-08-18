@@ -3,7 +3,6 @@ package parsers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import metamodels.vertices.VariableVertex;
 import org.eclipse.ocl.pivot.Variable;
 import parsers.qvtr.QVTRelation;
 
@@ -11,7 +10,7 @@ import parsers.qvtr.QVTRelation;
  * 
  * @author Aurélien Pepin
  */
-public class VariableVertexFactory {
+public class VariableIndexer {
     
     /**
      * A counter starting from 0 to give an unique identifier to
@@ -21,9 +20,9 @@ public class VariableVertexFactory {
     
     private final QVTRelation relation;
     
-    private HashMap<String, List<VariableVertex>> classes;
+    private HashMap<String, List<Variable>> classes;
     
-    public VariableVertexFactory(QVTRelation relation) {
+    public VariableIndexer(QVTRelation relation) {
         this.relation = relation;
         this.counter = 0;
         this.classes = new HashMap<>();
@@ -38,13 +37,13 @@ public class VariableVertexFactory {
         return newVertex;
     }
     
-    private void addOccurrenceOfVariable(VariableVertex varVertex) {
-        String varKey = varVertex.getVariable().getName();
+    private void addOccurrenceOfVariable(Variable var) {
+        String varKey = var.getName();
         
         if (!classes.containsKey(varKey))
             classes.put(varKey, new ArrayList<>());
         
-        classes.get(varKey).add(varVertex);
+        classes.get(varKey).add(var);
     }
 
     public HashMap<String, List<VariableVertex>> getClasses() {

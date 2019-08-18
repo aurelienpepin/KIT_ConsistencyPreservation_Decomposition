@@ -9,10 +9,10 @@ import org.jgrapht.Graph;
  *
  * @author Aurélien Pepin
  */
-public class HyperGraph { // implements Graph<HyperVertex, HyperEdge> {
+public class HyperGraph<V extends HyperVertex, E extends HyperEdge> { // implements Graph<HyperVertex, HyperEdge> {
 
-    private final Set<HyperVertex> vertices;
-    private final Set<HyperEdge> edges;
+    private final Set<V> vertices;
+    private final Set<E> edges;
     
     public HyperGraph() {
         this.vertices = new HashSet<>();
@@ -25,7 +25,7 @@ public class HyperGraph { // implements Graph<HyperVertex, HyperEdge> {
     //     throw new RuntimeException("allez fais ce hyperedge");
     // }
     
-    public boolean addEdge(HyperEdge e) {
+    public boolean addEdge(E e) {
         if (e == null)
             throw new NullPointerException("Edge cannot be null");
         
@@ -36,7 +36,7 @@ public class HyperGraph { // implements Graph<HyperVertex, HyperEdge> {
         return true;        
     } 
    
-    public boolean addVertex(HyperVertex v) {
+    public boolean addVertex(V v) {
         if (v == null)
             throw new NullPointerException("Vertex cannot be null");
         
@@ -47,19 +47,19 @@ public class HyperGraph { // implements Graph<HyperVertex, HyperEdge> {
         return true;
     }
     
-    public boolean containsVertex(HyperVertex v) {
+    public boolean containsVertex(V v) {
         return vertices.contains(v);
     }
     
-    public boolean containsEdge(HyperEdge e) {
+    public boolean containsEdge(E e) {
         return edges.contains(e);
     }
 
-    public Set<HyperEdge> edgeSet() {
+    public Set<E> edgeSet() {
         return edges;
     }
 
-    public Set<HyperVertex> vertexSet() {
+    public Set<V> vertexSet() {
         return vertices;
     }
 }

@@ -1,47 +1,30 @@
 package metamodels;
 
-import java.util.HashMap;
-import java.util.Map;
-import metamodels.edges.PredicateEdge;
+import metamodels.hypergraphs.HyperEdge;
+import metamodels.hypergraphs.HyperGraph;
 import metamodels.vertices.Metavertex;
-import metamodels.vertices.ecore.ENamedElementVertex;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.jgrapht.graph.DefaultUndirectedGraph;
 import parsers.qvtr.QVTSpecification;
 
-/**
- *
- * @author Aurelien
- */
-public class Metagraph extends DefaultUndirectedGraph<Metavertex, PredicateEdge> {
-
-    private final Map<ENamedElement, ENamedElementVertex> elementsAsVertices;
+public class Metagraph extends HyperGraph<Metavertex, HyperEdge> {
     
     private QVTSpecification spec;
     
     public Metagraph() {
-        super(PredicateEdge.class);
-        this.elementsAsVertices = new HashMap<>();
         this.spec = new QVTSpecification();
+        throw new RuntimeException("TODO constructor");
     }
     
     public Metagraph(QVTSpecification spec) {
-        super(PredicateEdge.class);
-        this.elementsAsVertices = new HashMap<>();
-        this.spec = spec;
-    }
-
-    public void setSpecification(QVTSpecification spec) {
+        if (spec == null)
+            throw new NullPointerException("Specification cannot be null");
+        
         this.spec = spec;
     }
     
-    public QVTSpecification getSpec() {
-        return spec;
-    }
-
-    @Override
-    public boolean addVertex(Metavertex v) {
-        // this.elementsAsVertices.put(v.getElement(), v);
-        return super.addVertex(v);
+    public void setSpecification(QVTSpecification spec) {
+        if (spec == null)
+            throw new NullPointerException("Specification cannot be null");
+        
+        this.spec = spec;
     }
 }

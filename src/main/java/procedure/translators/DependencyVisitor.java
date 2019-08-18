@@ -132,7 +132,7 @@ import org.eclipse.ocl.pivot.VoidType;
 import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
-import parsers.VariableVertexFactory;
+import parsers.VariableIndexer;
 import parsers.qvtr.QVTRelation;
 
 /**
@@ -145,9 +145,9 @@ public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorCon
      * A factory to instantiate unique variables vertices.
      * This is important to distinguish variables with the same name from different relations.
      */
-    private final VariableVertexFactory varVertexFactory;
+    private final VariableIndexer varVertexFactory;
     
-    public DependencyVisitor(VariableVertexFactory varVertexFactory, TranslatorContext context) {
+    public DependencyVisitor(VariableIndexer varVertexFactory, TranslatorContext context) {
         super(context);
         this.varVertexFactory = varVertexFactory;
     }
@@ -319,7 +319,9 @@ public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorCon
 
     @Override // OK
     public Metavertex visitVariableExp(VariableExp ve) {
-        return varVertexFactory.getNewVariableVertex((Variable) ve.getReferredElement());
+        System.out.println(ve.getReferredElement() + " " + ve.getReferredElement().hashCode());
+        // return varVertexFactory.getNewVariableVertex((Variable) ve.getReferredElement());
+        return null;
     }
     
     /* **********************************************************
@@ -797,7 +799,7 @@ public class DependencyVisitor extends AbstractVisitor<Metavertex, TranslatorCon
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public VariableVertexFactory getVariableVertexFactory() {
+    public VariableIndexer getVariableVertexFactory() {
         return varVertexFactory;
     }
 }

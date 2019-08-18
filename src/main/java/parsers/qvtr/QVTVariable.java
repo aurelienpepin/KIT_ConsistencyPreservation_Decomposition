@@ -1,16 +1,15 @@
-package metamodels.vertices;
+package parsers.qvtr;
 
 import org.eclipse.ocl.pivot.Variable;
-import parsers.qvtr.QVTRelation;
 
 /**
  *
  * @author Aurélien Pepin
  */
-public class VariableVertex extends SimpleMetavertex {
-
+public class QVTVariable {
+    
     /**
-     * The OCL variable itself.
+     * The OCL/QVT-R variable itself.
      */
     private final Variable variable;
     
@@ -20,23 +19,25 @@ public class VariableVertex extends SimpleMetavertex {
      */
     private final QVTRelation relation;
     
+    /**
+     * Represent the id^th occurrence of the variable.
+     */
     private final int id;
-
-    public VariableVertex(Variable variable, QVTRelation relation, int id) {
+    
+    public QVTVariable(Variable variable, QVTRelation relation, int id) {
         if (variable == null || relation == null)
-            throw new RuntimeException("Unable to create a VariableVertex");
+            throw new RuntimeException("Unable to create a QVTVariable");
         
         this.variable = variable;
         this.relation = relation;
         this.id = id;
     }
-
+    
     @Override
     public String toString() {
         return "Var(" + this.relation.getName() + "){" + this.variable + " " + this.id + "}";
     }
 
-    @Override
     public String getFullName() {
         return "Var(" + this.relation.getName() + "){" + this.variable.getName() + " " + this.id + "}";
     }
