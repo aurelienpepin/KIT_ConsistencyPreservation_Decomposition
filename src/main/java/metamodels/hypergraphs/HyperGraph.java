@@ -62,4 +62,9 @@ public class HyperGraph<V extends HyperVertex, E extends HyperEdge> { // impleme
     public Set<V> vertexSet() {
         return vertices;
     }
+
+    @Override
+    public String toString() {
+        return "(" + vertices + " | " + edges + ")";
+    }
 }

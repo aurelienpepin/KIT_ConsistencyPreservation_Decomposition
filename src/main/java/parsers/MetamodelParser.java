@@ -45,6 +45,7 @@ public class MetamodelParser {
         Metagraph graph = new Metagraph();
         
         for (String ecoreFilePath : ecoreFilePaths) {
+            // Replace with my own merge
             Graphs.addGraph(graph, generateGraphFrom(ecoreFilePath));
         }
         
@@ -76,6 +77,7 @@ public class MetamodelParser {
         Metagraph graph = new Metagraph();
         
         for (EPackage rootPackage : rootPackages) {
+            // Replace with my own merge
             Graphs.addGraph(graph, generateGraphFrom(rootPackage));
         }
         

@@ -22,25 +22,17 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
-        HyperGraph hg = new HyperGraph();
-        hg.addEdge(null);
-        
-//        HyperVertex a = new HyperVertex();
-//        HyperVertex b = new HyperVertex();
-//        System.out.println(hg.addVertex(a));
-//        System.out.println(hg.addVertex(b));
-//        System.out.println(hg.addEdge(a, b));
-//        System.out.println(hg);
         
         // 1. CREATE GRAPH
-        String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        // String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
+        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
         Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
         // showGraph(graph);
         
         // 2. PERFORM DECOMPOSITION
-        Decomposer.decompose(graph);
+        // Decomposer.decompose(graph);
         
         System.out.println(graph);
     }

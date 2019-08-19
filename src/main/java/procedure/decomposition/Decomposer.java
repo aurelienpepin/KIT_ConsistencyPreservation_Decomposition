@@ -24,7 +24,7 @@ import procedure.translators.TranslatorContext;
  * @author Aurélien Pepin
  */
 public class Decomposer {
-    
+    /*
     public static List<DecompositionResult> decompose(Metagraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
         
@@ -45,7 +45,7 @@ public class Decomposer {
         
         return results;
     }
-    
+    */
     // TODO: Use the strategy pattern to give the choice of the algorithm
     private static DecompositionResult reverseDelete(AsSubgraph<Metavertex, PredicateEdge> component) {
         List<PredicateEdge> edges = new ArrayList<>(component.edgeSet());

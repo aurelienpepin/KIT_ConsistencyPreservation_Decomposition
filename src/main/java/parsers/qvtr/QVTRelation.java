@@ -2,16 +2,15 @@ package parsers.qvtr;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
+import edu.emory.mathcs.backport.java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import metamodels.Metagraph;
-import metamodels.edges.LockedEdge;
 import metamodels.edges.PredicateEdge;
 import metamodels.vertices.Metavertex;
-import metamodels.vertices.VariableVertex;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -63,7 +62,58 @@ public class QVTRelation implements QVTTranslatable {
     
     @Override
     public void translate(Metagraph graph) {
+        TranslatorContext tc = TranslatorContext.getInstance();
+        // HashMap<String, List<QVTVariable>> classes = depV.getVariableVertexFactory().getClasses();
+        List<Set<Variable>> variableList = new ArrayList<>();
         
+        for (QVTDomain domain : domains) {
+            variableList.addAll(this.transformDomain(graph, domain));
+        }
+        
+        System.out.println("variableList: " + variableList);
+        System.out.println("resultat: " + merge(variableList));
+    }
+    
+    private List<Set<Variable>> transformDomain(Metagraph graph, QVTDomain domain) {
+        List<Set<Variable>> variableList = new ArrayList<>();
+        
+        for (PropertyTemplateItem pti : domain.getParts()) {
+            System.out.println(pti + " " + pti.getValue().accept(depV));
+            variableList.add(pti.getValue().accept(depV));
+        }
+        
+        System.out.println("---");
+        return variableList;
+    }
+    
+    private static<T> List<Set<T>> merge(List<Set<T>> sets) {
+        boolean merged = true;
+        
+        while (merged) {
+            merged = false;
+            List<Set<T>> results = new ArrayList<>();
+            
+            while (!sets.isEmpty()) {
+                Set<T> common = sets.get(0);
+                List<Set<T>> rest = sets.subList(1, sets.size());
+                sets = new ArrayList<>();
+                
+                for (Set s : rest) {
+                    if (Collections.disjoint(s, common)) {
+                        sets.add(s);
+                    } else {
+                        merged = true;
+                        common.addAll(s);
+                    }
+                }
+                
+                results.add(common);
+            }
+            
+            sets = results;
+        }
+        
+        return sets;
     }
     
     /*

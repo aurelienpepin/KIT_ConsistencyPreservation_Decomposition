@@ -11,7 +11,6 @@ public class Metagraph extends HyperGraph<Metavertex, HyperEdge> {
     
     public Metagraph() {
         this.spec = new QVTSpecification();
-        throw new RuntimeException("TODO constructor");
     }
     
     public Metagraph(QVTSpecification spec) {

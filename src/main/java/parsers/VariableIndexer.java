@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.eclipse.ocl.pivot.Variable;
 import parsers.qvtr.QVTRelation;
+import parsers.qvtr.QVTVariable;
 
 /**
  * 
@@ -20,7 +21,7 @@ public class VariableIndexer {
     
     private final QVTRelation relation;
     
-    private HashMap<String, List<Variable>> classes;
+    private final HashMap<String, List<QVTVariable>> classes;
     
     public VariableIndexer(QVTRelation relation) {
         this.relation = relation;
@@ -28,17 +29,17 @@ public class VariableIndexer {
         this.classes = new HashMap<>();
     }
     
-    public VariableVertex getNewVariableVertex(Variable variable) {
+    public QVTVariable getNewQVTVariable(Variable variable) {
         if (variable == null)
             throw new NullPointerException("No vertex can be instantiated for a null variable.");
         
-        VariableVertex newVertex = new VariableVertex(variable, relation, counter++);
+        QVTVariable newVertex = new QVTVariable(variable, relation, counter++);
         this.addOccurrenceOfVariable(newVertex);
         return newVertex;
     }
     
-    private void addOccurrenceOfVariable(Variable var) {
-        String varKey = var.getName();
+    private void addOccurrenceOfVariable(QVTVariable var) {
+        String varKey = var.getVariable().getName();
         
         if (!classes.containsKey(varKey))
             classes.put(varKey, new ArrayList<>());
@@ -46,7 +47,7 @@ public class VariableIndexer {
         classes.get(varKey).add(var);
     }
 
-    public HashMap<String, List<VariableVertex>> getClasses() {
+    public HashMap<String, List<QVTVariable>> getClasses() {
         return classes;
     }
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import metamodels.edges.PredicateEdge;
 import metamodels.vertices.Metavertex;
-import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.graph.AsSubgraph;
 
 /**
