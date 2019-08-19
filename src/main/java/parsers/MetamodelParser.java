@@ -1,6 +1,7 @@
 package parsers;
 
 import metamodels.Metagraph;
+import metamodels.hypergraphs.HyperGraph;
 import metamodels.vertices.ecore.EAttributeVertex;
 import metamodels.vertices.ecore.ENamedElementVertex;
 import metamodels.vertices.ecore.EPackageVertex;
@@ -45,8 +46,7 @@ public class MetamodelParser {
         Metagraph graph = new Metagraph();
         
         for (String ecoreFilePath : ecoreFilePaths) {
-            // Replace with my own merge
-            Graphs.addGraph(graph, generateGraphFrom(ecoreFilePath));
+            HyperGraph.addHyperGraph(graph, generateGraphFrom(ecoreFilePath));
         }
         
         return graph;
@@ -77,8 +77,7 @@ public class MetamodelParser {
         Metagraph graph = new Metagraph();
         
         for (EPackage rootPackage : rootPackages) {
-            // Replace with my own merge
-            Graphs.addGraph(graph, generateGraphFrom(rootPackage));
+            HyperGraph.addHyperGraph(graph, generateGraphFrom(rootPackage));
         }
         
         return graph;

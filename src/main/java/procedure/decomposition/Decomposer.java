@@ -46,6 +46,13 @@ public class Decomposer {
         return results;
     }
     */
+    public static List<DecompositionResult> decompose(Metagraph graph) {
+        List<DecompositionResult> results = new ArrayList<>();
+        
+        // Get the dual graph
+        throw new RuntimeException("Unimplemented yet");
+    }
+    
     // TODO: Use the strategy pattern to give the choice of the algorithm
     private static DecompositionResult reverseDelete(AsSubgraph<Metavertex, PredicateEdge> component) {
         List<PredicateEdge> edges = new ArrayList<>(component.edgeSet());

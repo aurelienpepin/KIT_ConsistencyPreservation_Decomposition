@@ -63,6 +63,11 @@ public class HyperGraph<V extends HyperVertex, E extends HyperEdge> { // impleme
         return vertices;
     }
 
+    public static void addHyperGraph(HyperGraph dest, HyperGraph source) {
+        dest.vertexSet().addAll(source.vertexSet());
+        dest.edgeSet().addAll(source.edgeSet());
+    }
+    
     @Override
     public String toString() {
         return "(" + vertices + " | " + edges + ")";

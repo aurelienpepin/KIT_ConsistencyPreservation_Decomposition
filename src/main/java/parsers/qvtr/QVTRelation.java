@@ -4,7 +4,9 @@ import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
 import edu.emory.mathcs.backport.java.util.Collections;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,7 @@ import metamodels.vertices.Metavertex;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.ocl.pivot.OCLExpression;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
@@ -21,7 +24,9 @@ import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import parsers.VariableIndexer;
+import procedure.translators.ConstraintVisitor;
 import procedure.translators.DependencyVisitor;
+import procedure.translators.TransformationTranslator;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -39,7 +44,7 @@ public class QVTRelation implements QVTTranslatable {
     
     private final DependencyVisitor depV;
     
-    // private final Map<Variable, List<PropertyTemplateItem>> classes;
+    private final ConstraintVisitor conV;
     
     public QVTRelation(Relation relation) {
         this.relation = relation;
@@ -48,72 +53,53 @@ public class QVTRelation implements QVTTranslatable {
         // Each QVTrelation has its own factory so the scope of a VariableVertice is the relation.
         VariableIndexer varVertexFactory = new VariableIndexer(this);
         this.depV = new DependencyVisitor(varVertexFactory, TranslatorContext.getInstance());
-        
-        // this.classes = new HashMap<>();
+        this.conV = new ConstraintVisitor(TranslatorContext.getInstance());
         
         for (Domain rd : relation.getDomain()) {
             this.domains.add(new QVTDomain((RelationDomain) rd));
         }
-        
-//        for (Variable v : relation.getVariable()) {
-//            this.classes.put(v, new ArrayList<>()); // !!! it adds useless variables
-//        }
     }
     
     @Override
-    public void translate(Metagraph graph) {
-        TranslatorContext tc = TranslatorContext.getInstance();
-        // HashMap<String, List<QVTVariable>> classes = depV.getVariableVertexFactory().getClasses();
-        List<Set<Variable>> variableList = new ArrayList<>();
-        
+    public void translate(Metagraph graph) {        
         for (QVTDomain domain : domains) {
-            variableList.addAll(this.transformDomain(graph, domain));
+            System.out.println(this.transformDomain(graph, domain));
         }
         
-        System.out.println("variableList: " + variableList);
-        System.out.println("resultat: " + merge(variableList));
+        // System.out.println("variableList: " + variableList);
+        // System.out.println("resultat: " + TransformationTranslator.merge(variableList));
+        
+        // POUR CHAQUE MERGE:
+        //      - nouvelle edge dans le graph
+        //      - graph.addEdge()
     }
     
-    private List<Set<Variable>> transformDomain(Metagraph graph, QVTDomain domain) {
-        List<Set<Variable>> variableList = new ArrayList<>();
+    private Map<Set<Variable>, Set<Expr>> transformDomain(Metagraph graph, QVTDomain domain) {
+        Map<Set<Variable>, Set<Expr>> expressions = new HashMap<>();
+        TranslatorContext tContext = TranslatorContext.getInstance();
         
-        for (PropertyTemplateItem pti : domain.getParts()) {
-            System.out.println(pti + " " + pti.getValue().accept(depV));
-            variableList.add(pti.getValue().accept(depV));
-        }
-        
-        System.out.println("---");
-        return variableList;
-    }
-    
-    private static<T> List<Set<T>> merge(List<Set<T>> sets) {
-        boolean merged = true;
-        
-        while (merged) {
-            merged = false;
-            List<Set<T>> results = new ArrayList<>();
+        domain.getParts().forEach((pti) -> {
+            // System.out.println(pti + " " + pti.getValue().accept(depV));
+            Set<Variable> variables = pti.getValue().accept(depV);
             
-            while (!sets.isEmpty()) {
-                Set<T> common = sets.get(0);
-                List<Set<T>> rest = sets.subList(1, sets.size());
-                sets = new ArrayList<>();
+            // Doesn't matter for multi-model consistency preservation
+            if (!(variables.isEmpty())) {
+                // GENERATE THE Z3 PREDICATE
+                EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
+                Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), tContext.getZ3Ctx().mkStringSort());
+                BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(conV));
                 
-                for (Set s : rest) {
-                    if (Collections.disjoint(s, common)) {
-                        sets.add(s);
-                    } else {
-                        merged = true;
-                        common.addAll(s);
-                    }
+                if (expressions.containsKey(variables)) {
+                    expressions.get(variables).add(predicate);
+                } else {
+                    expressions.put(variables, new HashSet<>(Arrays.asList(predicate)));
                 }
-                
-                results.add(common);
             }
-            
-            sets = results;
-        }
+        });
         
-        return sets;
+        // System.out.println("(D) " + domain + ": " + expressions);
+        // System.out.println("---");
+        return expressions;
     }
     
     /*
