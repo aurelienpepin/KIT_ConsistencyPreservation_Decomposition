@@ -2,7 +2,7 @@ package integration;
 
 import java.util.List;
 import junit.framework.TestCase;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import org.junit.jupiter.api.Test;
 import parsers.TransformationParser;
 import procedure.decomposition.Decomposer;
@@ -32,7 +32,7 @@ public class ITSimple extends TestCase implements IntegrationTest {
 
     @Test
     public void testIndependentSubgraphs() {
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
+        MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
         List<DecompositionResult> results = Decomposer.decompose(graph);
         
         assertTrue("Bad number of independent subgraphs", results.size() == 2);
@@ -40,7 +40,7 @@ public class ITSimple extends TestCase implements IntegrationTest {
     
     @Test
     public void testResults() {
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
+        MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
         List<DecompositionResult> results = Decomposer.decompose(graph);
         
         assertTrue("Bad result about decomposability", results.stream().allMatch(r -> r.isPositive()));

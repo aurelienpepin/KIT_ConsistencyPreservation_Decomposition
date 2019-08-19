@@ -6,7 +6,7 @@ import metamodels.hypergraphs.HyperVertex;
  *
  * @author Aurélien Pepin
  */
-public abstract class Metavertex extends HyperVertex {
+public abstract class MetaVertex extends HyperVertex {
     
     public abstract String getFullName();
 }

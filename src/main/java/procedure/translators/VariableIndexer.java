@@ -42,10 +42,7 @@ public class VariableIndexer {
         // Transform the PropertyTemplateItem into a Z3 constraint
         EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
         Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), tContext.getZ3Ctx().mkStringSort());
-        BoolExpr predicate = tContext.getZ3Ctx().mkEq( // (= eq1 translate(pti))
-                eq1,
-                pti.getValue().accept(relation.getConstraintVisitor())
-        );
+        BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(relation.getConstraintVisitor()));
 
         // Add predicate to the set of variables
         if (bindings.containsKey(variables)) {
@@ -57,20 +54,20 @@ public class VariableIndexer {
     
     public void merge() {
         boolean merged = true;
-        List<Entry<Set<Variable>, Set<Expr>>> sets = new ArrayList<>(bindings.entrySet());
+        List<Entry<Set<Variable>, Set<Expr>>> entries = new ArrayList<>(bindings.entrySet());
         
         while (merged) {
             merged = false;
             List<Entry<Set<Variable>, Set<Expr>>> results = new ArrayList<>(); 
             
-            while (!sets.isEmpty()) {
-                Entry<Set<Variable>, Set<Expr>> common = sets.get(0);
-                List<Entry<Set<Variable>, Set<Expr>>> rest = sets.subList(1, sets.size());
-                sets = new ArrayList<>();
+            while (!entries.isEmpty()) {
+                Entry<Set<Variable>, Set<Expr>> common = entries.get(0);
+                List<Entry<Set<Variable>, Set<Expr>>> rest = entries.subList(1, entries.size());
+                entries = new ArrayList<>();
                 
                 for (Entry<Set<Variable>, Set<Expr>> s : rest) {
                     if (Collections.disjoint(s.getKey(), common.getKey())) {
-                        sets.add(s);
+                        entries.add(s);
                     } else {
                         merged = true;
                         common.getKey().addAll(s.getKey());
@@ -80,43 +77,15 @@ public class VariableIndexer {
                 results.add(common);
             }
                         
-            sets = results;
+            entries = results;
         }
         
         bindings.clear();
-        for (Entry<Set<Variable>, Set<Expr>> entry : sets) {
+        for (Entry<Set<Variable>, Set<Expr>> entry : entries) {
             bindings.put(entry.getKey(), entry.getValue());
         }
     }
-    /* 
-    public static<T> List<Set<T>> merge(List<Set<T>> sets) {
-        boolean merged = true;
-        
-        while (merged) {
-            merged = false;
-            List<Set<T>> results = new ArrayList<>();
-            
-            while (!sets.isEmpty()) {
-                Set<T> common = sets.get(0);
-                List<Set<T>> rest = sets.subList(1, sets.size());
-                sets = new ArrayList<>();
-                
-                for (Set s : rest) {
-                    if (Collections.disjoint(s, common)) {
-                        sets.add(s);
-                    } else {
-                        merged = true;
-                        common.addAll(s);
-                    }
-                }                
-                results.add(common);
-            }            
-            sets = results;
-        }
-        
-        return sets;
-    }
-    */
+
     public Map<Set<Variable>, Set<Expr>> getBindings() {
         return bindings;
     }

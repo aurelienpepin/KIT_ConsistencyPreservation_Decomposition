@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import metamodels.edges.PredicateEdge;
-import metamodels.vertices.Metavertex;
+import metamodels.vertices.MetaVertex;
 import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
@@ -46,7 +46,7 @@ public class Decomposer {
         return results;
     }
     */
-    public static List<DecompositionResult> decompose(Metagraph graph) {
+    public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
         
         // Get the dual graph
@@ -54,15 +54,15 @@ public class Decomposer {
     }
     
     // TODO: Use the strategy pattern to give the choice of the algorithm
-    private static DecompositionResult reverseDelete(AsSubgraph<Metavertex, PredicateEdge> component) {
+    private static DecompositionResult reverseDelete(AsSubgraph<MetaVertex, PredicateEdge> component) {
         List<PredicateEdge> edges = new ArrayList<>(component.edgeSet());
         List<PredicateEdge> removedEdges = new ArrayList<>();
         int i = 0;
         
         while (i < edges.size()) {           
             PredicateEdge edge = edges.get(i);
-            Metavertex s = component.getEdgeSource(edge);
-            Metavertex t = component.getEdgeTarget(edge);
+            MetaVertex s = component.getEdgeSource(edge);
+            MetaVertex t = component.getEdgeTarget(edge);
             
             // Delete the edge
             component.removeEdge(edge);
@@ -83,7 +83,7 @@ public class Decomposer {
         return new DecompositionResult(component, removedEdges, edges);
     }
     
-    private static boolean simulableThroughCombination(AsSubgraph<Metavertex, PredicateEdge> graph, PredicateEdge edge, Metavertex source, Metavertex target) {
+    private static boolean simulableThroughCombination(AsSubgraph<MetaVertex, PredicateEdge> graph, PredicateEdge edge, MetaVertex source, MetaVertex target) {
         KShortestPathAlgorithm algo = new YenKShortestPath(graph);
         // System.out.println("ARB: " + edge + " " + algo.getPaths(source, target, 100));	// arbitrary, for experimentation
 

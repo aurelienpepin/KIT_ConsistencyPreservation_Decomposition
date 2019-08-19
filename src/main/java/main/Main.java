@@ -8,11 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import metamodels.edges.PredicateEdge;
 import metamodels.hypergraphs.HyperGraph;
 import metamodels.hypergraphs.HyperVertex;
-import metamodels.vertices.Metavertex;
+import metamodels.vertices.MetaVertex;
 import org.jgrapht.ext.JGraphXAdapter;
 import parsers.TransformationParser;
 
@@ -28,7 +28,7 @@ public class Main {
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
         String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
+        MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
         // showGraph(graph);
         
         // 2. PERFORM DECOMPOSITION

@@ -2,18 +2,18 @@ package metamodels;
 
 import metamodels.hypergraphs.HyperEdge;
 import metamodels.hypergraphs.HyperGraph;
-import metamodels.vertices.Metavertex;
+import metamodels.vertices.MetaVertex;
 import parsers.qvtr.QVTSpecification;
 
-public class Metagraph extends HyperGraph<Metavertex, HyperEdge> {
+public class MetaGraph extends HyperGraph<MetaVertex, HyperEdge> {
     
     private QVTSpecification spec;
     
-    public Metagraph() {
+    public MetaGraph() {
         this.spec = new QVTSpecification();
     }
     
-    public Metagraph(QVTSpecification spec) {
+    public MetaGraph(QVTSpecification spec) {
         if (spec == null)
             throw new NullPointerException("Specification cannot be null");
         
@@ -25,5 +25,9 @@ public class Metagraph extends HyperGraph<Metavertex, HyperEdge> {
             throw new NullPointerException("Specification cannot be null");
         
         this.spec = spec;
+    }
+    
+    public DualGraph toDual() {
+        throw new UnsupportedOperationException("TODO");
     }
 }

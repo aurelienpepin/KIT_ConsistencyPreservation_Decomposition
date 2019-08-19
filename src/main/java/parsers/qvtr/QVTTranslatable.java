@@ -1,6 +1,6 @@
 package parsers.qvtr;
 
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 
 /**
  *
@@ -8,5 +8,5 @@ import metamodels.Metagraph;
  */
 public interface QVTTranslatable {
     
-    public void translate(Metagraph graph);
+    public void translate(MetaGraph graph);
 }

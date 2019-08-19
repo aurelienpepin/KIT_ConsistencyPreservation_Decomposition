@@ -3,7 +3,7 @@ package parsers;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -29,17 +29,17 @@ public class TransformationParser {
      * @param qvtrFilePaths
      * @return 
      */
-    public static Metagraph generateGraphFrom(String... qvtrFilePaths) {
+    public static MetaGraph generateGraphFrom(String... qvtrFilePaths) {
         OCLstdlib.install();
         QVTrelationStandaloneSetup.doSetup();
         
-        Metagraph graph = new Metagraph();
+        MetaGraph graph = new MetaGraph();
         TransformationParser.fillGraph(graph, qvtrFilePaths); // Predicates
         
         return graph;
     }
     
-    private static Metagraph fillGraph(Metagraph graph, String... qvtrFilePaths) {
+    private static MetaGraph fillGraph(MetaGraph graph, String... qvtrFilePaths) {
         ResourceSet resourceSet = new ResourceSetImpl();
         Set<QVTTransformation> transformations = new HashSet<>();
         
