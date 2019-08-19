@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import metamodels.edges.EdgeAssembler;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
@@ -25,7 +26,7 @@ public class VariableIndexer {
     
     private final QVTRelation relation;
     
-    private final Map<Set<Variable>, Set<Expr>> bindings;
+    private final Map<Set<Variable>, EdgeAssembler> bindings;
     
     private final TranslatorContext tContext;
     
@@ -45,33 +46,34 @@ public class VariableIndexer {
         BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(relation.getConstraintVisitor()));
 
         // Add predicate to the set of variables
-        if (bindings.containsKey(variables)) {
-            bindings.get(variables).add(predicate);
-        } else {
-            bindings.put(variables, new HashSet<>(Arrays.asList(predicate)));
+        if (!bindings.containsKey(variables)) {
+            bindings.put(variables, new EdgeAssembler());
         }
+        
+        bindings.get(variables).addExpression(predicate);
+        bindings.get(variables).addVertex(eav1);
     }
     
     public void merge() {
         boolean merged = true;
-        List<Entry<Set<Variable>, Set<Expr>>> entries = new ArrayList<>(bindings.entrySet());
+        List<Entry<Set<Variable>, EdgeAssembler>> entries = new ArrayList<>(bindings.entrySet());
         
         while (merged) {
             merged = false;
-            List<Entry<Set<Variable>, Set<Expr>>> results = new ArrayList<>(); 
+            List<Entry<Set<Variable>, EdgeAssembler>> results = new ArrayList<>(); 
             
             while (!entries.isEmpty()) {
-                Entry<Set<Variable>, Set<Expr>> common = entries.get(0);
-                List<Entry<Set<Variable>, Set<Expr>>> rest = entries.subList(1, entries.size());
+                Entry<Set<Variable>, EdgeAssembler> common = entries.get(0);
+                List<Entry<Set<Variable>, EdgeAssembler>> rest = entries.subList(1, entries.size());
                 entries = new ArrayList<>();
                 
-                for (Entry<Set<Variable>, Set<Expr>> s : rest) {
+                for (Entry<Set<Variable>, EdgeAssembler> s : rest) {
                     if (Collections.disjoint(s.getKey(), common.getKey())) {
                         entries.add(s);
                     } else {
                         merged = true;
                         common.getKey().addAll(s.getKey());
-                        common.getValue().addAll(s.getValue());
+                        common.getValue().add(s.getValue());
                     }
                 }
                 results.add(common);
@@ -81,12 +83,12 @@ public class VariableIndexer {
         }
         
         bindings.clear();
-        for (Entry<Set<Variable>, Set<Expr>> entry : entries) {
+        for (Entry<Set<Variable>, EdgeAssembler> entry : entries) {
             bindings.put(entry.getKey(), entry.getValue());
         }
     }
 
-    public Map<Set<Variable>, Set<Expr>> getBindings() {
+    public Map<Set<Variable>, EdgeAssembler> getBindings() {
         return bindings;
     }
 }

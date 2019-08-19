@@ -38,11 +38,11 @@ public class ITSimple extends TestCase implements IntegrationTest {
         assertTrue("Bad number of independent subgraphs", results.size() == 2);
     }
     
-    @Test
-    public void testResults() {
+    // @Test
+    /* public void testResults() {
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
         List<DecompositionResult> results = Decomposer.decompose(graph);
         
         assertTrue("Bad result about decomposability", results.stream().allMatch(r -> r.isPositive()));
-    }
+    } */
 }

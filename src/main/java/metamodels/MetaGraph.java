@@ -1,11 +1,12 @@
 package metamodels;
 
+import metamodels.edges.MetaEdge;
 import metamodels.hypergraphs.HyperEdge;
 import metamodels.hypergraphs.HyperGraph;
 import metamodels.vertices.MetaVertex;
 import parsers.qvtr.QVTSpecification;
 
-public class MetaGraph extends HyperGraph<MetaVertex, HyperEdge> {
+public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
     
     private QVTSpecification spec;
     
@@ -28,6 +29,13 @@ public class MetaGraph extends HyperGraph<MetaVertex, HyperEdge> {
     }
     
     public DualGraph toDual() {
+        DualGraph dual = new DualGraph();
+        
+        for (MetaEdge edge : this.edgeSet())
+            dual.addVertex(edge);
+        
+        // Generate combinations of two.
+        
         throw new UnsupportedOperationException("TODO");
     }
 }

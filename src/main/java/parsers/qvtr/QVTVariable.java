@@ -3,7 +3,7 @@ package parsers.qvtr;
 import org.eclipse.ocl.pivot.Variable;
 
 /**
- *
+ * Probably useless now. TODO: delete.
  * @author Aurélien Pepin
  */
 public class QVTVariable {

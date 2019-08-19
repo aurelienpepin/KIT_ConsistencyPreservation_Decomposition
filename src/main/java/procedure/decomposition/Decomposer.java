@@ -6,14 +6,14 @@ import com.microsoft.z3.Status;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import metamodels.DualGraph;
 import metamodels.MetaGraph;
-import metamodels.edges.PredicateEdge;
 import metamodels.vertices.MetaVertex;
 import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.cycle.PatonCycleBase;
 import org.jgrapht.alg.interfaces.KShortestPathAlgorithm;
 import org.jgrapht.alg.shortestpath.YenKShortestPath;
 import org.jgrapht.graph.AsSubgraph;
@@ -50,9 +50,15 @@ public class Decomposer {
         List<DecompositionResult> results = new ArrayList<>();
         
         // Get the dual graph
+        DualGraph dual = graph.toDual();
+        
+        // Pas sûr d'avoir besoin de ça
+        PatonCycleBase pcb = new PatonCycleBase(dual);
+        System.out.println("PATON: " + pcb.getCycleBasis().getCycles());
+                
         throw new RuntimeException("Unimplemented yet");
     }
-    
+    /*
     // TODO: Use the strategy pattern to give the choice of the algorithm
     private static DecompositionResult reverseDelete(AsSubgraph<MetaVertex, PredicateEdge> component) {
         List<PredicateEdge> edges = new ArrayList<>(component.edgeSet());
@@ -108,4 +114,5 @@ public class Decomposer {
 
         return Status.UNSATISFIABLE.equals(s.check());
     }
+    */
 }

@@ -30,7 +30,7 @@ import org.eclipse.ocl.pivot.model.OCLstdlib;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.utilities.ParserException;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationCallExp;
-import procedure.translators.DependencyVisitor;
+import procedure.visitors.DependencyVisitor;
 import procedure.translators.TranslatorContext;
 /**
  * 

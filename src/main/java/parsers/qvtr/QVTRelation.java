@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import metamodels.MetaGraph;
+import metamodels.edges.EdgeAssembler;
+import metamodels.edges.MetaEdge;
+import metamodels.hypergraphs.HyperEdge;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
@@ -12,8 +15,8 @@ import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import procedure.translators.VariableIndexer;
-import procedure.translators.ConstraintVisitor;
-import procedure.translators.DependencyVisitor;
+import procedure.visitors.ConstraintVisitor;
+import procedure.visitors.DependencyVisitor;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -55,13 +58,12 @@ public class QVTRelation implements QVTTranslatable {
         }
         
         // Group variables that have something to do together
-        System.out.println("AVANT MERGE: " + this.varIndexer.getBindings());
         this.varIndexer.merge();
-        System.out.println("APRES MERGE: " + this.varIndexer.getBindings());
         
-        // POUR CHAQUE MERGE:
-        //      - nouvelle edge dans le graph
-        //      - graph.addEdge()
+        for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
+            MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
+            graph.addEdge(edge);            
+        }
     }
     
     private void transformDomain(MetaGraph graph, QVTDomain domain) {        
