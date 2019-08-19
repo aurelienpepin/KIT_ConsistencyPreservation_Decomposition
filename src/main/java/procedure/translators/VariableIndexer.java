@@ -1,4 +1,4 @@
-package parsers;
+package procedure.translators;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
@@ -9,14 +9,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import parsers.qvtr.QVTRelation;
-import procedure.translators.ConstraintVisitor;
-import procedure.translators.TranslatorContext;
 
 /**
  * 
@@ -48,6 +47,7 @@ public class VariableIndexer {
                 pti.getValue().accept(relation.getConstraintVisitor())
         );
 
+        // Add predicate to the set of variables
         if (bindings.containsKey(variables)) {
             bindings.get(variables).add(predicate);
         } else {
@@ -56,21 +56,39 @@ public class VariableIndexer {
     }
     
     public void merge() {
-        throw new UnsupportedOperationException("TODO merge of variables");
+        boolean merged = true;
+        List<Entry<Set<Variable>, Set<Expr>>> sets = new ArrayList<>(bindings.entrySet());
+        
+        while (merged) {
+            merged = false;
+            List<Entry<Set<Variable>, Set<Expr>>> results = new ArrayList<>(); 
+            
+            while (!sets.isEmpty()) {
+                Entry<Set<Variable>, Set<Expr>> common = sets.get(0);
+                List<Entry<Set<Variable>, Set<Expr>>> rest = sets.subList(1, sets.size());
+                sets = new ArrayList<>();
+                
+                for (Entry<Set<Variable>, Set<Expr>> s : rest) {
+                    if (Collections.disjoint(s.getKey(), common.getKey())) {
+                        sets.add(s);
+                    } else {
+                        merged = true;
+                        common.getKey().addAll(s.getKey());
+                        common.getValue().addAll(s.getValue());
+                    }
+                }
+                results.add(common);
+            }
+                        
+            sets = results;
+        }
+        
+        bindings.clear();
+        for (Entry<Set<Variable>, Set<Expr>> entry : sets) {
+            bindings.put(entry.getKey(), entry.getValue());
+        }
     }
-
-    public Map<Set<Variable>, Set<Expr>> getBindings() {
-        return bindings;
-    }
-    
-    /**
-     * Merge sets as long as their intersections are non-empty.
-     * Example: [{1}, {2, 3}, {1, 4}, {5}] -> [{1, 2, 3, 4}, {5}]
-     * 
-     * @param <T>
-     * @param sets
-     * @return 
-     */
+    /* 
     public static<T> List<Set<T>> merge(List<Set<T>> sets) {
         boolean merged = true;
         
@@ -97,5 +115,9 @@ public class VariableIndexer {
         }
         
         return sets;
+    }
+    */
+    public Map<Set<Variable>, Set<Expr>> getBindings() {
+        return bindings;
     }
 }

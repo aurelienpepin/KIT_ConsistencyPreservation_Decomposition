@@ -22,7 +22,7 @@ import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
-import parsers.VariableIndexer;
+import procedure.translators.VariableIndexer;
 import procedure.translators.ConstraintVisitor;
 import procedure.translators.DependencyVisitor;
 import procedure.translators.TransformationTranslator;
@@ -66,7 +66,11 @@ public class QVTRelation implements QVTTranslatable {
             this.transformDomain(graph, domain);
         }
         
-        System.out.println(this.varIndexer.getBindings());
+        // Group variables that have something to do together
+        System.out.println("AVANT MERGE: " + this.varIndexer.getBindings());
+        this.varIndexer.merge();
+        System.out.println("APRES MERGE: " + this.varIndexer.getBindings());
+        
         // POUR CHAQUE MERGE:
         //      - nouvelle edge dans le graph
         //      - graph.addEdge()
