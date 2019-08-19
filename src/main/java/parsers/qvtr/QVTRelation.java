@@ -2,7 +2,6 @@ package parsers.qvtr;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
-import edu.emory.mathcs.backport.java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,13 +45,14 @@ public class QVTRelation implements QVTTranslatable {
     
     private final ConstraintVisitor conV;
     
+    private final VariableIndexer varIndexer;
+    
     public QVTRelation(Relation relation) {
         this.relation = relation;
         this.domains = new ArrayList<>();
         
-        // Each QVTrelation has its own factory so the scope of a VariableVertice is the relation.
-        VariableIndexer varVertexFactory = new VariableIndexer(this);
-        this.depV = new DependencyVisitor(varVertexFactory, TranslatorContext.getInstance());
+        this.varIndexer = new VariableIndexer(this);
+        this.depV = new DependencyVisitor(TranslatorContext.getInstance());
         this.conV = new ConstraintVisitor(TranslatorContext.getInstance());
         
         for (Domain rd : relation.getDomain()) {
@@ -63,43 +63,22 @@ public class QVTRelation implements QVTTranslatable {
     @Override
     public void translate(Metagraph graph) {        
         for (QVTDomain domain : domains) {
-            System.out.println(this.transformDomain(graph, domain));
+            this.transformDomain(graph, domain);
         }
         
-        // System.out.println("variableList: " + variableList);
-        // System.out.println("resultat: " + TransformationTranslator.merge(variableList));
-        
+        System.out.println(this.varIndexer.getBindings());
         // POUR CHAQUE MERGE:
         //      - nouvelle edge dans le graph
         //      - graph.addEdge()
     }
     
-    private Map<Set<Variable>, Set<Expr>> transformDomain(Metagraph graph, QVTDomain domain) {
-        Map<Set<Variable>, Set<Expr>> expressions = new HashMap<>();
-        TranslatorContext tContext = TranslatorContext.getInstance();
-        
-        domain.getParts().forEach((pti) -> {
+    private void transformDomain(Metagraph graph, QVTDomain domain) {        
+        for (PropertyTemplateItem pti : domain.getParts()) {
             // System.out.println(pti + " " + pti.getValue().accept(depV));
             Set<Variable> variables = pti.getValue().accept(depV);
             
-            // Doesn't matter for multi-model consistency preservation
-            if (!(variables.isEmpty())) {
-                // GENERATE THE Z3 PREDICATE
-                EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
-                Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), tContext.getZ3Ctx().mkStringSort());
-                BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(conV));
-                
-                if (expressions.containsKey(variables)) {
-                    expressions.get(variables).add(predicate);
-                } else {
-                    expressions.put(variables, new HashSet<>(Arrays.asList(predicate)));
-                }
-            }
-        });
-        
-        // System.out.println("(D) " + domain + ": " + expressions);
-        // System.out.println("---");
-        return expressions;
+            varIndexer.addBinding(variables, pti);
+        }
     }
     
     /*
@@ -213,5 +192,9 @@ public class QVTRelation implements QVTTranslatable {
     
     public String getName() {
         return relation.getName();
+    }
+
+    public ConstraintVisitor getConstraintVisitor() {
+        return conV;
     }
 }

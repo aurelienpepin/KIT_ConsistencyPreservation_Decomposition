@@ -28,40 +28,4 @@ public class TransformationTranslator {
             transformation.translate(graph);
         }
     }
-    
-    /**
-     * Merge sets as long as their intersections are non-empty.
-     * Example: [{1}, {2, 3}, {1, 4}, {5}] -> [{1, 2, 3, 4}, {5}]
-     * 
-     * @param <T>
-     * @param sets
-     * @return 
-     */
-    public static<T> List<Set<T>> merge(List<Set<T>> sets) {
-        boolean merged = true;
-        
-        while (merged) {
-            merged = false;
-            List<Set<T>> results = new ArrayList<>();
-            
-            while (!sets.isEmpty()) {
-                Set<T> common = sets.get(0);
-                List<Set<T>> rest = sets.subList(1, sets.size());
-                sets = new ArrayList<>();
-                
-                for (Set s : rest) {
-                    if (Collections.disjoint(s, common)) {
-                        sets.add(s);
-                    } else {
-                        merged = true;
-                        common.addAll(s);
-                    }
-                }                
-                results.add(common);
-            }            
-            sets = results;
-        }
-        
-        return sets;
-    }
 }

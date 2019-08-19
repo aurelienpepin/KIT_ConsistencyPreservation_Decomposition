@@ -132,24 +132,14 @@ import org.eclipse.ocl.pivot.VoidType;
 import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
-import parsers.VariableIndexer;
-import parsers.qvtr.QVTRelation;
-
 /**
  *
  * @author Aurelien
  */
 public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
 
-    /**
-     * A factory to instantiate unique variables vertices.
-     * This is important to distinguish variables with the same name from different relations.
-     */
-    // private final VariableIndexer varIndexer;
-    
-    public DependencyVisitor(VariableIndexer varIndexer, TranslatorContext context) {
+    public DependencyVisitor(TranslatorContext context) {
         super(context);
-        // this.varIndexer = varIndexer;
     }
     
     @Override
@@ -796,8 +786,4 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     public Set<Variable> visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    // public VariableIndexer getVariableVertexFactory() {
-    //     return varIndexer;
-    // }
 }
