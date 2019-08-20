@@ -13,6 +13,7 @@ import metamodels.vertices.ecore.ENamedElementVertex;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.cycle.PatonCycleBase;
 import org.jgrapht.alg.interfaces.KShortestPathAlgorithm;
 import org.jgrapht.alg.shortestpath.YenKShortestPath;
@@ -52,11 +53,8 @@ public class Decomposer {
         // Get the dual graph
         DualGraph dual = graph.toDual();
         
-        // Pas sûr d'avoir besoin de ça
-        PatonCycleBase pcb = new PatonCycleBase(dual);
-        System.out.println("PATON: " + pcb.getCycleBasis().getCycles());
-                
-        throw new RuntimeException("Unimplemented yet");
+        // Perform cycle detection
+        CycleDetector cycleDetector = new CycleDetector(dual);
     }
     /*
     // TODO: Use the strategy pattern to give the choice of the algorithm

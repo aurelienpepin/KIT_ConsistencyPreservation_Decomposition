@@ -10,7 +10,7 @@ import metamodels.vertices.MetaVertex;
  *
  * @author Aurelien
  */
-public class MetaEdge extends HyperEdge {
+public class MetaEdge extends HyperEdge<MetaVertex> {
     
     public MetaEdge(Set<MetaVertex> vertices, Set<Expr> expressions) {
         super(new HashSet<>(), expressions);

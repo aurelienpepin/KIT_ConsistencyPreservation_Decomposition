@@ -308,7 +308,7 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
 
     @Override // OK
     public Expr visitVariableExp(VariableExp ve) {
-        System.out.println("VARIABLE ONLY WORKS WITH STRINGS NOW");
+        // System.out.println("VARIABLE ONLY WORKS WITH STRINGS NOW");
         return context.getZ3Ctx().mkConst(((Variable) ve.getReferredVariable()).getName(), context.getZ3Ctx().mkStringSort());
     }
     

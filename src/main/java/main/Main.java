@@ -8,11 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import metamodels.DualGraph;
 import metamodels.MetaGraph;
+import metamodels.hypergraphs.HyperEdge;
 import metamodels.hypergraphs.HyperGraph;
 import metamodels.hypergraphs.HyperVertex;
 import metamodels.vertices.MetaVertex;
 import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.DefaultEdge;
 import parsers.TransformationParser;
 
 import procedure.decomposition.Decomposer;
@@ -29,7 +32,7 @@ public class Main {
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
         
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
-        // showGraph(graph);
+        showGraph(graph.toDual());
         
         // 2. PERFORM DECOMPOSITION
         Decomposer.decompose(graph);
@@ -37,15 +40,15 @@ public class Main {
         System.out.println(graph);
     }
     
-//    public static void showGraph(Metagraph g) throws IOException {
-//        JGraphXAdapter<Metavertex, PredicateEdge> graphAdapter = new JGraphXAdapter<>(g);
-//        mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
-//        
-//        mxIGraphLayout layout = circleLayout;
-//        layout.execute(graphAdapter.getDefaultParent());
-//
-//        BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
-//        File imgFile = new File("src/test/resources/graph.png");
-//        ImageIO.write(image, "PNG", imgFile);
-//    }
+    public static void showGraph(DualGraph g) throws IOException {
+        JGraphXAdapter<HyperEdge, DefaultEdge> graphAdapter = new JGraphXAdapter<>(g);
+        mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
+        
+        mxIGraphLayout layout = circleLayout;
+        layout.execute(graphAdapter.getDefaultParent());
+
+        BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
+        File imgFile = new File("src/test/resources/graph.png");
+        ImageIO.write(image, "PNG", imgFile);
+    }
 }

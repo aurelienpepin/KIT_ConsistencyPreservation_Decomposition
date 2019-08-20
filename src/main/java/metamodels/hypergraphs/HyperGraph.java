@@ -1,15 +1,15 @@
 package metamodels.hypergraphs;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.HashSet;
-import org.jgrapht.Graph;
 
 /**
  *
  * @author Aurélien Pepin
+ * @param <V>
+ * @param <E>
  */
-public class HyperGraph<V extends HyperVertex, E extends HyperEdge> { // implements Graph<HyperVertex, HyperEdge> {
+public class HyperGraph<V extends HyperVertex, E extends HyperEdge> {
 
     private final Set<V> vertices;
     private final Set<E> edges;
