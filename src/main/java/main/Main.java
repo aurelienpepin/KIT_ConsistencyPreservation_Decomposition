@@ -8,9 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import metamodels.Metagraph;
-import metamodels.edges.PredicateEdge;
-import metamodels.vertices.Metavertex;
+import metamodels.DualGraph;
+import metamodels.MetaGraph;
+import metamodels.edges.DualEdge;
+import metamodels.edges.MetaEdge;
 import org.jgrapht.ext.JGraphXAdapter;
 import parsers.TransformationParser;
 
@@ -20,22 +21,24 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
-
+        
         // 1. CREATE GRAPH
-        String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        // String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
+        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
         // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
-        showGraph(graph);
+        
+        MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
+        showGraph(graph.toDual());
         
         // 2. PERFORM DECOMPOSITION
         Decomposer.decompose(graph);
         
-        System.out.println(graph);
+        // System.out.println(graph);
     }
     
-    public static void showGraph(Metagraph g) throws IOException {
-        JGraphXAdapter<Metavertex, PredicateEdge> graphAdapter = new JGraphXAdapter<>(g);
+    public static void showGraph(DualGraph g) throws IOException {
+        JGraphXAdapter<MetaEdge, DualEdge> graphAdapter = new JGraphXAdapter<>(g);
         mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
         
         mxIGraphLayout layout = circleLayout;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
@@ -30,7 +30,7 @@ import org.eclipse.ocl.pivot.model.OCLstdlib;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.utilities.ParserException;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationCallExp;
-import procedure.translators.DependencyVisitor;
+import procedure.visitors.DependencyVisitor;
 import procedure.translators.TranslatorContext;
 /**
  * 

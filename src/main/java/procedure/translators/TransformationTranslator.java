@@ -1,7 +1,10 @@
 package procedure.translators;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 import parsers.qvtr.QVTSpecification;
 import parsers.qvtr.QVTTransformation;
 
@@ -11,7 +14,13 @@ import parsers.qvtr.QVTTransformation;
  */
 public class TransformationTranslator {
     
-    public static void translate(Set<QVTTransformation> transformations, Metagraph graph) {
+    /**
+     * Fill a graph with a set of QVT-R transformations.
+     * 
+     * @param transformations
+     * @param graph 
+     */
+    public static void translate(Set<QVTTransformation> transformations, MetaGraph graph) {
         QVTSpecification spec = new QVTSpecification(transformations);
         graph.setSpecification(spec);
         

@@ -1,6 +1,7 @@
 package parsers;
 
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
+import metamodels.hypergraphs.HyperGraph;
 import metamodels.vertices.ecore.EAttributeVertex;
 import metamodels.vertices.ecore.ENamedElementVertex;
 import metamodels.vertices.ecore.EPackageVertex;
@@ -24,8 +25,8 @@ public class MetamodelParser {
      * @param ecoreFilePath File path to the Ecore metamodel
      * @return A graph filled with elements of the metamodel
      */
-    private static Metagraph generateGraphFrom(String ecoreFilePath) {
-        Metagraph graph = new Metagraph();
+    private static MetaGraph generateGraphFrom(String ecoreFilePath) {
+        MetaGraph graph = new MetaGraph();
         
         ResourceSet resourceSet = new ResourceSetImpl();
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
@@ -41,11 +42,11 @@ public class MetamodelParser {
      * @param ecoreFilePaths List of file paths to Ecore metamodels
      * @return A graph filled with elements of the metamodel
      */
-    public static Metagraph generateGraphFrom(String... ecoreFilePaths) {
-        Metagraph graph = new Metagraph();
+    public static MetaGraph generateGraphFrom(String... ecoreFilePaths) {
+        MetaGraph graph = new MetaGraph();
         
         for (String ecoreFilePath : ecoreFilePaths) {
-            Graphs.addGraph(graph, generateGraphFrom(ecoreFilePath));
+            HyperGraph.addHyperGraph(graph, generateGraphFrom(ecoreFilePath));
         }
         
         return graph;
@@ -56,11 +57,11 @@ public class MetamodelParser {
      * @param rootPackage
      * @return 
      */
-    private static Metagraph generateGraphFrom(EPackage rootPackage) {
+    private static MetaGraph generateGraphFrom(EPackage rootPackage) {
         if (rootPackage == null)
             throw new RuntimeException("Root package cannot be null");
         
-        Metagraph graph = new Metagraph();
+        MetaGraph graph = new MetaGraph();
         graph.addVertex(new EPackageVertex(rootPackage));
         
         MetamodelParser.parseFromPackage(rootPackage, graph);
@@ -72,11 +73,11 @@ public class MetamodelParser {
      * @param rootPackages
      * @return 
      */
-    public static Metagraph generateGraphFrom(EPackage... rootPackages) {
-        Metagraph graph = new Metagraph();
+    public static MetaGraph generateGraphFrom(EPackage... rootPackages) {
+        MetaGraph graph = new MetaGraph();
         
         for (EPackage rootPackage : rootPackages) {
-            Graphs.addGraph(graph, generateGraphFrom(rootPackage));
+            HyperGraph.addHyperGraph(graph, generateGraphFrom(rootPackage));
         }
         
         return graph;
@@ -87,7 +88,7 @@ public class MetamodelParser {
      * @param resource
      * @param graph 
      */
-    private static void parseFromRoot(Resource resource, Metagraph graph) {
+    private static void parseFromRoot(Resource resource, MetaGraph graph) {
         if (!beginsWithEPackage(resource))
             throw new RuntimeException("The following metamodel does not begin with an EPackage: " + resource.getURI());
         
@@ -97,7 +98,7 @@ public class MetamodelParser {
         MetamodelParser.parseFromPackage(rootPackage, graph);
     }
     
-    private static void parseFromPackage(EPackage ePackage, Metagraph graph) {
+    private static void parseFromPackage(EPackage ePackage, MetaGraph graph) {
         for (EPackage subPackage : ePackage.getESubpackages()) {
             graph.addVertex(new EPackageVertex(subPackage));
             MetamodelParser.parseFromPackage(subPackage, graph);
@@ -109,7 +110,7 @@ public class MetamodelParser {
         }
     }
     
-    private static void parseFromClassifier(EClassifier eClassifier, Metagraph graph) {
+    private static void parseFromClassifier(EClassifier eClassifier, MetaGraph graph) {
         switch (eClassifier.eClass().getName()) {
             case "EClass":
                 MetamodelParser.parseFromClass((EClass) eClassifier, graph);
@@ -119,7 +120,7 @@ public class MetamodelParser {
         }
     }
     
-    private static void parseFromClass(EClass eClass, Metagraph graph) {
+    private static void parseFromClass(EClass eClass, MetaGraph graph) {
         for (EAttribute attribute : eClass.getEAttributes()) {
             graph.addVertex(new EAttributeVertex(attribute));
         }

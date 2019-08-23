@@ -2,7 +2,8 @@ package parsers;
 
 import java.util.HashSet;
 import java.util.Set;
-import metamodels.Metagraph;
+import java.util.logging.Level;
+import metamodels.MetaGraph;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -17,7 +18,6 @@ import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.qvtr.QVTTransformation;
 import java.util.logging.Logger;
-import org.eclipse.ocl.pivot.Import;
 import procedure.translators.TransformationTranslator;
 
 public class TransformationParser {
@@ -29,18 +29,17 @@ public class TransformationParser {
      * @param qvtrFilePaths
      * @return 
      */
-    public static Metagraph generateGraphFrom(String... qvtrFilePaths) {
+    public static MetaGraph generateGraphFrom(String... qvtrFilePaths) {
         OCLstdlib.install();
         QVTrelationStandaloneSetup.doSetup();
         
-        // Metagraph graph = generateGraphVertices(qvtrFilePaths); // Metamodel elements
-        Metagraph graph = new Metagraph();
-        TransformationParser.generateGraphEdges(graph, qvtrFilePaths); // Predicates
+        MetaGraph graph = new MetaGraph();
+        TransformationParser.fillGraph(graph, qvtrFilePaths); // Predicates
         
         return graph;
     }
     
-    private static Metagraph generateGraphEdges(Metagraph graph, String... qvtrFilePaths) {
+    private static MetaGraph fillGraph(MetaGraph graph, String... qvtrFilePaths) {
         ResourceSet resourceSet = new ResourceSetImpl();
         Set<QVTTransformation> transformations = new HashSet<>();
         
@@ -71,10 +70,10 @@ public class TransformationParser {
 
     private static void manageErrors(EList<Resource.Diagnostic> errors, URI qvtrURI) {
         if (errors != null && !errors.isEmpty()) {
-            System.out.println("[PARSER] The following errors were detected while parsing " + qvtrURI.path());
+            LOGGER.log(Level.SEVERE, "[PARSER] The following errors were detected while parsing {0}:", qvtrURI.path());
             
             for (Resource.Diagnostic error : errors) {
-                System.out.println("> " + error);
+                LOGGER.log(Level.SEVERE, "> {0}", error);
             }
         }
     }

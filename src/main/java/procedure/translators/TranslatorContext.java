@@ -1,6 +1,6 @@
 package procedure.translators;
 
-import metamodels.Metagraph;
+import metamodels.MetaGraph;
 
 /**
  *
