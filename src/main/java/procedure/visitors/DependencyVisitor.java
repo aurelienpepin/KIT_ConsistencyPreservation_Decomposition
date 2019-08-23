@@ -150,7 +150,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
 
     @Override // OK
     public Set<Variable> visitBooleanLiteralExp(BooleanLiteralExp ble) {
-        return null; // return new HashSet<>();
+        return Collections.emptySet();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
 
     @Override // OK
     public Set<Variable> visitIntegerLiteralExp(IntegerLiteralExp ile) {
-        return null; // return new HashSet<>();
+        return Collections.emptySet();
     }
 
     @Override
@@ -213,9 +213,9 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+    @Override // OK
     public Set<Variable> visitMapLiteralExp(MapLiteralExp mle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.emptySet();
     }
 
     @Override
@@ -228,14 +228,14 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+    @Override // OK
     public Set<Variable> visitNullLiteralExp(NullLiteralExp nle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.emptySet();
     }
 
-    @Override
+    @Override // OK
     public Set<Variable> visitNumericLiteralExp(NumericLiteralExp nle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.emptySet();
     }
 
     @Override // OK
@@ -286,9 +286,9 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
         return Collections.emptySet();
     }
 
-    @Override
+    @Override // OK
     public Set<Variable> visitTupleLiteralExp(TupleLiteralExp tle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.emptySet();
     }
 
     @Override

@@ -1,17 +1,16 @@
 package metamodels;
 
-import metamodels.hypergraphs.HyperEdge;
-import metamodels.vertices.MetaVertex;
-import org.jgrapht.graph.DefaultEdge;
+import metamodels.edges.DualEdge;
+import metamodels.edges.MetaEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 /**
  *
  * @author Aurélien Pepin
  */
-public class DualGraph extends SimpleGraph<HyperEdge, DefaultEdge> {
+public class DualGraph extends SimpleGraph<MetaEdge, DualEdge> {
     
     public DualGraph() {
-        super(DefaultEdge.class);
+        super(DualEdge.class);
     }
 }

@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import metamodels.DualGraph;
 import metamodels.MetaGraph;
-import metamodels.hypergraphs.HyperEdge;
-import metamodels.hypergraphs.HyperGraph;
-import metamodels.hypergraphs.HyperVertex;
-import metamodels.vertices.MetaVertex;
+import metamodels.edges.DualEdge;
+import metamodels.edges.MetaEdge;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultEdge;
 import parsers.TransformationParser;
 
 import procedure.decomposition.Decomposer;
@@ -37,11 +34,11 @@ public class Main {
         // 2. PERFORM DECOMPOSITION
         Decomposer.decompose(graph);
         
-        System.out.println(graph);
+        // System.out.println(graph);
     }
     
     public static void showGraph(DualGraph g) throws IOException {
-        JGraphXAdapter<HyperEdge, DefaultEdge> graphAdapter = new JGraphXAdapter<>(g);
+        JGraphXAdapter<MetaEdge, DualEdge> graphAdapter = new JGraphXAdapter<>(g);
         mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
         
         mxIGraphLayout layout = circleLayout;
