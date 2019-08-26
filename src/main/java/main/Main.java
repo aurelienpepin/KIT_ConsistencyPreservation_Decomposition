@@ -1,32 +1,51 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
-import metamodels.Metagraph;
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.util.mxCellRenderer;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import metamodels.DualGraph;
+import metamodels.MetaGraph;
+import metamodels.edges.DualEdge;
+import metamodels.edges.MetaEdge;
+import org.jgrapht.ext.JGraphXAdapter;
 import parsers.TransformationParser;
 
-import com.microsoft.z3.Context;
-import com.microsoft.z3.Solver;
 import procedure.decomposition.Decomposer;
 
 public class Main {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
-
+        
         // 1. CREATE GRAPH
-        String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
-        Metagraph graph = TransformationParser.generateGraphFrom(qvtr);
+        // String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
+        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
+        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
         
-        // Map<String, String> cfg = new HashMap<>();
-        // cfg.put("model", "true");
+        MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
+        showGraph(graph.toDual());
         
-        // Context context = new Context(cfg);
-        // Solver s = context.mkSolver();
-        
-        // 2. DECOMPOSITION PROCEDURE
+        // 2. PERFORM DECOMPOSITION
         Decomposer.decompose(graph);
         
-        System.out.println(graph);
+        // System.out.println(graph);
+    }
+    
+    public static void showGraph(DualGraph g) throws IOException {
+        JGraphXAdapter<MetaEdge, DualEdge> graphAdapter = new JGraphXAdapter<>(g);
+        mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
+        
+        mxIGraphLayout layout = circleLayout;
+        layout.execute(graphAdapter.getDefaultParent());
+
+        BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
+        File imgFile = new File("src/test/resources/graph.png");
+        ImageIO.write(image, "PNG", imgFile);
     }
 }
