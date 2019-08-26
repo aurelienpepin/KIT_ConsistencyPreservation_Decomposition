@@ -2,7 +2,6 @@ package procedure.visitors;
 
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.SeqExpr;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.ocl.pivot.Annotation;

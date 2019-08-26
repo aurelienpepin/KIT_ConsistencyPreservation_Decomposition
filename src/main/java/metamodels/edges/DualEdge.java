@@ -26,4 +26,8 @@ public class DualEdge extends DefaultEdge {
     public String toString() {
         return "(" + sharedElements + ")";
     }
+
+    public Set<MetaVertex> getSharedElements() {
+        return sharedElements;
+    }
 }
