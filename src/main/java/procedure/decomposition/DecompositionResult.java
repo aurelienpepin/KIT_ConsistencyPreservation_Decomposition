@@ -2,6 +2,8 @@ package procedure.decomposition;
 
 import java.util.ArrayList;
 import java.util.List;
+import metamodels.edges.DualEdge;
+import metamodels.edges.MetaEdge;
 import metamodels.vertices.MetaVertex;
 import org.jgrapht.graph.AsSubgraph;
 
@@ -12,46 +14,45 @@ import org.jgrapht.graph.AsSubgraph;
 public class DecompositionResult {
 
     /**
-     * Component (subgraph of the metagraph) in which edges are simulated.
+     * Component (subgraph of the dual of the metagraph) in which constraints are simulated.
      */
-    // private final AsSubgraph<MetaVertex, PredicateEdge> component;
+    private final AsSubgraph<MetaEdge, DualEdge> component;
 
     /**
-     * Edges that are simulable through a combination of other remaining edges.
+     * Constraints that are simulable through a combination of other remaining edges.
      */
-    // private final List<PredicateEdge> removedEdges;
+    private final List<MetaEdge> removedEdges;
 
     /**
-     * Edges that are NOT simulable through a combination of other remaining edges.
+     * Constraints that are NOT simulable through a combination of other remaining edges.
      */
-    // private final List<PredicateEdge> preservedEdges;
+    // private final List<MetaEdge> preservedEdges;
 
     /**
      * 
      * @param component
      * @param removedEdges
-     * @param preservedEdges 
      */
-    /* public DecompositionResult(AsSubgraph<MetaVertex, PredicateEdge> component, List<PredicateEdge> removedEdges, List<PredicateEdge> preservedEdges) {
+    public DecompositionResult(AsSubgraph<MetaEdge, DualEdge> component, List<MetaEdge> removedEdges /* , List<MetaEdge> preservedEdges */) {
         this.component = component;
         this.removedEdges = new ArrayList<>(removedEdges);
-        this.preservedEdges = new ArrayList<>(preservedEdges);
-    } */
+        // this.preservedEdges = new ArrayList<>(preservedEdges);
+    }
 
-    /* public List<PredicateEdge> getPreservedEdges() {
-        return preservedEdges;
-    } */
+    // public List<MetaEdge> getPreservedEdges() {
+    //     return preservedEdges;
+    // }
 
-    /* public List<PredicateEdge> getRemovedEdges() {
+    public List<MetaEdge> getRemovedEdges() {
         return removedEdges;
-    } */
-    
+    }
+   
     /**
-     * The result is considered positive if at least one edge in the component was removed.
+     * The result is considered positive if at least one constraint in the component was removed.
      * 
      * @return 
      */
-    /* public boolean isPositive() {
+    public boolean isPositive() {
         return !removedEdges.isEmpty();
-    } */
+    }
 }

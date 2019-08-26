@@ -36,9 +36,10 @@ public class Decomposer {
         // For each component, see what you can remove thanks to simulation
         for (AsSubgraph<MetaEdge, DualEdge> component : connectedComponents) {
             DecompositionResult result = checkCycles(component);
+            results.add(result);
         }
         
-        return null;
+        return results;
         // throw new UnsupportedOperationException("Not finished yet.");
     }
     
@@ -62,6 +63,7 @@ public class Decomposer {
                 if (pathToHornClause(p, constraint)) {
                     component.removeVertex(constraint);
                     removedDualVertices.add(constraint);
+                    
                     System.out.println("REPLACED: " + constraint);
                     break;
                 }
@@ -75,7 +77,7 @@ public class Decomposer {
             i++;
         }
         
-        return null;
+        return new DecompositionResult(component, removedDualVertices);
     }
     
     private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint) {

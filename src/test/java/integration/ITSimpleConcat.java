@@ -1,6 +1,7 @@
 package integration;
 
 import java.util.List;
+import static junit.framework.Assert.assertTrue;
 import junit.framework.TestCase;
 import metamodels.MetaGraph;
 import org.junit.jupiter.api.Test;
@@ -9,15 +10,15 @@ import procedure.decomposition.Decomposer;
 import procedure.decomposition.DecompositionResult;
 
 /**
- * 
- * @author Aurélien Pepin
+ *
+ * @author Aurelien
  */
-public class ITSimple extends TestCase implements IntegrationTest {
+public class ITSimpleConcat extends TestCase implements IntegrationTest {
     
-    private final String qvtrFile = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+    private final String qvtrFile = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
     
-    public ITSimple() {
-        super("Integration Simple");
+    public ITSimpleConcat() {
+        super("Integration SimpleConcat");
     }
     
     @Override
@@ -29,7 +30,7 @@ public class ITSimple extends TestCase implements IntegrationTest {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-
+    
     @Test
     public void testIndependentSubgraphs() {
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        

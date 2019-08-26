@@ -36,7 +36,7 @@ public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
     }
     
     public DualGraph toDual() {
-        DualGraph dual = new DualGraph();
+        DualGraph dual = new DualGraph(spec);
         
         for (MetaEdge edge : this.edgeSet())
             dual.addVertex(edge);
