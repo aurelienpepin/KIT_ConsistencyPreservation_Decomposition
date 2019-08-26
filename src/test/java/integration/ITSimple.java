@@ -39,10 +39,10 @@ public class ITSimple extends TestCase implements IntegrationTest {
     }
     
     // @Test
-    /* public void testResults() {
+    public void testResults() {
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
         List<DecompositionResult> results = Decomposer.decompose(graph);
         
         assertTrue("Bad result about decomposability", results.stream().allMatch(r -> r.isPositive()));
-    } */
+    }
 }

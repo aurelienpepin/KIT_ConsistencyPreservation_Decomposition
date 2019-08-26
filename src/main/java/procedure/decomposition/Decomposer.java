@@ -36,9 +36,10 @@ public class Decomposer {
         // For each component, see what you can remove thanks to simulation
         for (AsSubgraph<MetaEdge, DualEdge> component : connectedComponents) {
             DecompositionResult result = checkCycles(component);
+            results.add(result);
         }
         
-        return null;
+        return results;
         // throw new UnsupportedOperationException("Not finished yet.");
     }
     
