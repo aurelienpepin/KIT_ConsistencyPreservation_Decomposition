@@ -97,7 +97,7 @@ public class Decomposer {
         s.add((BoolExpr) constraint.getPredicateParts().iterator().next());
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
-        
+         
         return Status.UNSATISFIABLE.equals(s.check());
     }
 }
