@@ -5,6 +5,8 @@ import com.microsoft.z3.Context;
 import com.microsoft.z3.Solver;
 import com.microsoft.z3.Status;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import metamodels.DualGraph;
@@ -83,14 +85,19 @@ public class Decomposer {
     private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
-
-        path.getVertexList().forEach((pathEdge) -> {
+        
+        // Temporary: remove constraint from path
+        List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
+        otherConstraints.removeAll(Collections.singleton(constraint));
+        
+        otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
         });
 
+        s.add((BoolExpr) constraint.getPredicateParts().iterator().next());
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
-
+        
         return Status.UNSATISFIABLE.equals(s.check());
     }
 }

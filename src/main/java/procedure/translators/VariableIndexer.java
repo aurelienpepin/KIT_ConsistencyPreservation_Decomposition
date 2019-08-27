@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import parsers.qvtr.QVTRelation;
+import procedure.visitors.ConstraintFactory;
 
 /**
  * 
@@ -41,8 +42,10 @@ public class VariableIndexer {
             return; // Useless for multi-model consistency
         
         // Transform the PropertyTemplateItem into a Z3 constraint
+        ConstraintFactory factory = new ConstraintFactory(tContext);
+        
         EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
-        Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), tContext.getZ3Ctx().mkStringSort());
+        Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), factory.fromEcoreTypedElement(eav1.getElement()));
         BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(relation.getConstraintVisitor()));
 
         // Add predicate to the set of variables
