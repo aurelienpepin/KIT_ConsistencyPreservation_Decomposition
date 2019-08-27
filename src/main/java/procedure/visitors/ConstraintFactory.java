@@ -6,7 +6,6 @@ import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.ocl.pivot.VariableExp;
@@ -44,7 +43,7 @@ public class ConstraintFactory {
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
         Variable v = (Variable) ve.getReferredVariable();
-        String distinctiveName = relation.getName() + "::" + v.getName();
+        String distinctiveName = relation.getName() + "@" + v.getName();
         
         switch (ve.getReferredVariable().getType().getName()) {
             case "Integer":

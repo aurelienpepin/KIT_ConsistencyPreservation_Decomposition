@@ -85,7 +85,7 @@ public class Decomposer {
     private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
-        
+
         // Temporary: remove constraint from path
         List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
         otherConstraints.removeAll(Collections.singleton(constraint));
