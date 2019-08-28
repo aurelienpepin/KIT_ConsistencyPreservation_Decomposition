@@ -1,7 +1,11 @@
 package procedure.visitors;
 
 import com.microsoft.z3.ArithExpr;
+import com.microsoft.z3.BoolExpr;
+import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import com.microsoft.z3.IntExpr;
+import com.microsoft.z3.RealExpr;
 import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
 import java.util.List;
@@ -25,20 +29,65 @@ public class ConstraintFactory {
     }
      
     public Expr fromOperationCall(OperationCallExp oce, List<Expr> operands) {
+        Context c = context.getZ3Ctx();
+        
+        // TODO des opérations qui redéfinissent ces noms ?
         // System.out.println("t: " + oce.getReferredOperation().getType());
         switch (oce.getReferredOperation().getOperationId().getName()) {
+            case "=":
+                return c.mkEq(operands.get(0), operands.get(1));
+            case "<>":
+                return c.mkNot(c.mkEq(operands.get(0), operands.get(1)));
+            // BASIC ARITHMETIC OPERATIONS
             case "+":
                 if ("String".equals(oce.getReferredOperation().getType().toString())) // TODO custom function (for readability)
-                    return context.getZ3Ctx().mkConcat(operands.toArray(new SeqExpr[operands.size()]));
+                    return c.mkConcat(operands.toArray(new SeqExpr[operands.size()]));
                 else
-                    return context.getZ3Ctx().mkAdd(operands.toArray(new ArithExpr[operands.size()]));
+                    return c.mkAdd(operands.toArray(new ArithExpr[operands.size()]));
             case "-":
-                return context.getZ3Ctx().mkSub(operands.toArray(new ArithExpr[operands.size()]));
+                return c.mkSub(operands.toArray(new ArithExpr[operands.size()]));
             case "*":
-                return context.getZ3Ctx().mkMul(operands.toArray(new ArithExpr[operands.size()]));
+                return c.mkMul(operands.toArray(new ArithExpr[operands.size()]));
+            case "mod":
+                return c.mkMod((IntExpr) operands.get(0), (IntExpr) operands.get(1));
+            case "abs":
+                ArithExpr operand = (ArithExpr) operands.get(0);
+                return c.mkITE(c.mkLt(operand, c.mkInt(0)), c.mkUnaryMinus(operand), operand);
+            // ORDERED SET OPERATIONS
+            case "max":
+                ArithExpr maxOper0 = (ArithExpr) operands.get(0);
+                ArithExpr maxOper1 = (ArithExpr) operands.get(1);
+                return c.mkITE(c.mkGt(maxOper0, maxOper1), maxOper0, maxOper1);
+            case "min":
+                ArithExpr minOper0 = (ArithExpr) operands.get(0);
+                ArithExpr minOper1 = (ArithExpr) operands.get(1);
+                return c.mkITE(c.mkGt(minOper0, minOper1), minOper0, minOper1);
+            // FRACTIONALS TO INTEGRALS
+            case "floor":
+                return c.mkReal2Int((RealExpr) operands.get(0));
+            // ORDER RELATIONS
+            case "<":
+                return c.mkLt((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
+            case "<=":
+                return c.mkLe((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
+            case ">":
+                return c.mkGt((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
+            case ">=":
+                return c.mkGe((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
+            // BOOLEAN FUNCTIONS
+            case "not":
+                return c.mkNot((BoolExpr) operands.get(0));
+            case "and":
+                return c.mkAnd(operands.toArray(new BoolExpr[operands.size()]));
+            case "or":
+                return c.mkOr(operands.toArray(new BoolExpr[operands.size()]));
+            case "xor":
+                return c.mkXor((BoolExpr) operands.get(0), (BoolExpr) operands.get(1));
+            case "implies":
+                return c.mkImplies((BoolExpr) operands.get(0), (BoolExpr) operands.get(1));
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
-        } 
+        }
     }
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      

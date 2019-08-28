@@ -250,20 +250,6 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
 
     @Override // TODO
     public Expr visitOperationCallExp(OperationCallExp oce) {
-        // System.out.println("OCE: " + oce);
-        // System.out.println("OCE_source: " + oce.getOwnedSource());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getGeneralizedId().getGeneralizedId());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getGeneralizedId().getName());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getParametersId());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getName());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getParametersId().get(1));
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getParametersId().get(0).getLiteralName());
-        // System.out.println("OCE_oper: " + oce.getReferredOperation().getOperationId().getParametersId().get(0).getMetaTypeName());
-        // System.out.println("OCE_argu: " + oce.getOwnedArguments());
-        // System.out.println("OCE_type: " + oce.getReferredOperation());
-        // System.out.println("OCE_type: " + oce.getReferredOperation().getType());
-        // System.out.println("OCE_type: " + oce.getReferredOperation().getTypeParameters());
-        
         List<Expr> operands = new ArrayList<>();
         operands.add(oce.getOwnedSource().accept(this));
         
