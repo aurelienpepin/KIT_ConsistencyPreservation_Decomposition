@@ -1,5 +1,6 @@
 package parsers.qvtr;
 
+import com.microsoft.z3.BoolExpr;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
+import org.eclipse.qvtd.pivot.qvtbase.Predicate;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
@@ -57,11 +59,8 @@ public class QVTRelation implements QVTTranslatable {
             this.transformDomain(graph, domain);
         }
         
-        // System.out.println("ICI EST LE WHEN: " + this.relation.getWhen());
-        if (this.relation.getWhen() != null) {
-            System.out.println("ICI EST LE WHEN: " + this.relation.getWhen().getPredicate().get(0).getConditionExpression().accept(conV));
-        }
-        
+        // Add preconditions (When-clause) in the metagraph
+        this.transformWhen(graph);
         
         // Group variables that have something to do together
         this.varIndexer.merge();
@@ -69,6 +68,17 @@ public class QVTRelation implements QVTTranslatable {
         for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
             MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
             graph.addEdge(edge);            
+        }
+    }
+    
+    private void transformWhen(MetaGraph graph) {
+        if (this.relation.getWhen() == null)
+            return;
+        
+        // TODO: extend the support of calls of other relations!
+        // If this occurs, the program raises an exception (~ unknown OCL op.) ATM
+        for (Predicate pred : this.relation.getWhen().getPredicate()) {
+            graph.addPrecondition((BoolExpr) pred.getConditionExpression().accept(conV));
         }
     }
     

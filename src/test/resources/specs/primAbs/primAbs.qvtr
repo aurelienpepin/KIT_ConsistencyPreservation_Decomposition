@@ -10,7 +10,7 @@ transformation primAtoPrimB(primA:primApack, primB:primBpack) {
 		r: Real;
 		s: String;
 		
-		domain primA iA:IntA {intA=i.abs()};
+		domain primA iA:IntA {intA=i};
 		domain primB iB:IntB {intB=i.abs()};
 		
 		when {

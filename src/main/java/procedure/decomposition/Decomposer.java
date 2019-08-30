@@ -30,6 +30,7 @@ public class Decomposer {
 
     public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
+        Set<BoolExpr> preconditions = graph.getPreconditions();
         
         // Get the dual graph
         DualGraph dual = graph.toDual();
@@ -40,7 +41,7 @@ public class Decomposer {
         
         // For each component, see what you can remove thanks to simulation
         for (AsSubgraph<MetaEdge, DualEdge> component : connectedComponents) {
-            DecompositionResult result = checkCycles(component);
+            DecompositionResult result = checkCycles(component, preconditions);
             results.add(result);
         }
         
@@ -48,7 +49,7 @@ public class Decomposer {
         // throw new UnsupportedOperationException("Not finished yet.");
     }
     
-    public static DecompositionResult checkCycles(AsSubgraph<MetaEdge, DualEdge> component) {
+    public static DecompositionResult checkCycles(AsSubgraph<MetaEdge, DualEdge> component, Set<BoolExpr> preconditions) {
         List<MetaEdge> dualVertices = new ArrayList<>(component.vertexSet());
         List<MetaEdge> removedDualVertices = new ArrayList<>();
         
@@ -65,7 +66,7 @@ public class Decomposer {
                 if (!p.getVertexList().contains(constraint))
                     continue;
                 
-                if (pathToHornClause(p, constraint)) {
+                if (pathToHornClause(p, constraint, preconditions)) {
                     component.removeVertex(constraint);
                     removedDualVertices.add(constraint);
                     
@@ -85,22 +86,25 @@ public class Decomposer {
         return new DecompositionResult(component, removedDualVertices);
     }
     
-    private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint) {
+    private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint, Set<BoolExpr> preconditions) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
-
+        
+        if (!preconditions.isEmpty()) {
+            s.add(ctx.mkAnd(preconditions.toArray(new BoolExpr[preconditions.size()])));
+        }
+        
         // Temporary: remove constraint from path
-        // List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
-        // otherConstraints.removeAll(Collections.singleton(constraint));
         Set<MetaEdge> otherConstraints = new HashSet<>(path.getVertexList());
-        otherConstraints.removeAll(Collections.singleton(constraint));
+        otherConstraints.remove(constraint);
+        // otherConstraints.removeAll(Collections.singleton(constraint));
         
         otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
         });
         
         // System.out.println(constraint.getPredicateParts());
-        s.add((BoolExpr) constraint.getPredicateParts().iterator().next());
+        s.add((BoolExpr) constraint.getPredicateParts().iterator().next()); // TODO: mettre un exemplaire de chaque variable libre
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
         // System.out.println(s.check());

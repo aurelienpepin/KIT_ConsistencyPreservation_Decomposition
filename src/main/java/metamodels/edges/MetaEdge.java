@@ -21,7 +21,7 @@ public class MetaEdge extends HyperEdge<MetaVertex> {
     
     public Expr getPredicate() {
         return TranslatorContext.getInstance().getZ3Ctx().mkAnd(expressions.toArray(new BoolExpr[expressions.size()])); 
-   }
+    }
     
     public Set<Expr> getPredicateParts() {
         return expressions;
