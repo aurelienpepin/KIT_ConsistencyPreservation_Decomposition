@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="PrimitiveA"
+ nsURI="primitiveA_PrimitiveA.xmi" nsPrefix="PrimitiveA">
+  <eClassifiers xsi:type="ecore:EClass" name="IntA">
+     <eAttributes name="intA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CharA">
+     <eAttributes name="charA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoolA">
+     <eAttributes name="boolA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ByteA">
+     <eAttributes name="byteA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EByte" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DoubleA">
+     <eAttributes name="doubleA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FloatA">
+     <eAttributes name="floatA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StringA">
+     <eAttributes name="stringA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ShortA">
+     <eAttributes name="shortA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EShort" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LongA">
+     <eAttributes name="longA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+</ecore:EPackage>

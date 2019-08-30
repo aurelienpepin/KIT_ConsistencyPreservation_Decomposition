@@ -2,11 +2,14 @@ package procedure.decomposition;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
+import com.microsoft.z3.Expr;
 import com.microsoft.z3.Solver;
 import com.microsoft.z3.Status;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import metamodels.DualGraph;
@@ -87,17 +90,21 @@ public class Decomposer {
         Solver s = ctx.mkSolver();
 
         // Temporary: remove constraint from path
-        List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
+        // List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
+        // otherConstraints.removeAll(Collections.singleton(constraint));
+        Set<MetaEdge> otherConstraints = new HashSet<>(path.getVertexList());
         otherConstraints.removeAll(Collections.singleton(constraint));
         
         otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
         });
-
+        
+        // System.out.println(constraint.getPredicateParts());
         s.add((BoolExpr) constraint.getPredicateParts().iterator().next());
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
-         
+        // System.out.println(s.check());
+        // System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());
     }
 }
