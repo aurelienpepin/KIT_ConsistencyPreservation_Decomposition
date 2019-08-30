@@ -44,7 +44,7 @@ public class QVTRelation implements QVTTranslatable {
         
         this.varIndexer = new VariableIndexer(this);
         this.depV = new DependencyVisitor(TranslatorContext.getInstance());
-        this.conV = new ConstraintVisitor(TranslatorContext.getInstance());
+        this.conV = new ConstraintVisitor(this, TranslatorContext.getInstance());
         
         for (Domain rd : relation.getDomain()) {
             this.domains.add(new QVTDomain((RelationDomain) rd));

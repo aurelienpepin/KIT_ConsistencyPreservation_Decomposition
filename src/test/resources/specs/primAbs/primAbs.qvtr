@@ -1,0 +1,42 @@
+import primApack : 'PrimitiveA.ecore'::PrimitiveA;
+import primBpack : 'PrimitiveB.ecore'::PrimitiveB;
+import primCpack : 'PrimitiveC.ecore'::PrimitiveC;
+
+transformation primAtoPrimB(primA:primApack, primB:primBpack) {
+
+	top relation AtoB {
+		b: Boolean;
+		i: Integer;
+		r: Real;
+		s: String;
+		
+		domain primA iA:IntA {intA=i.abs()};
+		domain primB iB:IntB {intB=i.abs()};
+	}
+}
+
+transformation primBtoPrimC(primB:primBpack, primC:primCpack) {
+	
+	top relation BtoC {
+		b: Boolean;
+		i: Integer;
+		r: Real;
+		s: String;
+		
+		domain primB iB:IntB {intB=i};
+		domain primC iC:IntC {intC=i};
+	}
+}
+
+transformation primAtoPrimC(primA:primApack, primC:primCpack) {
+	
+	top relation AtoC {
+		b: Boolean;
+		i: Integer;
+		r: Real;
+		s: String;
+		
+		domain primA iA:IntA {intA=i};
+		domain primC iC:IntC {intC=i};
+	}
+}

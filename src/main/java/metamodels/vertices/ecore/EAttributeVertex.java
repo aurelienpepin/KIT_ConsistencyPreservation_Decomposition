@@ -11,6 +11,7 @@ public class EAttributeVertex extends ENamedElementVertex {
     @Override
     public String getFullName() {
         EAttribute attrElem = (EAttribute) element;
+        // System.out.println("ATTRTYPE: " + attrElem.getEType());
         StringBuilder sb = new StringBuilder();
         
         if (attrElem.getEContainingClass() != null) {

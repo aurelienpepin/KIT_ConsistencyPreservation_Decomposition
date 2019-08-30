@@ -1,6 +1,7 @@
 package integration;
 
 import java.util.List;
+import static junit.framework.Assert.assertTrue;
 import junit.framework.TestCase;
 import metamodels.MetaGraph;
 import org.junit.jupiter.api.Test;
@@ -9,15 +10,15 @@ import procedure.decomposition.Decomposer;
 import procedure.decomposition.DecompositionResult;
 
 /**
- * 
- * @author Aurélien Pepin
+ *
+ * @author Aurelien
  */
-public class ITSimple extends TestCase implements IntegrationTest {
+public class ITAbc extends TestCase implements IntegrationTest {
     
-    private final String qvtrFile = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simple\\simple.qvtr";
+    private final String qvtrFile = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\abc\\abc.qvtr";
     
-    public ITSimple() {
-        super("Integration Simple");
+    public ITAbc() {
+        super("Integration ABC");
     }
     
     @Override
@@ -35,7 +36,7 @@ public class ITSimple extends TestCase implements IntegrationTest {
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtrFile);        
         List<DecompositionResult> results = Decomposer.decompose(graph);
         
-        assertTrue("Bad number of independent subgraphs", results.size() == 2);
+        assertTrue("Bad number of independent subgraphs", results.size() == 1);
     }
     
     @Test

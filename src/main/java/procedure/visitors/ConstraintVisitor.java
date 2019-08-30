@@ -131,6 +131,7 @@ import org.eclipse.ocl.pivot.VoidType;
 import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
+import parsers.qvtr.QVTRelation;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -139,8 +140,17 @@ import procedure.translators.TranslatorContext;
  */
 public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> {
     
-    public ConstraintVisitor(TranslatorContext context) {
+    /**
+     * The relation in which the constraint visitor is created.
+     */
+    private final QVTRelation relation;
+    
+    private final ConstraintFactory factory;
+    
+    public ConstraintVisitor(QVTRelation relation, TranslatorContext context) {
         super(context);
+        this.relation = relation;
+        this.factory = new ConstraintFactory(context);
     }
 
     @Override
@@ -178,9 +188,9 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+    @Override // OK
     public Expr visitIntegerLiteralExp(IntegerLiteralExp ile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return context.getZ3Ctx().mkInt(ile.getIntegerSymbol().longValue());
     }
 
     @Override
@@ -247,7 +257,7 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
             operands.add(operand.accept(this));
         }
         
-        return context.getZ3Ctx().mkConcat(operands.toArray(new SeqExpr[operands.size()]));
+        return factory.fromOperationCall(oce, operands);
     }
 
     @Override
@@ -307,8 +317,7 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
 
     @Override // OK
     public Expr visitVariableExp(VariableExp ve) {
-        // System.out.println("VARIABLE ONLY WORKS WITH STRINGS NOW");
-        return context.getZ3Ctx().mkConst(((Variable) ve.getReferredVariable()).getName(), context.getZ3Ctx().mkStringSort());
+        return factory.fromVariable(ve, relation);
     }
     
     /* **********************************************************
