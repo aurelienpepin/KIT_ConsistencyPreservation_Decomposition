@@ -57,6 +57,12 @@ public class QVTRelation implements QVTTranslatable {
             this.transformDomain(graph, domain);
         }
         
+        // System.out.println("ICI EST LE WHEN: " + this.relation.getWhen());
+        if (this.relation.getWhen() != null) {
+            System.out.println("ICI EST LE WHEN: " + this.relation.getWhen().getPredicate().get(0).getConditionExpression().accept(conV));
+        }
+        
+        
         // Group variables that have something to do together
         this.varIndexer.merge();
         

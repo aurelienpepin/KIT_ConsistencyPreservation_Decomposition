@@ -12,6 +12,10 @@ transformation primAtoPrimB(primA:primApack, primB:primBpack) {
 		
 		domain primA iA:IntA {intA=i.abs()};
 		domain primB iB:IntB {intB=i.abs()};
+		
+		when {
+			i > 0;
+		}
 	}
 }
 
