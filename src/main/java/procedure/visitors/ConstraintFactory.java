@@ -10,9 +10,12 @@ import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.ocl.pivot.CollectionLiteralExp;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.ocl.pivot.VariableExp;
+import org.eclipse.ocl.pivot.CollectionKind;
+import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
 import procedure.translators.TranslatorContext;
 
@@ -33,6 +36,7 @@ public class ConstraintFactory {
         
         // TODO des opérations qui redéfinissent ces noms ?
         // System.out.println("t: " + oce.getReferredOperation().getType());
+        // System.out.println(oce.getReferredOperation().getOperationId().getName());
         switch (oce.getReferredOperation().getOperationId().getName()) {
             case "=":
                 return c.mkEq(operands.get(0), operands.get(1));
@@ -40,7 +44,7 @@ public class ConstraintFactory {
                 return c.mkNot(c.mkEq(operands.get(0), operands.get(1)));
             // BASIC ARITHMETIC OPERATIONS
             case "+":
-                if ("String".equals(oce.getReferredOperation().getType().toString())) // TODO custom function (for readability)
+                if (this.typeEquals(oce, "String"))
                     return c.mkConcat(operands.toArray(new SeqExpr[operands.size()]));
                 else
                     return c.mkAdd(operands.toArray(new ArithExpr[operands.size()]));
@@ -85,9 +89,46 @@ public class ConstraintFactory {
                 return c.mkXor((BoolExpr) operands.get(0), (BoolExpr) operands.get(1));
             case "implies":
                 return c.mkImplies((BoolExpr) operands.get(0), (BoolExpr) operands.get(1));
+            // STRING-RELATED FUNCTIONS
+            case "concat":
+                if (this.typeEquals(oce, "String"))
+                    return c.mkConcat(operands.toArray(new SeqExpr[operands.size()]));
+            case "size":
+                if (this.typeEquals(oce, "String"))
+                    return c.mkLength((SeqExpr) operands.get(0));     
+            case "substring":
+                if (this.typeEquals(oce, "String")) {
+                    IntExpr substringOper2 = (IntExpr) c.mkSub((IntExpr) operands.get(2), (IntExpr) operands.get(1));
+                    substringOper2 = (IntExpr) c.mkAdd(substringOper2, c.mkInt(1));
+                    return c.mkExtract((SeqExpr) operands.get(0), (IntExpr) operands.get(1), substringOper2);
+                }
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
+    }
+    
+    public Expr fromCollectionLiteral(CollectionLiteralExp cle) {
+        Sort sort = fromType(cle.getType().flattenedType());
+        
+        switch (cle.getKind()) {
+            case SEQUENCE:
+                // context.getZ3Ctx().mkSetSo
+                // context.getZ3Ctx().mkArrayConst(string, sort, sort)
+                return null;
+            case SET:
+                // return context.getZ3Ctx().mkSet
+                return null;
+            case ORDERED_SET:
+                return null;
+            case BAG:
+                return null;
+            case COLLECTION:
+                return null;
+            default: // defensive
+                throw new UnsupportedOperationException("Unknown collection type");
+        }
+        
+        throw new UnsupportedOperationException("Unsupported collection literal translation: " + cle);
     }
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
@@ -119,5 +160,33 @@ public class ConstraintFactory {
             default:
                 throw new UnsupportedOperationException("Unsupported sort in constraint translation: " + element.getEType());
         }
+    }
+    
+    public Sort fromType(Type type) {
+        switch (type.toString()) {
+            case "Integer":
+                return context.getZ3Ctx().mkIntSort();
+            case "String":
+                return context.getZ3Ctx().mkStringSort();
+            case "Boolean":
+                return context.getZ3Ctx().mkBoolSort();
+            case "Real":
+                return context.getZ3Ctx().mkRealSort();
+            default:
+                throw new UnsupportedOperationException("Unsupported sort in constraint translation: " + type);
+        }
+    }
+    
+    /**
+     * Helper function for short type verification.
+     * @param oce
+     * @param type
+     * @return 
+     */
+    private boolean typeEquals(OperationCallExp oce, String type) {
+        // System.out.println("inTypeEquals: ");
+        // System.out.println("- " + oce.getReferredOperation().getOperationId().getName());
+        // System.out.println("- " + oce.getReferredOperation().getOwningClass());
+        return type.equals(oce.getReferredOperation().getOwningClass().toString());
     }
 }

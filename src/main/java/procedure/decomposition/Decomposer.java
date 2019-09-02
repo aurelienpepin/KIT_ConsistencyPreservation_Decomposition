@@ -31,14 +31,12 @@ public class Decomposer {
     public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
         Set<BoolExpr> preconditions = graph.getPreconditions();
-        
-        // Get the dual graph
         DualGraph dual = graph.toDual();
         
         // Get connected components
         BiconnectivityInspector inspector = new BiconnectivityInspector(dual);
         Set<AsSubgraph<MetaEdge, DualEdge>> connectedComponents = inspector.getConnectedComponents();
-        
+
         // For each component, see what you can remove thanks to simulation
         for (AsSubgraph<MetaEdge, DualEdge> component : connectedComponents) {
             DecompositionResult result = checkCycles(component, preconditions);
@@ -46,7 +44,6 @@ public class Decomposer {
         }
         
         return results;
-        // throw new UnsupportedOperationException("Not finished yet.");
     }
     
     public static DecompositionResult checkCycles(AsSubgraph<MetaEdge, DualEdge> component, Set<BoolExpr> preconditions) {
@@ -104,11 +101,13 @@ public class Decomposer {
         });
         
         // System.out.println(constraint.getPredicateParts());
-        s.add((BoolExpr) constraint.getPredicateParts().iterator().next()); // TODO: mettre un exemplaire de chaque variable libre
+        Iterator<Expr> it = constraint.getPredicateParts().iterator();
+        it.next();
+        s.add((BoolExpr) it.next()); // TODO: mettre un exemplaire de chaque variable libre
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
-        // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
-        // System.out.println(s.check());
-        // System.out.println(s.getModel());
+        System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
+        System.out.println(s.check());
+        System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());
     }
 }

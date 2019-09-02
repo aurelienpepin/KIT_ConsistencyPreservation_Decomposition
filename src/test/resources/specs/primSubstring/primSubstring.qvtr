@@ -8,14 +8,17 @@ transformation primAtoPrimB(primA:primApack, primB:primBpack) {
 		b: Boolean;
 		i: Integer;
 		r: Real;
+		
 		s: String;
+		xs: String;
 		
-		domain primA iA:IntA {intA=i};
-		domain primB iB:IntB {intB=i.abs()};
+		domain primA sA:StringA {stringA=xs.substring(2, 5)};
+		domain primB sB:StringB {stringB=xs};
 		
-		when {
-			b = true and r > 2.55 and i > 0;
-		}
+		when { not Sequence{5, 3, 5}->isEmpty() and xs.size() > 10; }
+		-- when {
+		-- 	s=xs.substring(1, 2);
+		-- }
 	}
 }
 
@@ -27,8 +30,8 @@ transformation primBtoPrimC(primB:primBpack, primC:primCpack) {
 		r: Real;
 		s: String;
 		
-		domain primB iB:IntB {intB=i};
-		domain primC iC:IntC {intC=i};
+		domain primB sB:StringB {stringB=s};
+		domain primC sC:StringC {stringC=s};
 	}
 }
 
@@ -38,9 +41,16 @@ transformation primAtoPrimC(primA:primApack, primC:primCpack) {
 		b: Boolean;
 		i: Integer;
 		r: Real;
-		s: String;
 		
-		domain primA iA:IntA {intA=i};
-		domain primC iC:IntC {intC=i};
+		s: String;
+		xs: String;
+		
+		domain primA sA:StringA {stringA=xs.substring(2, 5)};
+		domain primC sC:StringC {stringC=xs};
+		
+		when { xs.size() > 10; }
+		-- when {
+		--	s=xs.substring(1, 2);
+		-- }
 	}
 }
