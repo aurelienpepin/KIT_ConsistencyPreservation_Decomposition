@@ -170,8 +170,8 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
 
     @Override // Example: Sequence{5, 3, 5}
     public Expr visitCollectionLiteralExp(CollectionLiteralExp cle) {
-        // return factory.fromCollectionLiteral(cle);
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return factory.fromCollectionLiteral(cle);
+        // throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override

@@ -1,6 +1,7 @@
 package procedure.visitors;
 
 import com.microsoft.z3.ArithExpr;
+import com.microsoft.z3.ArrayExpr;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
@@ -15,6 +16,7 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.ocl.pivot.CollectionKind;
+import org.eclipse.ocl.pivot.CollectionLiteralPart;
 import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
 import procedure.translators.TranslatorContext;
@@ -52,11 +54,14 @@ public class ConstraintFactory {
                 return c.mkSub(operands.toArray(new ArithExpr[operands.size()]));
             case "*":
                 return c.mkMul(operands.toArray(new ArithExpr[operands.size()]));
+            case "/":
+            case "div":
+                return c.mkDiv((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
             case "mod":
                 return c.mkMod((IntExpr) operands.get(0), (IntExpr) operands.get(1));
             case "abs":
-                ArithExpr operand = (ArithExpr) operands.get(0);
-                return c.mkITE(c.mkLt(operand, c.mkInt(0)), c.mkUnaryMinus(operand), operand);
+                ArithExpr absOper = (ArithExpr) operands.get(0);
+                return c.mkITE(c.mkLt(absOper, c.mkInt(0)), c.mkUnaryMinus(absOper), absOper);
             // ORDERED SET OPERATIONS
             case "max":
                 ArithExpr maxOper0 = (ArithExpr) operands.get(0);
@@ -69,6 +74,8 @@ public class ConstraintFactory {
             // FRACTIONALS TO INTEGRALS
             case "floor":
                 return c.mkReal2Int((RealExpr) operands.get(0));
+            case "round":
+                return c.mkReal2Int((RealExpr) c.mkAdd(c.mkReal("0.5"), (RealExpr) operands.get(0)));
             // ORDER RELATIONS
             case "<":
                 return c.mkLt((ArithExpr) operands.get(0), (ArithExpr) operands.get(1));
@@ -102,33 +109,37 @@ public class ConstraintFactory {
                     substringOper2 = (IntExpr) c.mkAdd(substringOper2, c.mkInt(1));
                     return c.mkExtract((SeqExpr) operands.get(0), (IntExpr) operands.get(1), substringOper2);
                 }
+            case "toInteger":
+                return c.stringToInt(operands.get(0));
+            // COLLECTION-RELATED FUNCTIONS
+            case "isEmpty":
+                return c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1)));
+            case "notEmpty":
+                return c.mkNot(c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1))));
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
     }
     
     public Expr fromCollectionLiteral(CollectionLiteralExp cle) {
-        Sort sort = fromType(cle.getType().flattenedType());
-        
         switch (cle.getKind()) {
             case SEQUENCE:
-                // context.getZ3Ctx().mkSetSo
-                // context.getZ3Ctx().mkArrayConst(string, sort, sort)
-                return null;
+                ArrayExpr ae = this.createSequenceLiteral(cle);
+                System.out.println(ae);
+                return ae;
             case SET:
-                // return context.getZ3Ctx().mkSet
-                return null;
+                // return context.getZ3Ctx().mkArrayConst(symbol, sort, context.getZ3Ctx().mkBoolSort());
             case ORDERED_SET:
-                return null;
+                // return null;
             case BAG:
-                return null;
+                // return null;
             case COLLECTION:
-                return null;
+                // return null;
             default: // defensive
                 throw new UnsupportedOperationException("Unknown collection type");
         }
         
-        throw new UnsupportedOperationException("Unsupported collection literal translation: " + cle);
+        // throw new UnsupportedOperationException("Unsupported collection literal translation: " + cle);
     }
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
@@ -172,9 +183,44 @@ public class ConstraintFactory {
                 return context.getZ3Ctx().mkBoolSort();
             case "Real":
                 return context.getZ3Ctx().mkRealSort();
+            case "OclVoid":
+                throw new UnsupportedOperationException("OclVoid is not supported: empty collection literal?");
             default:
                 throw new UnsupportedOperationException("Unsupported sort in constraint translation: " + type);
         }
+    }
+    
+    public Expr fromValue(Sort sort, CollectionLiteralPart clp) {
+        switch (sort.getSortKind()) {
+            case Z3_INT_SORT:
+                return context.getZ3Ctx().mkInt(clp.toString());
+            case Z3_REAL_SORT:
+                return context.getZ3Ctx().mkReal(clp.toString());
+            case Z3_BOOL_SORT:
+                return context.getZ3Ctx().mkBoolConst(clp.toString());
+            default:
+                throw new UnsupportedOperationException("Unsupported value translation: " + clp + " (" + sort + ")");
+        }
+    }
+    
+    public ArrayExpr createSequenceLiteral(CollectionLiteralExp cle) {
+        Context c = context.getZ3Ctx();
+        Sort sort = fromType(cle.getType().flattenedType());
+        String symbol = context.getCollIndexer().getSymbol(cle);
+        // String lengthSymbol = context.getCollIndexer().getSymbolLength(cle);
+        
+        ArrayExpr arrayDef = c.mkArrayConst(symbol, context.getZ3Ctx().mkIntSort(), sort);
+        for (int i = 0; i < cle.getOwnedParts().size(); ++i) {
+            // System.out.println(cle.getOwnedParts().get(i));
+            // arrayDef = c.mkStore(arrayDef, c.mkInt(i), c.mkInt(Integer.parseInt(cle.getOwnedParts().get(i).toString())));
+            arrayDef = c.mkStore(arrayDef, c.mkInt(i), fromValue(sort, cle.getOwnedParts().get(i)));
+        }
+                
+        return c.mkStore(arrayDef, c.mkInt(-1), c.mkInt(cle.getOwnedParts().size()));
+    }
+    
+    public BoolExpr createSetLiteral(CollectionLiteralExp cle) {
+        return null; // ctx().mkEmptySet();
     }
     
     /**

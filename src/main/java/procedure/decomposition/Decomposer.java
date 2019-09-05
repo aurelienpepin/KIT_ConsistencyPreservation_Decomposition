@@ -104,6 +104,7 @@ public class Decomposer {
         Iterator<Expr> it = constraint.getPredicateParts().iterator();
         it.next();
         s.add((BoolExpr) it.next()); // TODO: mettre un exemplaire de chaque variable libre
+        // s.add(ctx.mkForAll)
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
         System.out.println(s.check());
