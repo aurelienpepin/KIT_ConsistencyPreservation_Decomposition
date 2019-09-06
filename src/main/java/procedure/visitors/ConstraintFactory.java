@@ -3,12 +3,16 @@ package procedure.visitors;
 import com.microsoft.z3.ArithExpr;
 import com.microsoft.z3.ArrayExpr;
 import com.microsoft.z3.BoolExpr;
+import com.microsoft.z3.Constructor;
 import com.microsoft.z3.Context;
+import com.microsoft.z3.DatatypeSort;
 import com.microsoft.z3.Expr;
+import com.microsoft.z3.FuncDecl;
 import com.microsoft.z3.IntExpr;
 import com.microsoft.z3.RealExpr;
 import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
+import com.microsoft.z3.enumerations.Z3_sort_kind;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.ocl.pivot.CollectionLiteralExp;
@@ -29,8 +33,11 @@ public class ConstraintFactory {
 
     private final TranslatorContext context;
     
+    private final CollectionConstraintFactory collFactory;
+    
     public ConstraintFactory(TranslatorContext context) {
         this.context = context;
+        this.collFactory = new CollectionConstraintFactory(this, context);
     }
      
     public Expr fromOperationCall(OperationCallExp oce, List<Expr> operands) {
@@ -113,6 +120,25 @@ public class ConstraintFactory {
                 return c.stringToInt(operands.get(0));
             // COLLECTION-RELATED FUNCTIONS
             case "isEmpty":
+                System.out.println(oce);
+                System.out.println(oce.getReferredOperation());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getExtenders());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eClass());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getSuperClasses());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getInstanceClassName());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getMetaTypeName());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().toString());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eAllContents());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getESObject());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eContents());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eCrossReferences());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedAnnotations());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedInvariants());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedProperties());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedSignature());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getTypeParameters());
+                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getUnspecializedElement());
+                System.out.println(operands.get(0).getSort().getSortKind());
                 return c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1)));
             case "notEmpty":
                 return c.mkNot(c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1))));
@@ -124,11 +150,9 @@ public class ConstraintFactory {
     public Expr fromCollectionLiteral(CollectionLiteralExp cle) {
         switch (cle.getKind()) {
             case SEQUENCE:
-                ArrayExpr ae = this.createSequenceLiteral(cle);
-                System.out.println(ae);
-                return ae;
+                return collFactory.createSequenceLiteral(cle);
             case SET:
-                // return context.getZ3Ctx().mkArrayConst(symbol, sort, context.getZ3Ctx().mkBoolSort());
+                return collFactory.createSetLiteral(cle);
             case ORDERED_SET:
                 // return null;
             case BAG:
@@ -136,7 +160,7 @@ public class ConstraintFactory {
             case COLLECTION:
                 // return null;
             default: // defensive
-                throw new UnsupportedOperationException("Unknown collection type");
+                throw new UnsupportedOperationException("Unknown or unsupported collection type");
         }
         
         // throw new UnsupportedOperationException("Unsupported collection literal translation: " + cle);
@@ -201,26 +225,6 @@ public class ConstraintFactory {
             default:
                 throw new UnsupportedOperationException("Unsupported value translation: " + clp + " (" + sort + ")");
         }
-    }
-    
-    public ArrayExpr createSequenceLiteral(CollectionLiteralExp cle) {
-        Context c = context.getZ3Ctx();
-        Sort sort = fromType(cle.getType().flattenedType());
-        String symbol = context.getCollIndexer().getSymbol(cle);
-        // String lengthSymbol = context.getCollIndexer().getSymbolLength(cle);
-        
-        ArrayExpr arrayDef = c.mkArrayConst(symbol, context.getZ3Ctx().mkIntSort(), sort);
-        for (int i = 0; i < cle.getOwnedParts().size(); ++i) {
-            // System.out.println(cle.getOwnedParts().get(i));
-            // arrayDef = c.mkStore(arrayDef, c.mkInt(i), c.mkInt(Integer.parseInt(cle.getOwnedParts().get(i).toString())));
-            arrayDef = c.mkStore(arrayDef, c.mkInt(i), fromValue(sort, cle.getOwnedParts().get(i)));
-        }
-                
-        return c.mkStore(arrayDef, c.mkInt(-1), c.mkInt(cle.getOwnedParts().size()));
-    }
-    
-    public BoolExpr createSetLiteral(CollectionLiteralExp cle) {
-        return null; // ctx().mkEmptySet();
     }
     
     /**

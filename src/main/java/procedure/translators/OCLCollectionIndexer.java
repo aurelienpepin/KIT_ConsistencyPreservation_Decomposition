@@ -20,7 +20,7 @@ public class OCLCollectionIndexer {
      */
     private int counter = 1;
     
-    private final String lengthSuffix = "len";
+    // private final String lengthSuffix = "len";
 
     public OCLCollectionIndexer() {
         this.symbols = new HashMap<>();
@@ -50,8 +50,8 @@ public class OCLCollectionIndexer {
      * @param cle
      * @return 
      */
-    public String getSymbolLength(CollectionLiteralExp cle) {
-        String symbol = getSymbol(cle);
-        return symbol + lengthSuffix;
-    }
+    // public String getSymbolLength(CollectionLiteralExp cle) {
+    //     String symbol = getSymbol(cle);
+    //     return symbol + lengthSuffix;
+    // }
 }
