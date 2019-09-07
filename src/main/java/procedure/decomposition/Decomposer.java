@@ -102,11 +102,13 @@ public class Decomposer {
         
         // System.out.println(constraint.getPredicateParts());
         Iterator<Expr> it = constraint.getPredicateParts().iterator();
-        it.next();
-        s.add((BoolExpr) it.next()); // TODO: mettre un exemplaire de chaque variable libre
+        // it.next();
+        // s.add((BoolExpr) it.next()); // TODO: mettre un exemplaire de chaque variable libre
         // s.add(ctx.mkForAll)
+        // s.add(ctx.mkForall)
         s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
-        System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
+        System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));
+        // (!) System.out.println(ctx.SimplifyHelp());
         System.out.println(s.check());
         System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());

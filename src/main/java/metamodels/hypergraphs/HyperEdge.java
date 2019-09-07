@@ -16,12 +16,6 @@ public abstract class HyperEdge<V extends HyperVertex> implements Cloneable, Ser
     
     protected final Set<Expr> expressions;
     
-    public HyperEdge() {
-        this.vertices = new HashSet<>();
-        this.expressions = new HashSet<>();
-        throw new RuntimeException("hyperedge constraint");
-    }
-    
     public HyperEdge(Set<V> vertices, Set<Expr> expressions) {
         this.vertices = vertices;
         this.expressions = expressions;

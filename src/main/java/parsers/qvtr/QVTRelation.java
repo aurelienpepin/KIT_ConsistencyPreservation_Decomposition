@@ -3,6 +3,7 @@ package parsers.qvtr;
 import com.microsoft.z3.BoolExpr;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import metamodels.MetaGraph;
 import metamodels.edges.EdgeAssembler;
@@ -65,9 +66,18 @@ public class QVTRelation implements QVTTranslatable {
         // Group variables that have something to do together
         this.varIndexer.merge();
         
-        for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
-            MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
-            graph.addEdge(edge);            
+        // for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
+        //     System.out.println("KEYSET HERE: " + varIndexer.getBindings().keySet());
+        //     MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
+        //     graph.addEdge(edge);            
+        // }
+        
+        for (Entry<Set<Variable>, EdgeAssembler> entry : varIndexer.getBindings().entrySet()) {
+            EdgeAssembler assembler = entry.getValue();
+            Set<Variable> freeVariables = entry.getKey();
+            
+            MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions(), freeVariables);
+            graph.addEdge(edge);
         }
     }
     

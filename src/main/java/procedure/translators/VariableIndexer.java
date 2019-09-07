@@ -41,6 +41,8 @@ public class VariableIndexer {
         if (variables.isEmpty())
             return; // Useless for multi-model consistency
         
+        System.out.println(variables);
+        
         // Transform the PropertyTemplateItem into a Z3 constraint
         ConstraintFactory factory = new ConstraintFactory(tContext);
         
@@ -93,5 +95,9 @@ public class VariableIndexer {
 
     public Map<Set<Variable>, EdgeAssembler> getBindings() {
         return bindings;
+    }
+    
+    public static String uniqueNameGenerator(QVTRelation relation, Variable var) {
+        return relation.getName() + "@" + var.getName();
     }
 }

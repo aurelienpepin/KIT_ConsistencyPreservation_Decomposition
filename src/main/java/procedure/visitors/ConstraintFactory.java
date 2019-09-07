@@ -23,6 +23,7 @@ import org.eclipse.ocl.pivot.CollectionLiteralPart;
 import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
 import procedure.translators.TranslatorContext;
+import procedure.translators.VariableIndexer;
 
 /**
  * Transform complex OCL expressions into Z3 predicates.
@@ -158,7 +159,8 @@ public class ConstraintFactory {
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
         Variable v = (Variable) ve.getReferredVariable();
-        String distinctiveName = relation.getName() + "@" + v.getName();
+        // String distinctiveName = relation.getName() + "@" + v.getName();
+        String distinctiveName = VariableIndexer.uniqueNameGenerator(relation, v);
         
         switch (ve.getReferredVariable().getType().getName()) {
             case "Integer":
