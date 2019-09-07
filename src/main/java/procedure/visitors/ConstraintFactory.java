@@ -5,6 +5,7 @@ import com.microsoft.z3.ArrayExpr;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Constructor;
 import com.microsoft.z3.Context;
+import com.microsoft.z3.DatatypeExpr;
 import com.microsoft.z3.DatatypeSort;
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.FuncDecl;
@@ -12,14 +13,12 @@ import com.microsoft.z3.IntExpr;
 import com.microsoft.z3.RealExpr;
 import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
-import com.microsoft.z3.enumerations.Z3_sort_kind;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.ocl.pivot.CollectionLiteralExp;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.ocl.pivot.VariableExp;
-import org.eclipse.ocl.pivot.CollectionKind;
 import org.eclipse.ocl.pivot.CollectionLiteralPart;
 import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
@@ -120,28 +119,19 @@ public class ConstraintFactory {
                 return c.stringToInt(operands.get(0));
             // COLLECTION-RELATED FUNCTIONS
             case "isEmpty":
-                System.out.println(oce);
-                System.out.println(oce.getReferredOperation());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getExtenders());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eClass());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getSuperClasses());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getInstanceClassName());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getMetaTypeName());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().toString());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eAllContents());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getESObject());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eContents());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().eCrossReferences());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedAnnotations());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedInvariants());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedProperties());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getOwnedSignature());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getTypeParameters());
-                System.out.println("*: " + oce.getReferredOperation().getOwningClass().getUnspecializedElement());
-                System.out.println(operands.get(0).getSort().getSortKind());
-                return c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1)));
+                DatatypeExpr dteExpr1 = (DatatypeExpr) operands.get(0);
+                FuncDecl length = ((DatatypeSort) dteExpr1.getSort()).getAccessors()[0][0];
+                
+                if (datatypeEquals(dteExpr1, "Sequence")) {
+                    return c.mkEq(c.mkInt(0), c.mkApp(length, dteExpr1));
+                } else if (datatypeEquals(dteExpr1, "Sort")) {
+                    return c.mkEq(c.mkInt(0), c.mkApp(length, dteExpr1));
+                }
             case "notEmpty":
-                return c.mkNot(c.mkEq(c.mkInt(0), c.mkSelect((ArrayExpr) operands.get(0), c.mkInt(-1))));
+                DatatypeExpr dteExpr2 = (DatatypeExpr) operands.get(0);
+                FuncDecl length2 = ((DatatypeSort) dteExpr2.getSort()).getAccessors()[0][0];
+                
+                return c.mkNot(c.mkEq(c.mkInt(0), c.mkApp(length2, dteExpr2)));
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
@@ -238,5 +228,15 @@ public class ConstraintFactory {
         // System.out.println("- " + oce.getReferredOperation().getOperationId().getName());
         // System.out.println("- " + oce.getReferredOperation().getOwningClass());
         return type.equals(oce.getReferredOperation().getOwningClass().toString());
+    }
+    
+    /**
+     * Helper function for short datatype verification.
+     * @param dte
+     * @param sort
+     * @return 
+     */
+    private boolean datatypeEquals(DatatypeExpr dte, String sort) {
+        return sort.equals(dte.getSort().toString());
     }
 }

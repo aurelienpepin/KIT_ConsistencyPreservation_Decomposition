@@ -78,7 +78,7 @@ public class QVTRelation implements QVTTranslatable {
         // TODO: extend the support of calls of other relations!
         // If this occurs, the program raises an exception (~ unknown OCL op.) ATM
         for (Predicate pred : this.relation.getWhen().getPredicate()) {
-            // System.out.println(pred);
+            // System.out.println("PRED: " + pred.getConditionExpression().accept(conV));
             graph.addPrecondition((BoolExpr) pred.getConditionExpression().accept(conV));
         }
     }

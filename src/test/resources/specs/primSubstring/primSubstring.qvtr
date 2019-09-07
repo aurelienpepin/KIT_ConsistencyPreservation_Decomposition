@@ -16,7 +16,7 @@ transformation primAtoPrimB(primA:primApack, primB:primBpack) {
 		domain primB sB:StringB {stringB=xs};
 		
 		when {
-			not Sequence{3.14}->isEmpty() and Sequence{5, 3, 5}->notEmpty() and xs.size() > 10;
+			not Sequence{3.14, 2.255}->isEmpty() and not Set{5, 3, 5}->isEmpty() and xs.size() > 10;
 		}
 	}
 }
