@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 import metamodels.MetaGraph;
 import metamodels.edges.EdgeAssembler;
 import metamodels.edges.MetaEdge;
@@ -74,8 +75,8 @@ public class QVTRelation implements QVTTranslatable {
         
         for (Entry<Set<Variable>, EdgeAssembler> entry : varIndexer.getBindings().entrySet()) {
             EdgeAssembler assembler = entry.getValue();
-            Set<Variable> freeVariables = entry.getKey();
-            
+            Set<QVTVariable> freeVariables = entry.getKey().stream().map(v -> new QVTVariable(v, this)).collect(Collectors.toSet());
+                        
             MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions(), freeVariables);
             graph.addEdge(edge);
         }

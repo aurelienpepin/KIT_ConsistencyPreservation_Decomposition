@@ -12,7 +12,7 @@ transformation primAtoPrimB(primA:primApack, primB:primBpack) {
 		s: String;
 		xs: String;
 		
-		domain primA sA:StringA {stringA=xs.substring(2, 5)};
+		domain primA sA:StringA {stringA=xs.substring(1, 1)};
 		domain primB sB:StringB {stringB=xs};
 		
 		when { xs.size() > 10; }
@@ -45,7 +45,7 @@ transformation primAtoPrimC(primA:primApack, primC:primCpack) {
 		s: String;
 		xs: String;
 		
-		domain primA sA:StringA {stringA=xs.substring(2, 5)};
+		domain primA sA:StringA {stringA=xs.substring(1, 1)};
 		domain primC sC:StringC {stringC=xs};
 		
 		when {

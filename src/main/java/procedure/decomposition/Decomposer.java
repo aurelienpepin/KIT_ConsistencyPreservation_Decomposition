@@ -3,8 +3,11 @@ package procedure.decomposition;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import com.microsoft.z3.Quantifier;
 import com.microsoft.z3.Solver;
+import com.microsoft.z3.Sort;
 import com.microsoft.z3.Status;
+import com.microsoft.z3.Symbol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -86,7 +89,7 @@ public class Decomposer {
     private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint, Set<BoolExpr> preconditions) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
-        
+
         if (!preconditions.isEmpty()) {
             s.add(ctx.mkAnd(preconditions.toArray(new BoolExpr[preconditions.size()])));
         }
@@ -94,23 +97,32 @@ public class Decomposer {
         // Temporary: remove constraint from path
         Set<MetaEdge> otherConstraints = new HashSet<>(path.getVertexList());
         otherConstraints.remove(constraint);
-        // otherConstraints.removeAll(Collections.singleton(constraint));
         
         otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
         });
         
-        // System.out.println(constraint.getPredicateParts());
-        Iterator<Expr> it = constraint.getPredicateParts().iterator();
-        // it.next();
-        // s.add((BoolExpr) it.next()); // TODO: mettre un exemplaire de chaque variable libre
-        // s.add(ctx.mkForAll)
-        // s.add(ctx.mkForall)
-        s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
+        Quantifier qt2 = ctx.mkForall(
+                new Expr[]{ctx.mkConst(constraint.getFreeVariables().iterator().next().getFullName(), 
+                ctx.mkStringSort())},
+                ctx.mkNot((BoolExpr) constraint.getPredicate()), 0, null, null, null, null);
+        
+        // ADD QUANTIFIERS BELOW:
+        // s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
+        s.add(qt2);
+        
+        System.out.println("-----------------------------------");
+        System.out.println("assertions_size: " + s.getAssertions().length);
         System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));
+        
         // (!) System.out.println(ctx.SimplifyHelp());
-        System.out.println(s.check());
-        System.out.println(s.getModel());
+        // System.out.println(s.check());
+        // System.out.println("UnsatCore: " + Arrays.toString(s.getUnsatCore()));
+        // System.out.println("Statistics: " + s.getStatistics());
+        // System.out.println("Parameters: " + s.getParameterDescriptions());
+        // System.out.println("Ctx Params: " + ctx.mkParams().toString());
+        // System.out.println(s.getReasonUnknown());
+        // System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());
     }
 }

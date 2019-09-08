@@ -22,6 +22,7 @@ import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.ocl.pivot.CollectionLiteralPart;
 import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
+import parsers.qvtr.QVTVariable;
 import procedure.translators.TranslatorContext;
 import procedure.translators.VariableIndexer;
 
@@ -159,8 +160,7 @@ public class ConstraintFactory {
     
     public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
         Variable v = (Variable) ve.getReferredVariable();
-        // String distinctiveName = relation.getName() + "@" + v.getName();
-        String distinctiveName = VariableIndexer.uniqueNameGenerator(relation, v);
+        String distinctiveName = (new QVTVariable(v, relation)).getFullName();
         
         switch (ve.getReferredVariable().getType().getName()) {
             case "Integer":
