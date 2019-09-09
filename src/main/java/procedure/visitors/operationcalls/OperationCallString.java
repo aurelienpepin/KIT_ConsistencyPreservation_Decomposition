@@ -1,4 +1,4 @@
-package procedure.translators.operationcalls;
+package procedure.visitors.operationcalls;
 
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
@@ -7,7 +7,7 @@ import com.microsoft.z3.SeqExpr;
 import java.util.List;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
-import static procedure.translators.operationcalls.Translatable.typeEquals;
+import static procedure.visitors.operationcalls.Translatable.typeEquals;
 
 /**
  *

@@ -1,5 +1,6 @@
 package procedure.visitors;
 
+import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.SeqExpr;
 import java.util.ArrayList;
@@ -183,9 +184,13 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    @Override
+    @Override // OK
     public Expr visitIfExp(IfExp ifexp) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        BoolExpr condition = (BoolExpr) ifexp.getOwnedCondition().accept(this);
+        Expr thenExpr = ifexp.getOwnedThen().accept(this);
+        Expr elseExpr = ifexp.getOwnedElse().accept(this);
+        
+        return context.getZ3Ctx().mkITE(condition, thenExpr, elseExpr);
     }
 
     @Override // OK

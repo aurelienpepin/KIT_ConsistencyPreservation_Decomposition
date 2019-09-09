@@ -1,4 +1,4 @@
-package procedure.translators.operationcalls;
+package procedure.visitors.operationcalls;
 
 import com.microsoft.z3.DatatypeExpr;
 import com.microsoft.z3.Expr;
@@ -31,6 +31,12 @@ public interface Translatable {
         return type.equals(oce.getReferredOperation().getOwningClass().toString());
     }
     
+    /**
+     * Helper function for short datatype verification.
+     * @param dte
+     * @param sort
+     * @return 
+     */
     public static boolean datatypeEquals(DatatypeExpr dte, String sort) {
         // System.out.println(dte.getSort().toString());
         // Ex: Sequence<Int> equivalent to Sequence

@@ -1,17 +1,7 @@
 package procedure.visitors;
 
-import com.microsoft.z3.ArithExpr;
-import com.microsoft.z3.ArrayExpr;
-import com.microsoft.z3.BoolExpr;
-import com.microsoft.z3.Constructor;
 import com.microsoft.z3.Context;
-import com.microsoft.z3.DatatypeExpr;
-import com.microsoft.z3.DatatypeSort;
 import com.microsoft.z3.Expr;
-import com.microsoft.z3.FuncDecl;
-import com.microsoft.z3.IntExpr;
-import com.microsoft.z3.RealExpr;
-import com.microsoft.z3.SeqExpr;
 import com.microsoft.z3.Sort;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
@@ -24,14 +14,14 @@ import org.eclipse.ocl.pivot.Type;
 import parsers.qvtr.QVTRelation;
 import parsers.qvtr.QVTVariable;
 import procedure.translators.TranslatorContext;
-import procedure.translators.operationcalls.OperationCallArith;
-import procedure.translators.operationcalls.OperationCallBool;
-import procedure.translators.operationcalls.OperationCallCast;
-import procedure.translators.operationcalls.OperationCallCollection;
-import procedure.translators.operationcalls.OperationCallEq;
-import procedure.translators.operationcalls.OperationCallOrd;
-import procedure.translators.operationcalls.OperationCallOrdSet;
-import procedure.translators.operationcalls.OperationCallString;
+import procedure.visitors.operationcalls.OperationCallArith;
+import procedure.visitors.operationcalls.OperationCallBool;
+import procedure.visitors.operationcalls.OperationCallCast;
+import procedure.visitors.operationcalls.OperationCallCollection;
+import procedure.visitors.operationcalls.OperationCallEq;
+import procedure.visitors.operationcalls.OperationCallOrd;
+import procedure.visitors.operationcalls.OperationCallOrdSet;
+import procedure.visitors.operationcalls.OperationCallString;
 
 /**
  * Transform complex OCL expressions into Z3 predicates.
@@ -176,17 +166,5 @@ public class ConstraintFactory {
             default:
                 throw new UnsupportedOperationException("Unsupported value translation: " + clp + " (" + sort + ")");
         }
-    }
-    
-    /**
-     * Helper function for short datatype verification.
-     * @param dte
-     * @param sort
-     * @return 
-     */
-    private boolean datatypeEquals(DatatypeExpr dte, String sort) {
-        // System.out.println(dte.getSort().toString());
-        // Ex: Sequence<Int> equivalent to Sequence
-        return dte.getSort().toString().startsWith(sort);
     }
 }
