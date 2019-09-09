@@ -21,6 +21,7 @@ import procedure.visitors.operationcalls.OperationCallCollection;
 import procedure.visitors.operationcalls.OperationCallEq;
 import procedure.visitors.operationcalls.OperationCallOrd;
 import procedure.visitors.operationcalls.OperationCallOrdSet;
+import procedure.visitors.operationcalls.OperationCallSize;
 import procedure.visitors.operationcalls.OperationCallString;
 
 /**
@@ -76,15 +77,19 @@ public class ConstraintFactory {
             case "implies":
                 return (new OperationCallBool()).translate(context, oce, operands);
             // String-related functions
-            case "concat":
-            case "size":    
+            case "concat": 
             case "substring":
             case "toInteger":
                 return (new OperationCallString()).translate(context, oce, operands);
             // Collection-related functions
             case "isEmpty":
             case "notEmpty":
+            case "includes":
+            case "excludes":
                 return (new OperationCallCollection()).translate(context, oce, operands);
+            // (Collection + String)-related functions
+            case "size":
+                return (new OperationCallSize()).translate(context, oce, operands);
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }

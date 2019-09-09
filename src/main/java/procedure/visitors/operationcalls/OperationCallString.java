@@ -22,14 +22,12 @@ public class OperationCallString implements Translatable {
         switch (oce.getReferredOperation().getOperationId().getName()) {
             case "concat":
                 if (typeEquals(oce, "String"))
-                    return c.mkConcat(operands.toArray(new SeqExpr[operands.size()]));
-            case "size":
-                if (typeEquals(oce, "String"))
-                    return c.mkLength((SeqExpr) operands.get(0));     
+                    return c.mkConcat(operands.toArray(new SeqExpr[operands.size()]));     
             case "substring":
                 if (typeEquals(oce, "String")) {
                     IntExpr substringOper2 = (IntExpr) c.mkSub((IntExpr) operands.get(2), (IntExpr) operands.get(1));
                     substringOper2 = (IntExpr) c.mkAdd(substringOper2, c.mkInt(1));
+                    
                     return c.mkExtract((SeqExpr) operands.get(0), (IntExpr) operands.get(1), substringOper2);
                 }
             case "toInteger":
