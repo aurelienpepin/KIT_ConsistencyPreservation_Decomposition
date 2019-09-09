@@ -253,7 +253,7 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    @Override // TODO
+    @Override // OK
     public Expr visitOperationCallExp(OperationCallExp oce) {
         List<Expr> operands = new ArrayList<>();
         operands.add(oce.getOwnedSource().accept(this));

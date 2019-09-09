@@ -22,6 +22,7 @@ import procedure.visitors.operationcalls.OperationCallEq;
 import procedure.visitors.operationcalls.OperationCallOrd;
 import procedure.visitors.operationcalls.OperationCallOrdSet;
 import procedure.visitors.operationcalls.OperationCallSequence;
+import procedure.visitors.operationcalls.OperationCallSet;
 import procedure.visitors.operationcalls.OperationCallSize;
 import procedure.visitors.operationcalls.OperationCallString;
 
@@ -96,6 +97,8 @@ public class ConstraintFactory {
             case "last":
             case "first":
                 return (new OperationCallSequence()).translate(context, oce, operands);
+            case "symmetricDifference":
+                return (new OperationCallSet()).translate(context, oce, operands);
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
