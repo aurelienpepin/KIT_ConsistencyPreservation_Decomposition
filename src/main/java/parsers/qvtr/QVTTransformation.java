@@ -52,6 +52,7 @@ public class QVTTransformation implements QVTTranslatable {
         if (!transformation.getOwnedKey().isEmpty())
             throw new RuntimeException("TODO: support the use of keys in transformations");
     }
+    
     @Override
     public void translate(MetaGraph graph) {
         for (QVTRelation relation : relations) {

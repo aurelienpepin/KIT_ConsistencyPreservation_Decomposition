@@ -21,6 +21,7 @@ import procedure.visitors.operationcalls.OperationCallCollection;
 import procedure.visitors.operationcalls.OperationCallEq;
 import procedure.visitors.operationcalls.OperationCallOrd;
 import procedure.visitors.operationcalls.OperationCallOrdSet;
+import procedure.visitors.operationcalls.OperationCallSequence;
 import procedure.visitors.operationcalls.OperationCallSize;
 import procedure.visitors.operationcalls.OperationCallString;
 
@@ -91,8 +92,10 @@ public class ConstraintFactory {
             case "size":
                 return (new OperationCallSize()).translate(context, oce, operands);
             // Sequence-related functions
+            case "at":
+            case "last":
             case "first":
-                throw new UnsupportedOperationException("Unsupported first yet");
+                return (new OperationCallSequence()).translate(context, oce, operands);
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }

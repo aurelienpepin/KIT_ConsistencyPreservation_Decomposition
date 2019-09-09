@@ -47,7 +47,7 @@ public class VariableIndexer {
         EAttributeVertex eav1 = new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject());
         Expr eq1 = tContext.getZ3Ctx().mkConst(eav1.getFullName(), factory.fromEcoreTypedElement(eav1.getElement()));
         BoolExpr predicate = tContext.getZ3Ctx().mkEq(eq1, pti.getValue().accept(relation.getConstraintVisitor()));
-
+        
         // Add predicate to the set of variables
         if (!bindings.containsKey(variables)) {
             bindings.put(variables, new EdgeAssembler());

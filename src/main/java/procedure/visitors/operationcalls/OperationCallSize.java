@@ -30,16 +30,18 @@ public class OperationCallSize implements Translatable {
                 if (typeEquals(oce, "String"))
                     return c.mkLength((SeqExpr) operands.get(0));
                 
-                DatatypeExpr dteExpr1 = (DatatypeExpr) operands.get(0);
-                FuncDecl length = ((DatatypeSort) dteExpr1.getSort()).getAccessors()[0][0];
+                DatatypeExpr dteExpr = (DatatypeExpr) operands.get(0);
+                FuncDecl length = ((DatatypeSort) dteExpr.getSort()).getAccessors()[0][0];
                 
-                if (datatypeEquals(dteExpr1, "Sequence")) {
-                    return (IntExpr) c.mkApp(length, dteExpr1);
-                } else if (datatypeEquals(dteExpr1, "Set")) {
-                    return (IntExpr) c.mkApp(length, dteExpr1);
-                } else {
-                    throw new UnsupportedOperationException("Unsupported collection: " + dteExpr1);
+                if (datatypeEquals(dteExpr, "Sequence")) {
+                    return (IntExpr) c.mkApp(length, dteExpr);
                 }
+                
+                if (datatypeEquals(dteExpr, "Set")) {
+                    return (IntExpr) c.mkApp(length, dteExpr);
+                }
+                
+                throw new UnsupportedOperationException("Unsupported collection: " + dteExpr);
             default: // defensive
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());   
         }
