@@ -11,7 +11,7 @@ transformation valAtoValB(valA:valApack, valB:valBpack) {
 		domain valB objB:B {b=x-1};
 		
 		when {
-			not Sequence{26, 27, 28}->isEmpty() and Sequence{29.2}->notEmpty();
+			not Sequence{26, 27, 28}->isEmpty() and not Sequence{29.2}->notEmpty();
 		}
 	}
 }
