@@ -23,6 +23,7 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.cycle.PatonCycleBase;
 import org.jgrapht.graph.AsSubgraph;
+import parsers.qvtr.QVTVariable;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -103,12 +104,10 @@ public class Decomposer {
         });
         
         Quantifier qt2 = ctx.mkForall(
-                new Expr[]{ctx.mkConst(constraint.getFreeVariables().iterator().next().getFullName(), 
-                ctx.mkStringSort())},
+                freeVariablesToExprs(constraint.getFreeVariables()), // new Expr[]{ctx.mkConst(constraint.getFreeVariables().iterator().next().getFullName(), 
+                // ctx.mkStringSort())},
                 ctx.mkNot((BoolExpr) constraint.getPredicate()), 0, null, null, null, null);
         
-        // ADD QUANTIFIERS BELOW:
-        // s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
         s.add(qt2);
         
         System.out.println("-----------------------------------");
@@ -124,5 +123,9 @@ public class Decomposer {
         // System.out.println(s.getReasonUnknown());
         // System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());
+    }
+    
+    private static Expr[] freeVariablesToExprs(Set<QVTVariable> variables) {
+        return variables.stream().map(v -> v.getExpr()).toArray(Expr[]::new);
     }
 }

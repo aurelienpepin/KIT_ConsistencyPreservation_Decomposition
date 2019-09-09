@@ -1,5 +1,6 @@
 package parsers.qvtr;
 
+import com.microsoft.z3.Expr;
 import org.eclipse.ocl.pivot.Variable;
 
 /**
@@ -30,5 +31,9 @@ public class QVTVariable {
     @Override
     public String toString() {
         return this.getFullName();
+    }
+
+    public Expr getExpr() {
+        return relation.getConstraintVisitor().getFactory().fromVariable(variable, relation);
     }
 }

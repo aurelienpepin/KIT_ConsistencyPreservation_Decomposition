@@ -319,7 +319,7 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
 
     @Override // OK
     public Expr visitVariableExp(VariableExp ve) {
-        return factory.fromVariable(ve, relation);
+        return factory.fromVariableExp(ve, relation);
     }
     
     /* **********************************************************
@@ -796,6 +796,8 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
     public Expr visitWildcardType(WildcardType wt) {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
-    
-    
+
+    public ConstraintFactory getFactory() {
+        return factory;
+    }
 }

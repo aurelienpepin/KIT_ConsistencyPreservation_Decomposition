@@ -158,11 +158,14 @@ public class ConstraintFactory {
         // throw new UnsupportedOperationException("Unsupported collection literal translation: " + cle);
     }
     
-    public Expr fromVariable(VariableExp ve, QVTRelation relation) {      
-        Variable v = (Variable) ve.getReferredVariable();
+    public Expr fromVariableExp(VariableExp ve, QVTRelation relation) {
+        return this.fromVariable((Variable) ve.getReferredVariable(), relation);
+    }
+    
+    public Expr fromVariable(Variable v, QVTRelation relation) {
         String distinctiveName = (new QVTVariable(v, relation)).getFullName();
         
-        switch (ve.getReferredVariable().getType().getName()) {
+        switch (v.getType().getName()) {
             case "Integer":
                 return context.getZ3Ctx().mkConst(distinctiveName, context.getZ3Ctx().mkIntSort());
             case "String":
@@ -172,7 +175,7 @@ public class ConstraintFactory {
             case "Real":
                 return context.getZ3Ctx().mkConst(distinctiveName, context.getZ3Ctx().mkRealSort());
             default:
-                throw new UnsupportedOperationException("Unsupported variable in constraint translation: " + ve.getReferredVariable().getType().getName());
+                throw new UnsupportedOperationException("Unsupported variable in constraint translation: " + v.getType().getName());
         }
     }
     
