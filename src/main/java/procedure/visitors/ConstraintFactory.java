@@ -128,12 +128,20 @@ public class ConstraintFactory {
                     return c.mkEq(c.mkInt(0), c.mkApp(length, dteExpr1));
                 } else if (datatypeEquals(dteExpr1, "Sort")) {
                     return c.mkEq(c.mkInt(0), c.mkApp(length, dteExpr1));
+                } else {
+                    throw new UnsupportedOperationException("Unsupported collection: " + dteExpr1);
                 }
             case "notEmpty":
                 DatatypeExpr dteExpr2 = (DatatypeExpr) operands.get(0);
                 FuncDecl length2 = ((DatatypeSort) dteExpr2.getSort()).getAccessors()[0][0];
                 
-                return c.mkNot(c.mkEq(c.mkInt(0), c.mkApp(length2, dteExpr2)));
+                if (datatypeEquals(dteExpr2, "Sequence")) {
+                    return c.mkNot(c.mkEq(c.mkInt(0), c.mkApp(length2, dteExpr2)));
+                } else if (datatypeEquals(dteExpr2, "Sort")) {
+                    return c.mkNot(c.mkEq(c.mkInt(0), c.mkApp(length2, dteExpr2)));
+                } else {
+                    throw new UnsupportedOperationException("Unsupported collection: " + dteExpr2);
+                }
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
@@ -242,6 +250,7 @@ public class ConstraintFactory {
      * @return 
      */
     private boolean datatypeEquals(DatatypeExpr dte, String sort) {
-        return sort.equals(dte.getSort().toString());
+        // System.out.println(dte.getSort().toString());
+        return dte.getSort().toString().startsWith(sort);
     }
 }
