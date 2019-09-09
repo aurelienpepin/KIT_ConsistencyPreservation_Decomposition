@@ -90,6 +90,9 @@ public class ConstraintFactory {
             // (Collection + String)-related functions
             case "size":
                 return (new OperationCallSize()).translate(context, oce, operands);
+            // Sequence-related functions
+            case "first":
+                throw new UnsupportedOperationException("Unsupported first yet");
             default:
                 throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
         }
