@@ -1,5 +1,7 @@
 package metamodels;
 
+import com.microsoft.z3.BoolExpr;
+import com.microsoft.z3.Expr;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,10 +17,13 @@ import parsers.qvtr.QVTSpecification;
 
 public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
     
+    private Set<BoolExpr> preconditions;
+    
     private QVTSpecification spec;
     
     public MetaGraph() {
         this.spec = new QVTSpecification();
+        this.preconditions = new HashSet<>();
     }
     
     public MetaGraph(QVTSpecification spec) {
@@ -26,6 +31,7 @@ public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
             throw new NullPointerException("Specification cannot be null");
         
         this.spec = spec;
+        this.preconditions = new HashSet<>();
     }
     
     public void setSpecification(QVTSpecification spec) {
@@ -33,6 +39,17 @@ public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
             throw new NullPointerException("Specification cannot be null");
         
         this.spec = spec;
+    }
+    
+    public void addPrecondition(BoolExpr precondition) {
+        if (precondition == null)
+            throw new NullPointerException("Precondition cannot be null");
+        
+        this.preconditions.add(precondition);
+    }
+
+    public Set<BoolExpr> getPreconditions() {
+        return preconditions;
     }
     
     public DualGraph toDual() {

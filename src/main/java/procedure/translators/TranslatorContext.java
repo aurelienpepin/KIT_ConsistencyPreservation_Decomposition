@@ -16,8 +16,14 @@ public class TranslatorContext {
      */
     private final com.microsoft.z3.Context z3Context;
     
+    /**
+     * The symbol provider for OCL collection literals.
+     */
+    private final OCLCollectionIndexer collectionIndexer;
+    
     private TranslatorContext() {
         this.z3Context = new com.microsoft.z3.Context();
+        this.collectionIndexer = new OCLCollectionIndexer();
     }
     
     /**
@@ -30,5 +36,9 @@ public class TranslatorContext {
     
     public com.microsoft.z3.Context getZ3Ctx() {
         return this.z3Context;
+    }
+
+    public OCLCollectionIndexer getCollIndexer() {
+        return collectionIndexer;
     }
 }

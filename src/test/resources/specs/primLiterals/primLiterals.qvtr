@@ -1,0 +1,19 @@
+import primApack : 'PrimitiveA.ecore'::PrimitiveA;
+import primBpack : 'PrimitiveB.ecore'::PrimitiveB;
+import primCpack : 'PrimitiveC.ecore'::PrimitiveC;
+
+transformation primAtoPrimB(primA:primApack, primB:primBpack) {
+
+	top relation AtoB {
+		b: Boolean;
+		i: Integer;
+		r: Real;
+		s: String;
+		
+		domain primA iA:IntA {};
+		
+		when {
+			b = false and i > 8 and r > 3.151 and s = 'primitive test';
+		}
+	}
+}

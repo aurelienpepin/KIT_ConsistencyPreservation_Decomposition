@@ -1,8 +1,11 @@
 package parsers.qvtr;
 
+import com.microsoft.z3.BoolExpr;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 import metamodels.MetaGraph;
 import metamodels.edges.EdgeAssembler;
 import metamodels.edges.MetaEdge;
@@ -11,6 +14,7 @@ import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
+import org.eclipse.qvtd.pivot.qvtbase.Predicate;
 import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
@@ -44,7 +48,7 @@ public class QVTRelation implements QVTTranslatable {
         
         this.varIndexer = new VariableIndexer(this);
         this.depV = new DependencyVisitor(TranslatorContext.getInstance());
-        this.conV = new ConstraintVisitor(TranslatorContext.getInstance());
+        this.conV = new ConstraintVisitor(this, TranslatorContext.getInstance());
         
         for (Domain rd : relation.getDomain()) {
             this.domains.add(new QVTDomain((RelationDomain) rd));
@@ -57,12 +61,36 @@ public class QVTRelation implements QVTTranslatable {
             this.transformDomain(graph, domain);
         }
         
+        // Add preconditions (When-clause) in the metagraph
+        this.transformWhen(graph);
+        
         // Group variables that have something to do together
         this.varIndexer.merge();
         
-        for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
-            MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
-            graph.addEdge(edge);            
+        // for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
+        //     System.out.println("KEYSET HERE: " + varIndexer.getBindings().keySet());
+        //     MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
+        //     graph.addEdge(edge);            
+        // }
+        
+        for (Entry<Set<Variable>, EdgeAssembler> entry : varIndexer.getBindings().entrySet()) {
+            EdgeAssembler assembler = entry.getValue();
+            Set<QVTVariable> freeVariables = entry.getKey().stream().map(v -> new QVTVariable(v, this)).collect(Collectors.toSet());
+                        
+            MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions(), freeVariables);
+            graph.addEdge(edge);
+        }
+    }
+    
+    private void transformWhen(MetaGraph graph) {
+        if (this.relation.getWhen() == null)
+            return;
+        
+        // TODO: extend the support of calls of other relations!
+        // If this occurs, the program raises an exception (~ unknown OCL op.) ATM
+        for (Predicate pred : this.relation.getWhen().getPredicate()) {
+            // System.out.println("PRED: " + pred.getConditionExpression().accept(conV));
+            graph.addPrecondition((BoolExpr) pred.getConditionExpression().accept(conV));
         }
     }
     

@@ -18,12 +18,6 @@ public class HyperGraph<V extends HyperVertex, E extends HyperEdge> {
         this.vertices = new HashSet<>();
         this.edges = new HashSet<>();
     }
-
-    // TODO
-    // public void addEdge(Iterable<HyperVertex> vertices) {
-    //     HyperEdge edge = new HyperEdge();
-    //     throw new RuntimeException("allez fais ce hyperedge");
-    // }
     
     public boolean addEdge(E e) {
         if (e == null)

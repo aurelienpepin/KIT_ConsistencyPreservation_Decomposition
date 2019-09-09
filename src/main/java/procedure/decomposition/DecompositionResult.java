@@ -55,4 +55,9 @@ public class DecompositionResult {
     public boolean isPositive() {
         return !removedEdges.isEmpty();
     }
+
+    @Override
+    public String toString() {
+        return "DecompositionResult{" + "component=" + component + ", removedEdges=" + removedEdges + '}';
+    }
 }
