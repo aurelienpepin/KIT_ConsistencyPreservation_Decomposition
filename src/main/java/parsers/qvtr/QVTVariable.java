@@ -1,48 +1,39 @@
 package parsers.qvtr;
 
+import com.microsoft.z3.Expr;
 import org.eclipse.ocl.pivot.Variable;
 
 /**
- * Probably useless now. TODO: delete.
+ *
  * @author Aurélien Pepin
  */
 public class QVTVariable {
     
     /**
-     * The OCL/QVT-R variable itself.
-     */
-    private final Variable variable;
-    
-    /**
-     * The QVT-R relation in which the variable is used.
-     * Useful because two variables in different relations can have the same name.
+     * The relation to which the variable belongs.
      */
     private final QVTRelation relation;
     
-    /**
-     * Represent the id^th occurrence of the variable.
-     */
-    private final int id;
+    private final Variable variable;
     
-    public QVTVariable(Variable variable, QVTRelation relation, int id) {
+    public QVTVariable(Variable variable, QVTRelation relation) {
         if (variable == null || relation == null)
-            throw new RuntimeException("Unable to create a QVTVariable");
+            throw new NullPointerException("Null instantiation of a QVT-R variable.");
         
         this.variable = variable;
         this.relation = relation;
-        this.id = id;
     }
     
+    public String getFullName() {
+        return relation.getName() + "@" + variable.getName();
+    }
+
     @Override
     public String toString() {
-        return "Var(" + this.relation.getName() + "){" + this.variable + " " + this.id + "}";
+        return this.getFullName();
     }
 
-    public String getFullName() {
-        return "Var(" + this.relation.getName() + "){" + this.variable.getName() + " " + this.id + "}";
-    }
-
-    public Variable getVariable() {
-        return variable;
+    public Expr getExpr() {
+        return relation.getConstraintVisitor().getFactory().fromVariable(variable, relation);
     }
 }

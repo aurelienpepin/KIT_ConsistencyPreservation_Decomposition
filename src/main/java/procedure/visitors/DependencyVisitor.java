@@ -307,9 +307,7 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
 
     @Override // OK
     public Set<Variable> visitVariableExp(VariableExp ve) {
-        // System.out.println(ve.getReferredElement() + " " + ve.getReferredElement().hashCode());
         return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
-        // return varVertexFactory.getNewVariableVertex((Variable) ve.getReferredElement());
     }
     
     /* **********************************************************

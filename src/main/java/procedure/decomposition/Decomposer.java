@@ -3,8 +3,11 @@ package procedure.decomposition;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+import com.microsoft.z3.Quantifier;
 import com.microsoft.z3.Solver;
+import com.microsoft.z3.Sort;
 import com.microsoft.z3.Status;
+import com.microsoft.z3.Symbol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,6 +23,7 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.alg.cycle.PatonCycleBase;
 import org.jgrapht.graph.AsSubgraph;
+import parsers.qvtr.QVTVariable;
 import procedure.translators.TranslatorContext;
 
 /**
@@ -30,25 +34,23 @@ public class Decomposer {
 
     public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
-        
-        // Get the dual graph
+        Set<BoolExpr> preconditions = graph.getPreconditions();
         DualGraph dual = graph.toDual();
         
         // Get connected components
         BiconnectivityInspector inspector = new BiconnectivityInspector(dual);
         Set<AsSubgraph<MetaEdge, DualEdge>> connectedComponents = inspector.getConnectedComponents();
-        
+
         // For each component, see what you can remove thanks to simulation
         for (AsSubgraph<MetaEdge, DualEdge> component : connectedComponents) {
-            DecompositionResult result = checkCycles(component);
+            DecompositionResult result = checkCycles(component, preconditions);
             results.add(result);
         }
         
         return results;
-        // throw new UnsupportedOperationException("Not finished yet.");
     }
     
-    public static DecompositionResult checkCycles(AsSubgraph<MetaEdge, DualEdge> component) {
+    public static DecompositionResult checkCycles(AsSubgraph<MetaEdge, DualEdge> component, Set<BoolExpr> preconditions) {
         List<MetaEdge> dualVertices = new ArrayList<>(component.vertexSet());
         List<MetaEdge> removedDualVertices = new ArrayList<>();
         
@@ -65,7 +67,7 @@ public class Decomposer {
                 if (!p.getVertexList().contains(constraint))
                     continue;
                 
-                if (pathToHornClause(p, constraint)) {
+                if (pathToHornClause(p, constraint, preconditions)) {
                     component.removeVertex(constraint);
                     removedDualVertices.add(constraint);
                     
@@ -85,26 +87,45 @@ public class Decomposer {
         return new DecompositionResult(component, removedDualVertices);
     }
     
-    private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint) {
+    private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint, Set<BoolExpr> preconditions) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
 
+        if (!preconditions.isEmpty()) {
+            s.add(ctx.mkAnd(preconditions.toArray(new BoolExpr[preconditions.size()])));
+        }
+        
         // Temporary: remove constraint from path
-        // List<MetaEdge> otherConstraints = new ArrayList<>(path.getVertexList());
-        // otherConstraints.removeAll(Collections.singleton(constraint));
         Set<MetaEdge> otherConstraints = new HashSet<>(path.getVertexList());
-        otherConstraints.removeAll(Collections.singleton(constraint));
+        otherConstraints.remove(constraint);
         
         otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
         });
         
-        // System.out.println(constraint.getPredicateParts());
-        s.add((BoolExpr) constraint.getPredicateParts().iterator().next());
-        s.add(ctx.mkNot((BoolExpr) constraint.getPredicate()));
-        // System.out.println("assertions: " + Arrays.toString(s.getAssertions()));
+        Quantifier qt2 = ctx.mkForall(
+                freeVariablesToExprs(constraint.getFreeVariables()), // new Expr[]{ctx.mkConst(constraint.getFreeVariables().iterator().next().getFullName(), 
+                // ctx.mkStringSort())},
+                ctx.mkNot((BoolExpr) constraint.getPredicate()), 0, null, null, null, null);
+        
+        s.add(qt2);
+        
+        System.out.println("-----------------------------------");
+        System.out.println("assertions_size: " + s.getAssertions().length);
+        System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));
+        
+        // (!) System.out.println(ctx.SimplifyHelp());
         // System.out.println(s.check());
+        // System.out.println("UnsatCore: " + Arrays.toString(s.getUnsatCore()));
+        // System.out.println("Statistics: " + s.getStatistics());
+        // System.out.println("Parameters: " + s.getParameterDescriptions());
+        // System.out.println("Ctx Params: " + ctx.mkParams().toString());
+        // System.out.println(s.getReasonUnknown());
         // System.out.println(s.getModel());
         return Status.UNSATISFIABLE.equals(s.check());
+    }
+    
+    private static Expr[] freeVariablesToExprs(Set<QVTVariable> variables) {
+        return variables.stream().map(v -> v.getExpr()).toArray(Expr[]::new);
     }
 }
