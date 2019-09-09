@@ -7,11 +7,7 @@ import com.microsoft.z3.DatatypeSort;
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.FuncDecl;
 import com.microsoft.z3.IntExpr;
-import com.microsoft.z3.Log;
-import com.microsoft.z3.Native;
-import com.microsoft.z3.Solver;
 import com.microsoft.z3.Sort;
-import java.util.Arrays;
 import java.util.HashSet;
 import org.eclipse.ocl.pivot.CollectionKind;
 import org.eclipse.ocl.pivot.CollectionLiteralExp;
@@ -58,10 +54,10 @@ public class CollectionConstraintFactory {
         
         switch (kind) {
             case SEQUENCE:
-                DatatypeSort seqDts = c.mkDatatypeSort("Sequence", new Constructor[] {constructorFromCollection(kind, sort)});
+                DatatypeSort seqDts = c.mkDatatypeSort("Sequence<" + sort + ">", new Constructor[] {constructorFromCollection(kind, sort)});
                 return seqDts;
             case SET:
-                DatatypeSort setDts = c.mkDatatypeSort("Set", new Constructor[] {constructorFromCollection(kind, sort)});
+                DatatypeSort setDts = c.mkDatatypeSort("Set<" + sort + ">", new Constructor[] {constructorFromCollection(kind, sort)});
                 return setDts;
             default:
                 throw new UnsupportedOperationException("Unknown or unsupported OCL collection: " + kind);
@@ -78,11 +74,10 @@ public class CollectionConstraintFactory {
         FuncDecl lengthFunc = seqSort.getAccessors()[0][0];
         FuncDecl arrayFunc = seqSort.getAccessors()[0][1];
         
-        //System.out.println("sfc: " + Arrays.toString(seqSort.getAccessors()[0]));
-        // System.out.println("sfc: " + seqSort.getAccessors()[0][0].apply(c.mkConst("seqtest", seqSort)));
-        
         IntExpr newLength = c.mkInt(cle.getOwnedParts().size());
-        ArrayExpr newArray = c.mkArrayConst(symbol, c.getIntSort(), sort);        
+        // ArrayExpr newArray = c.mkConstArray(sort, c.mkCons);                 // REPLACED ARRAYCONST WITH CONSTARRAY (TODO: eval)
+        ArrayExpr newArray = c.mkArrayConst(symbol, c.getIntSort(), sort);   // REPLACED ARRAYCONST WITH CONSTARRAY (TODO: eval)
+        
         Expr newSeq = c.mkApp(makeSeq, newLength, newArray);
         
         for (int i = 0; i < cle.getOwnedParts().size(); ++i) {
@@ -90,10 +85,6 @@ public class CollectionConstraintFactory {
             newSeq = c.mkApp(makeSeq, newLength, newArray);
         }
         
-        // SOLVING TRIES
-        // Solver s = c.mkSolver();
-        // s.add(c.mkEq(c.mkInt(1), c.mkApp(seqSort.getAccessors()[0][0], newSeq)));
-        // System.out.println(s.check());
         return newSeq;
     }
     

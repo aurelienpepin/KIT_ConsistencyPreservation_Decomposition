@@ -90,9 +90,11 @@ public class Decomposer {
     private static boolean pathToHornClause(GraphPath<MetaEdge, DualEdge> path, MetaEdge constraint, Set<BoolExpr> preconditions) {
         Context ctx = TranslatorContext.getInstance().getZ3Ctx();
         Solver s = ctx.mkSolver();
-
+        // Solver fakeS = ctx.mkSolver();
+        
         if (!preconditions.isEmpty()) {
             s.add(ctx.mkAnd(preconditions.toArray(new BoolExpr[preconditions.size()])));
+            // fakeS.add(ctx.mkAnd(preconditions.toArray(new BoolExpr[preconditions.size()])));
         }
         
         // Temporary: remove constraint from path
@@ -101,6 +103,7 @@ public class Decomposer {
         
         otherConstraints.forEach((pathEdge) -> {
             s.add((BoolExpr) pathEdge.getPredicate());
+            // fakeS.add((BoolExpr) pathEdge.getPredicate());
         });
         
         Quantifier qt2 = ctx.mkForall(
@@ -122,6 +125,12 @@ public class Decomposer {
         // System.out.println("Ctx Params: " + ctx.mkParams().toString());
         // System.out.println(s.getReasonUnknown());
         // System.out.println(s.getModel());
+        // System.out.println("Check: " + fakeS.check());
+        // System.out.println("UnsatCore: " + Arrays.toString(fakeS.getUnsatCore()));
+        // System.out.println(s.check());
+        // System.out.println(s.getModel());
+        
+        // (!!) already unsatisfiable in left hand >> check before? TODO
         return Status.UNSATISFIABLE.equals(s.check());
     }
     

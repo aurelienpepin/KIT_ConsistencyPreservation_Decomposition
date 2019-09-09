@@ -1,0 +1,37 @@
+import valApack : 'a.ecore'::ValA;
+import valBpack : 'b.ecore'::ValB;
+import valCpack : 'c.ecore'::ValC;
+
+transformation valAtoValB(valA:valApack, valB:valBpack) {
+
+	top relation AtoB {
+		x: Integer;
+		
+		domain valA objA:A {a=x};
+		domain valB objB:B {b=x-1};
+		
+		when {
+			not Sequence{26, 27, 28}->isEmpty() and not Sequence{29.2}->notEmpty();
+		}
+	}
+}
+
+transformation valBtoValC(valB:valBpack, valC:valCpack) {
+
+	top relation BtoC {
+		y: Integer;
+		
+		domain valB objB:B {b=y};
+		domain valC objC:C {c=y-1};
+	}
+}
+
+transformation valAtoValC(valA:valApack, valC:valCpack) {
+
+	top relation AtoC {
+		z: Integer;
+		
+		domain valA objA:A {a=z};
+		domain valC objC:C {c=z-2};
+	}
+}

@@ -33,6 +33,7 @@ public class QVTVariable {
         return this.getFullName();
     }
 
+    // TODO: REFACTOR (cf. call in ConstraintFactory)
     public Expr getExpr() {
         return relation.getConstraintVisitor().getFactory().fromVariable(variable, relation);
     }
