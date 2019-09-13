@@ -7,13 +7,24 @@ This repository features an implementation of the **decomposition procedure**, a
 ### Prerequisites
 
 ```
-TODO :-)
+JdK >= 1.8
+Maven >= 3.6.1
 ```
 
 ### Installation
 
-```
+```shell
 mvn clean install
+```
+
+### Test
+
+```shell
+mvn verify
+
+# Code coverage (report in ./target/site/clover/index.html)
+mvn clean clover:setup verify clover:aggregate clover:clover
+
 ```
 
 ## Presentation

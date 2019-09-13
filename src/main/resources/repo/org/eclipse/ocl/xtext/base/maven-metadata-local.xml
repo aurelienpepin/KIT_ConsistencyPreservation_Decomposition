@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.ocl.xtext</groupId>
+  <artifactId>base</artifactId>
+  <versioning>
+    <release>1.8.0.v20190603-1146</release>
+    <versions>
+      <version>1.8.0.v20190603-1146</version>
+    </versions>
+    <lastUpdated>20190913094450</lastUpdated>
+  </versioning>
+</metadata>

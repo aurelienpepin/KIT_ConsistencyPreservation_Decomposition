@@ -20,6 +20,11 @@
             <id>RepoEclipse</id>
             <url>https://repo.eclipse.org/content/groups/releases/</url>
         </repository>
+        <!-- Local repository for external .jar -->
+        <repository>
+            <id>project</id>
+            <url>file://${project.basedir}/src/main/resources/repo</url>
+        </repository>
     </repositories>
     <build>
         <plugins>
@@ -63,7 +68,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>2.5.1</version>
@@ -218,8 +223,23 @@
                             <generatePom>true</generatePom>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>install-jar-lib-microsoft-z3</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <groupId>com.microsoft</groupId>
+                            <artifactId>z3</artifactId>
+                            <version>4.8.5</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/src/main/resources/jar/com.microsoft.z3.jar</file>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
     <dependencies>
@@ -256,11 +276,6 @@
             <groupId>org.choco-solver</groupId>
             <artifactId>choco-solver</artifactId>
             <version>4.10.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft</groupId>
-            <artifactId>z3</artifactId>
-            <version>4.8.5</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
@@ -321,64 +336,59 @@
         </dependency> -->
         <!-- Local dependencies -->
         <dependency>
-            <groupId>org.eclipse.qvtd</groupId>
-            <artifactId>org.eclipse.qvtd.pivot.qvtrelation</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>com.microsoft</groupId>
+        <artifactId>z3</artifactId>
+        <version>4.8.5</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd</groupId>
-            <artifactId>org.eclipse.qvtd.pivot.qvtbase</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.ocl</groupId>
+        <artifactId>pivot</artifactId>
+        <version>1.8.0.v20190603-1146</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd</groupId>
-            <artifactId>org.eclipse.qvtd.pivot.qvttemplate</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.ocl.xtext</groupId>
+        <artifactId>base</artifactId>
+        <version>1.8.0.v20190603-1146</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd</groupId>
-            <artifactId>org.eclipse.qvtd.runtime</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.ocl.xtext</groupId>
+        <artifactId>essentialocl</artifactId>
+        <version>1.8.0.v20190603-1146</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.ocl.pivot</groupId>
-            <artifactId>org.eclipse.ocl.pivot</artifactId>
-            <version>1.8.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd.pivot</groupId>
+        <artifactId>qvtbase</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.ocl.xtext.base</groupId>
-            <artifactId>org.eclipse.ocl.xtext.base</artifactId>
-            <version>1.8.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd.pivot</groupId>
+        <artifactId>qvtrelation</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd.xtext.qvtbase</groupId>
-            <artifactId>org.eclipse.qvtd.xtext.qvtbase</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd.pivot</groupId>
+        <artifactId>qvttemplate</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd.xtext.qvtcore</groupId>
-            <artifactId>org.eclipse.qvtd.xtext.qvtcore</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd</groupId>
+        <artifactId>runtime</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.qvtd.xtext.qvtrelation</groupId>
-            <artifactId>org.eclipse.qvtd.xtext.qvtrelation</artifactId>
-            <version>0.19.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd.xtext</groupId>
+        <artifactId>qvtbase</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.ocl.xtext.essentialocl</groupId>
-            <artifactId>org.eclipse.ocl.xtext.essentialocl</artifactId>
-            <version>1.8.0</version>
-            <type>jar</type>
+        <groupId>org.eclipse.qvtd.xtext</groupId>
+        <artifactId>qvtcore</artifactId>
+        <version>0.19.0.v20190605-0849</version>
+        </dependency>
+        <dependency>
+        <groupId>org.eclipse.qvtd.xtext</groupId>
+        <artifactId>qvtrelation</artifactId>
+        <version>0.19.0.v20190605-0849</version>
         </dependency>
     </dependencies>
 </project>
