@@ -40,6 +40,8 @@ In essence, the steps of the algorithm are:
 2. **Translate** (OCL) consistency predicates in *QVTRelation*s into logical formulas and embed them in a graph.
 3. **Solve** by using the graph to find candidate paths (≡ combinations of constraints to replace another constraint) and the Z3 solver to check the validity of these paths.
 
+![Project organisation](https://raw.githubusercontent.com/aurelienpepin/KIT_ConsistencyPreservation_Decomposition/feature/cleancode/organisation.png?token=ABYBLDRPOF7RHHY37NRD6Y25QSBJA)
+
 ## Built with
 
 * [Ecore](https://wiki.eclipse.org/Ecore), the core metamodel of the *Eclipse Modeling Framework*
