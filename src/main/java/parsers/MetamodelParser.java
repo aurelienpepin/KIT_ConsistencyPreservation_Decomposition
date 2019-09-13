@@ -3,7 +3,6 @@ package parsers;
 import metamodels.MetaGraph;
 import metamodels.hypergraphs.HyperGraph;
 import metamodels.vertices.ecore.EAttributeVertex;
-import metamodels.vertices.ecore.ENamedElementVertex;
 import metamodels.vertices.ecore.EPackageVertex;
 import metamodels.vertices.ecore.EReferenceVertex;
 import org.eclipse.emf.common.util.URI;
@@ -16,8 +15,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.jgrapht.Graphs;
 
+/**
+ * Parses Ecore metamodels to find metamodel elements and to transform them into
+ * vertices for the consistency graph (metagraph).
+ * 
+ * @author Aurélien Pepin
+ */
 public class MetamodelParser {
     
     /**
@@ -84,9 +88,11 @@ public class MetamodelParser {
     }
     
     /**
+     * Use an Ecore resource to find metamodel elements starting from
+     * the root of XML representation of the metamodel and to add them to the metagraph.
      * 
-     * @param resource
-     * @param graph 
+     * @param resource  The Ecore resource to parse
+     * @param graph     The graph to fill with new vertices
      */
     private static void parseFromRoot(Resource resource, MetaGraph graph) {
         if (!beginsWithEPackage(resource))
@@ -98,6 +104,13 @@ public class MetamodelParser {
         MetamodelParser.parseFromPackage(rootPackage, graph);
     }
     
+    /**
+     * Find metamodel elements starting from an EPackage and add them
+     * to the metagraph.
+     * 
+     * @param ePackage  The package to visit
+     * @param graph     The graph to fill with new vertices
+     */
     private static void parseFromPackage(EPackage ePackage, MetaGraph graph) {
         for (EPackage subPackage : ePackage.getESubpackages()) {
             graph.addVertex(new EPackageVertex(subPackage));
@@ -110,6 +123,13 @@ public class MetamodelParser {
         }
     }
     
+    /**
+     * Find metamodel elements starting from an EClassifier and add them
+     * to the metagraph.
+     * 
+     * @param eClassifier   The classifier to visit
+     * @param graph         The graph to fill with new vertices
+     */
     private static void parseFromClassifier(EClassifier eClassifier, MetaGraph graph) {
         switch (eClassifier.eClass().getName()) {
             case "EClass":
@@ -120,6 +140,13 @@ public class MetamodelParser {
         }
     }
     
+    /**
+     * Find metamodel elements starting from an EClass and add them
+     * to the metagraph.
+     * 
+     * @param eClass    The class to visit
+     * @param graph     The graph to fill with new vertices
+     */
     private static void parseFromClass(EClass eClass, MetaGraph graph) {
         for (EAttribute attribute : eClass.getEAttributes()) {
             graph.addVertex(new EAttributeVertex(attribute));
@@ -135,9 +162,11 @@ public class MetamodelParser {
     //      - EDataType, EEnum, EEnumLiteral
     
     /**
+     * Check if the given resource is a valid resource, i.e. that the parent
+     * element is an EPackage.
      * 
-     * @param resource
-     * @return 
+     * @param resource  The resource to check
+     * @return          True if the resource root is a package, false otherwise.
      */
     private static boolean beginsWithEPackage(Resource resource) {
         if (resource.getContents().isEmpty())

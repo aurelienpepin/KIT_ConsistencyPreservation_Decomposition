@@ -6,20 +6,30 @@ import java.util.logging.Level;
 import metamodels.MetaGraph;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.pivot.model.OCLstdlib;
 import org.eclipse.qvtd.xtext.qvtrelation.QVTrelationStandaloneSetup;
-import org.eclipse.qvtd.pivot.qvtrelation.RelationModel;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TopLevelCS;
 import org.eclipse.qvtd.xtext.qvtrelationcs.TransformationCS;
 import parsers.qvtr.QVTTransformation;
 import java.util.logging.Logger;
+import parsers.qvtr.QVTSpecification;
 import procedure.translators.TransformationTranslator;
 
+/**
+ * Parses QVT-R files to generate an intermediate representation of the
+ * consistency specification (QVTSpecification, QVTTransformation, etc.).
+ * 
+ * Note: the TransformationParser calls the MetamodelParser because metamodels
+ * are always imported at the beginning at a QVT-R file.
+ * 
+ * @see     MetamodelParser
+ * @see     QVTSpecification
+ * @author  Aurelien
+ */
 public class TransformationParser {
     
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -39,6 +49,13 @@ public class TransformationParser {
         return graph;
     }
     
+    /**
+     * Fill the graph with the content of given QVT-R files.
+     * 
+     * @param graph
+     * @param qvtrFilePaths
+     * @return 
+     */
     private static MetaGraph fillGraph(MetaGraph graph, String... qvtrFilePaths) {
         ResourceSet resourceSet = new ResourceSetImpl();
         Set<QVTTransformation> transformations = new HashSet<>();
@@ -68,6 +85,12 @@ public class TransformationParser {
         return transformations;
     }
 
+    /**
+     * If there are errors in the QVT-R files, list them here.
+     * 
+     * @param errors
+     * @param qvtrURI 
+     */
     private static void manageErrors(EList<Resource.Diagnostic> errors, URI qvtrURI) {
         if (errors != null && !errors.isEmpty()) {
             LOGGER.log(Level.SEVERE, "[PARSER] The following errors were detected while parsing {0}:", qvtrURI.path());
