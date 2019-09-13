@@ -7,12 +7,26 @@ import org.jgrapht.graph.SimpleGraph;
 import parsers.qvtr.QVTSpecification;
 
 /**
- *
+ * Represents a dual graph, i.e. the dual of a metagraph.
+ * In the dual graph, the metaedges are the vertices and the sets of
+ * metavertices are the edges.
+ * 
+ * A metagraph and its dual graph are isomorphic. The advantage of the metagraph
+ * over the dual graph is that it only has binary edges.
+ * 
+ * TODO: preconditions are not shared from metagraph to dual graph (!)
+ * 
  * @author Aurélien Pepin
  */
 public class DualGraph extends SimpleGraph<MetaEdge, DualEdge> {
-    
-    private QVTSpecification spec;
+
+    /**
+     * An intermediate representation of the consistency specification.
+     * 
+     * A metagraph has access to the consistency
+     * specification, and so does its dual graph.
+     */
+    private final QVTSpecification spec;
     
     public DualGraph() {
         super(DualEdge.class);
@@ -24,6 +38,11 @@ public class DualGraph extends SimpleGraph<MetaEdge, DualEdge> {
         this.spec = spec;
     }
     
+    /**
+     * Transforms a dual graph into a metagraph.
+     * 
+     * @return The isomorphic metagraph.
+     */
     public MetaGraph toMeta() {
         MetaGraph meta = new MetaGraph(spec);
         

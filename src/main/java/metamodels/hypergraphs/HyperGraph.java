@@ -4,10 +4,13 @@ import java.util.Set;
 import java.util.HashSet;
 
 /**
- *
- * @author Aurélien Pepin
- * @param <V>
- * @param <E>
+ * Represents a hypergraph.
+ * The class only includes the methods necessary to manipulate
+ * a hypergraph in the context of the decomposition procedure.
+ * 
+ * @author  Aurélien Pepin
+ * @param   <V> The vertex type, derived from HyperVertex
+ * @param   <E> The edge type, derived from HyperEdge
  */
 public class HyperGraph<V extends HyperVertex, E extends HyperEdge> {
 
@@ -57,6 +60,11 @@ public class HyperGraph<V extends HyperVertex, E extends HyperEdge> {
         return vertices;
     }
 
+    /**
+     * Merge two hypergraphs by adding the elements of one into the other.
+     * @param dest
+     * @param source
+     */
     public static void addHyperGraph(HyperGraph dest, HyperGraph source) {
         dest.vertexSet().addAll(source.vertexSet());
         dest.edgeSet().addAll(source.edgeSet());

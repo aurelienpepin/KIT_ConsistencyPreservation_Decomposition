@@ -1,7 +1,6 @@
 package metamodels;
 
 import com.microsoft.z3.BoolExpr;
-import com.microsoft.z3.Expr;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,16 +8,29 @@ import java.util.HashSet;
 import java.util.Set;
 import metamodels.edges.DualEdge;
 import metamodels.edges.MetaEdge;
-import metamodels.hypergraphs.HyperEdge;
 import metamodels.hypergraphs.HyperGraph;
-import metamodels.hypergraphs.HyperVertex;
 import metamodels.vertices.MetaVertex;
 import parsers.qvtr.QVTSpecification;
 
+/**
+ * Represents a metagraph, i.e. a graph whose vertices are metamodel elements
+ * and whose edges are constraints on subsets of metamodel elements.
+ * 
+ * Constraints can involve more than two elements, so the metagraph is a
+ * hypergraph (and not only a simple graph).
+ * 
+ * @author Aurélien Pepin
+ */
 public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
     
+    /**
+     * The set of preconditions (`when` clauses in QVTR).
+     */
     private Set<BoolExpr> preconditions;
     
+    /**
+     * An intermediate representation of the consistency specification.
+     */
     private QVTSpecification spec;
     
     public MetaGraph() {
@@ -52,6 +64,14 @@ public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
         return preconditions;
     }
     
+    /**
+     * Transforms a metagraph into a dual graph.
+     * In the dual graph, constraints (edges) become vertices and vertices
+     * are grouped into sets that represent edges (metamodel elements shared
+     * between constraints).
+     * 
+     * @return The isomorphic dual graph.
+     */
     public DualGraph toDual() {
         DualGraph dual = new DualGraph(spec);
         

@@ -4,10 +4,16 @@ import com.microsoft.z3.Expr;
 import java.util.HashSet;
 import java.util.Set;
 import metamodels.vertices.MetaVertex;
+import procedure.translators.VariableIndexer;
 
 /**
  * Intermediate structure between QVT-R domain patterns and hyperedges.
- * @author Aurélien Pepin
+ * An EdgeAssembler groups expressions and vertices. It is associated
+ * with QVT-R variables and used during the merge algorithm of
+ * VariableIndexer (construction of constraints).
+ * 
+ * @see     VariableIndexer
+ * @author  Aurélien Pepin
  */
 public class EdgeAssembler {
     

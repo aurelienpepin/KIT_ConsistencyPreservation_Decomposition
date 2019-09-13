@@ -23,25 +23,24 @@ public class Main {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
         
         // 1. CREATE GRAPH
-        // String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleConcat\\simpleConcat.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\uml2rdbms_simple\\uml2rdbms_simple.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\abc\\abc.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\abcNo\\abcNo.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\primAbs\\primAbs.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\primSubstring\\primSubstring.qvtr";
-        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\abcSequence\\abcSequence.qvtr";
-        
+        // TODO: read the filename(s) from `args`
+        String qvtr = "C:\\Users\\Aurelien\\Documents\\KIT\\Masterarbeit\\archive\\examples_qvtr\\simple\\simple.qvtr";
+
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
         showGraph(graph.toDual());
         
         // 2. PERFORM DECOMPOSITION
         System.out.println(Decomposer.decompose(graph));
-        
-        // System.out.println(graph);
     }
     
+    /**
+     * Exports a picture to visualize a graph of constraints.
+     * Offers a convenient way to check the procedure with complex consistency relations.
+     * (Temporary, for debugging purpose.)
+     * 
+     * @param g             The graph to visualize
+     * @throws IOException  The image cannot be created
+     */
     public static void showGraph(DualGraph g) throws IOException {
         JGraphXAdapter<MetaEdge, DualEdge> graphAdapter = new JGraphXAdapter<>(g);
         mxCircleLayout circleLayout = new mxCircleLayout(graphAdapter);
