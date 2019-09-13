@@ -17,6 +17,8 @@ Maven >= 3.6.1
 mvn clean install
 ```
 
+See [*Notes on installation*](#notes-on-installation) for further details.
+
 ### Test
 
 ```shell
@@ -68,9 +70,13 @@ In essence, the steps of the algorithm are:
 
 * An introduction to [multi-model consistency preservation](https://sdqweb.ipd.kit.edu/publications/pdfs/klare2018docsym.pdf)
 
-## Development notes
+## Notes on installation
 
-```
-mvn install:install-file -Dfile="src/main/resources/jar/com.microsoft.z3.jar" -DgroupId="com.microsoft"
--DartifactId="z3" -Dversion="4.8.5" -Dpackaging="jar" -DgeneratePom=true
-```
+This prototype relies on many external JARs, i.e. dependencies that are not available in Maven Public Repositories.
+An in-project repository for custom dependencies (`repo`) has been set up in `src/main/resources`.
+
+Executing `mvn clean install` is enough to resolve dependencies from public *and* custom repositories.
+This is currently the best approach to distribute local dependencies with their source.
+
+The only disadvantage is that these non-published dependencies will not be solved if this project is itself included into another project.
+More details and solutions on this approach can be found [here](https://stackoverflow.com/a/7623805/8804793).
