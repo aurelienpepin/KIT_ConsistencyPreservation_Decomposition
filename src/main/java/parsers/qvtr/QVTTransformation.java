@@ -11,6 +11,8 @@ import org.eclipse.qvtd.pivot.qvtrelation.Relation;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
 
 /**
+ * Represents a transformation, i.e. a set of rules to specify how one set of
+ * models can be transformed into another. Basic component in QVT-R.
  * 
  * @author Aurélien Pepin
  */
@@ -40,6 +42,7 @@ public class QVTTransformation implements QVTTranslatable {
         this.relations = new ArrayList<>();
         this.modelParams = new HashMap<>();
         
+        // A relation is a concrete subclass of a rule.
         for (Rule rule : transformation.getRule()) {
             relations.add(new QVTRelation((Relation) rule));
         }
@@ -48,7 +51,7 @@ public class QVTTransformation implements QVTTranslatable {
             modelParams.put(tm.getName(), new QVTModelParam(tm));
         }
         
-        // TODO: handle keys
+        // TODO: handle keys?
         if (!transformation.getOwnedKey().isEmpty())
             throw new RuntimeException("TODO: support the use of keys in transformations");
     }

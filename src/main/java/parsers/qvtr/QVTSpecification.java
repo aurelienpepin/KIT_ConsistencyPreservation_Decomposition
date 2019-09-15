@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * A collection of QVT transformations.
+ * 
  * @author Aurélien Pepin
  */
 public class QVTSpecification {

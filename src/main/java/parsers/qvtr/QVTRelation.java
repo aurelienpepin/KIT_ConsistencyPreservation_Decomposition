@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import metamodels.MetaGraph;
 import metamodels.edges.EdgeAssembler;
 import metamodels.edges.MetaEdge;
-import metamodels.hypergraphs.HyperEdge;
 import metamodels.vertices.ecore.EAttributeVertex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.ocl.pivot.Variable;
@@ -24,6 +23,11 @@ import procedure.visitors.DependencyVisitor;
 import procedure.translators.TranslatorContext;
 
 /**
+ * Represents a relation, i.e. the basic unit of transformation behavior
+ * specification in QVT-R. A relation is made of domains, preconditions
+ * and postconditions.
+ *
+ * Edges of the metagraph are produced in the QVTRelation.
  * 
  * @author Aurélien Pepin
  */
@@ -34,13 +38,29 @@ public class QVTRelation implements QVTTranslatable {
      */
     private final Relation relation;
     
+    /**
+     * List of domains in the transformation.
+     */
     private final List<QVTDomain> domains;
     
+    /**
+     * A dependency visitor to provide the set of QVT-R variables
+     * used in OCL conditions that appear in domains of the relation.
+     */
     private final DependencyVisitor depV;
     
+    /**
+     * A (custom) constraint visitor to translate OCL conditions that appear in
+     * domains of the relation to Z3 expressions.
+     */
     private final ConstraintVisitor conV;
     
+    /**
+     * An intermediate structure to keep track of QVT-R variables provided
+     * by the dependency visitor. Useful to build metagraph edges.
+     */
     private final VariableIndexer varIndexer;
+    
     
     public QVTRelation(Relation relation) {
         this.relation = relation;
@@ -55,6 +75,14 @@ public class QVTRelation implements QVTTranslatable {
         }
     }
     
+    /**
+     * Performs the translation of relations:
+     * - translates preconditions (partial support at the moment);
+     * - translates conditions into edges.
+     * 
+     * @see     VariableIndexer
+     * @param   graph   The graph to fill with new edges
+     */
     @Override
     public void translate(MetaGraph graph) {        
         for (QVTDomain domain : domains) {
@@ -67,21 +95,25 @@ public class QVTRelation implements QVTTranslatable {
         // Group variables that have something to do together
         this.varIndexer.merge();
         
-        // for (EdgeAssembler assembler : varIndexer.getBindings().values()) {
-        //     System.out.println("KEYSET HERE: " + varIndexer.getBindings().keySet());
-        //     MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions());
-        //     graph.addEdge(edge);            
-        // }
-        
+        // Build edges (MetaEdge) that represent constraints on set of metamodel elements
         for (Entry<Set<Variable>, EdgeAssembler> entry : varIndexer.getBindings().entrySet()) {
             EdgeAssembler assembler = entry.getValue();
-            Set<QVTVariable> freeVariables = entry.getKey().stream().map(v -> new QVTVariable(v, this)).collect(Collectors.toSet());
+            Set<QVTVariable> freeVariables = entry.getKey()
+                    .stream()
+                    .map(v -> new QVTVariable(v, this))
+                    .collect(Collectors.toSet());
                         
             MetaEdge edge = new MetaEdge(assembler.getVertices(), assembler.getExpressions(), freeVariables);
             graph.addEdge(edge);
         }
     }
     
+    /**
+     * Retrieves the `when` clause of a relation and translate it.
+     * The result is appended to the metagraph.
+     * 
+     * @param graph The graph to fill with preconditions
+     */
     private void transformWhen(MetaGraph graph) {
         if (this.relation.getWhen() == null)
             return;
@@ -89,11 +121,18 @@ public class QVTRelation implements QVTTranslatable {
         // TODO: extend the support of calls of other relations!
         // If this occurs, the program raises an exception (~ unknown OCL op.) ATM
         for (Predicate pred : this.relation.getWhen().getPredicate()) {
-            // System.out.println("PRED: " + pred.getConditionExpression().accept(conV));
             graph.addPrecondition((BoolExpr) pred.getConditionExpression().accept(conV));
         }
     }
     
+    /**
+     * Performs the translation of domains by first adding vertices to the graph.
+     * The QVT-R variables in each domain are retrieved with the dependency
+     * visitor to find interdependent PTIs.
+     * 
+     * @param graph  The graph to fill with vertices.
+     * @param domain The QVTDomain to explore.
+     */
     private void transformDomain(MetaGraph graph, QVTDomain domain) {        
         for (PropertyTemplateItem pti : domain.getParts()) {
             // System.out.println(pti + " " + pti.getValue().accept(depV));
