@@ -1,9 +1,8 @@
 package procedure.translators;
 
-import metamodels.MetaGraph;
-
 /**
- *
+ * (Singleton). Provides a unique access to important translation classes.
+ * 
  * @author Aurélien Pepin
  */
 public class TranslatorContext {
@@ -20,6 +19,7 @@ public class TranslatorContext {
      * The symbol provider for OCL collection literals.
      */
     private final OCLCollectionIndexer collectionIndexer;
+    
     
     private TranslatorContext() {
         this.z3Context = new com.microsoft.z3.Context();

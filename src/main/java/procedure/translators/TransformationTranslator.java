@@ -1,15 +1,14 @@
 package procedure.translators;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import metamodels.MetaGraph;
 import parsers.qvtr.QVTSpecification;
 import parsers.qvtr.QVTTransformation;
 
 /**
- *
+ * Starting point of the translation of QVT-R transformations.
+ * Starts the translation and gives an access of models to translate to the graph.
+ * 
  * @author Aurélien Pepin
  */
 public class TransformationTranslator {

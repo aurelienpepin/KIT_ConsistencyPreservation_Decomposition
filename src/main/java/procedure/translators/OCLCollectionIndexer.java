@@ -5,7 +5,10 @@ import java.util.Map;
 import org.eclipse.ocl.pivot.CollectionLiteralExp;
 
 /**
- *
+ * A simple tool to give unique names to OCL collection literals.
+ * (!) Note: pending implementation as the initialization of constant
+ * arrays in Z3 may avoid the use of this class.
+ * 
  * @author Aurélien Pepin
  */
 public class OCLCollectionIndexer {
