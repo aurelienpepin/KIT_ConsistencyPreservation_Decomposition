@@ -7,7 +7,7 @@ This repository features an implementation of the **decomposition procedure**, a
 ### Prerequisites
 
 ```
-JdK >= 1.8
+JDK >= 1.8
 Maven >= 3.6.1
 ```
 

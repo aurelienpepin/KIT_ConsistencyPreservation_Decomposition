@@ -15,6 +15,14 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Transform complex OCL expressions involving collections into Z3 formulas.
+ * Build datatype sorts in Z3.
+ * 
+ * A datatype (for collections) is made of:
+ * - A constructor  (mkSet, mkSequence, etc.)
+ * - Accessors      (length, array)
+ * 
+ * All OCL data structures are represented using Z3 arrays.
+ * 
  * @author Aurélien Pepin
  */
 public class CollectionConstraintFactory {
@@ -23,11 +31,19 @@ public class CollectionConstraintFactory {
 
     private final ConstraintFactory parentFactory;
     
+    
     public CollectionConstraintFactory(ConstraintFactory parentFactory, TranslatorContext context) {
         this.parentFactory = parentFactory;
         this.context = context;
     }
     
+    /**
+     * Build the constructor for a given collection kind.
+     * 
+     * @param kind  Kind of OCL collection (Sequence, Set, etc.)
+     * @param sort  Type of data that the data structure will contain
+     * @return      Constructor for the data structure of kind `kind`
+     */
     public Constructor constructorFromCollection(CollectionKind kind, Sort sort) {
         Context c = context.getZ3Ctx();
         
@@ -49,6 +65,14 @@ public class CollectionConstraintFactory {
         }
     }
     
+    /**
+     * Build the datatype sort for a given collection kind.
+     * IMPORTANT: sorts are parametrized through their names using chevrons.
+     * 
+     * @param kind  Kind of OCL collection (Sequence, Set, etc.)
+     * @param sort  Type of data that the data structure will contain
+     * @return      Datatype sort for the data structure of kind `kind`
+     */
     public DatatypeSort sortFromCollection(CollectionKind kind, Sort sort) {
         Context c = context.getZ3Ctx();
         
@@ -64,6 +88,12 @@ public class CollectionConstraintFactory {
         }
     }
     
+    /**
+     * Create the datatype sort for a sequence and fill it will literals.
+     * 
+     * @param cle   Sequence and its literals
+     * @return      The Z3 datatype filled with literals
+     */
     public Expr createSequenceLiteral(CollectionLiteralExp cle) {
         Context c = context.getZ3Ctx();
         Sort sort = parentFactory.fromType(cle.getType().flattenedType());
@@ -71,12 +101,12 @@ public class CollectionConstraintFactory {
         
         DatatypeSort seqSort = sortFromCollection(CollectionKind.SEQUENCE, sort);
         FuncDecl makeSeq = seqSort.getConstructors()[0];
-        FuncDecl lengthFunc = seqSort.getAccessors()[0][0];
-        FuncDecl arrayFunc = seqSort.getAccessors()[0][1];
+        // FuncDecl lengthFunc = seqSort.getAccessors()[0][0];
+        // FuncDecl arrayFunc = seqSort.getAccessors()[0][1];
         
         IntExpr newLength = c.mkInt(cle.getOwnedParts().size());
         // ArrayExpr newArray = c.mkConstArray(sort, c.mkCons);                 // REPLACED ARRAYCONST WITH CONSTARRAY (TODO: eval)
-        ArrayExpr newArray = c.mkArrayConst(symbol, c.getIntSort(), sort);   // REPLACED ARRAYCONST WITH CONSTARRAY (TODO: eval)
+        ArrayExpr newArray = c.mkArrayConst(symbol, c.getIntSort(), sort);      // REPLACED ARRAYCONST WITH CONSTARRAY (TODO: eval)
         
         Expr newSeq = c.mkApp(makeSeq, newLength, newArray);
         
@@ -88,6 +118,12 @@ public class CollectionConstraintFactory {
         return newSeq;
     }
     
+    /**
+     * Create the datatype sort for a set and fill it will literals.
+     * 
+     * @param cle   Set and its literals
+     * @return      The Z3 datatype filled with literals
+     */
     public Expr createSetLiteral(CollectionLiteralExp cle) {
         Context c = context.getZ3Ctx();
         Sort sort = parentFactory.fromType(cle.getType().flattenedType());
@@ -95,8 +131,8 @@ public class CollectionConstraintFactory {
         
         DatatypeSort setSort = sortFromCollection(CollectionKind.SET, sort);
         FuncDecl makeSet = setSort.getConstructors()[0];
-        FuncDecl lengthFunc = setSort.getAccessors()[0][0];
-        FuncDecl arrayFunc = setSort.getAccessors()[0][1];
+        // FuncDecl lengthFunc = setSort.getAccessors()[0][0];
+        // FuncDecl arrayFunc = setSort.getAccessors()[0][1];
         
         IntExpr newLength = c.mkInt(new HashSet<>(cle.getOwnedParts()).size());
         ArrayExpr newArray = c.mkEmptySet(sort);

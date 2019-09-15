@@ -132,9 +132,12 @@ import org.eclipse.ocl.pivot.WildcardType;
 import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
 import procedure.translators.TranslatorContext;
+
 /**
- *
- * @author Aurelien
+ * Traverse the abstract syntax tree of an OCL expression and recursively
+ * returns the set of QVT-R variables found inside the expression.
+ * 
+ * @author Aurélien Pepin
  */
 public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
 

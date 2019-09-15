@@ -7,8 +7,8 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about equality.
+ * @author Aurélien Pepin
  */
 public class OperationCallEq implements Translatable {
 

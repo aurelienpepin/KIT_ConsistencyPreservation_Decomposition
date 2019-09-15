@@ -8,8 +8,8 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about booleans.
+ * @author Aurélien Pepin
  */
 public class OperationCallBool implements Translatable {
 

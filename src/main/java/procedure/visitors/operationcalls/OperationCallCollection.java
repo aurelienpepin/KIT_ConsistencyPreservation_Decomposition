@@ -10,14 +10,13 @@ import com.microsoft.z3.Expr;
 import com.microsoft.z3.FuncDecl;
 import com.microsoft.z3.IntExpr;
 import java.util.List;
-import org.eclipse.emf.ecore.EAnnotationValidator;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 import static procedure.visitors.operationcalls.Translatable.datatypeEquals;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about collections.
+ * @author Aurélien Pepin
  */
 public class OperationCallCollection implements Translatable {
 

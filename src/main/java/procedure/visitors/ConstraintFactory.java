@@ -28,19 +28,35 @@ import procedure.visitors.operationcalls.OperationCallString;
 
 /**
  * Transform complex OCL expressions into Z3 predicates.
+ * Called by the ConstraintVisitor.
+ * 
  * @author Aurélien Pepin
  */
 public class ConstraintFactory {
 
     private final TranslatorContext context;
     
+    /**
+     * A specialized factory to translate declarations of OCL collection literals.
+     */
     private final CollectionConstraintFactory collFactory;
+    
     
     public ConstraintFactory(TranslatorContext context) {
         this.context = context;
         this.collFactory = new CollectionConstraintFactory(this, context);
     }
      
+    /**
+     * Translate an OCL operation call (ex.: `5+2`, `a.method()`, etc.).
+     * Given the large number of predefined operations in OCL, operations
+     * are grouped by theme and translated by specialized
+     * classes (OperationCall...) for better readability.
+     * 
+     * @param oce       Operation to translate
+     * @param operands  Operands (the first one is the source)
+     * @return          Translated operation
+     */
     public Expr fromOperationCall(OperationCallExp oce, List<Expr> operands) {
         Context c = context.getZ3Ctx();
 
@@ -104,6 +120,12 @@ public class ConstraintFactory {
         }
     }
     
+    /**
+     * Translate an OCL collection literal (ex.: `Sequence{1, 5, 1}`, `Set{2}`).
+     * 
+     * @param cle   Collection literal to translate
+     * @return      Translated collection literal
+     */
     public Expr fromCollectionLiteral(CollectionLiteralExp cle) {
         switch (cle.getKind()) {
             case SEQUENCE:
@@ -118,10 +140,25 @@ public class ConstraintFactory {
         }
     }
     
+    /**
+     * Translate an OCL variable expression.
+     * A variable expression is a part of the AST that contains a variable.
+     * 
+     * @param ve        Variable expression to translate
+     * @param relation  Relation to avoid name conflicts
+     * @return          Translated variable expression
+     */
     public Expr fromVariableExp(VariableExp ve, QVTRelation relation) {
         return this.fromVariable((Variable) ve.getReferredVariable(), relation);
     }
     
+    /**
+     * Translate an OCL variable.
+     * 
+     * @param v         Variable to translate
+     * @param relation  Relation to avoid name conflicts
+     * @return          Translated variable
+     */
     public Expr fromVariable(Variable v, QVTRelation relation) {
         String distinctiveName = (new QVTVariable(v, relation)).getFullName();
         
@@ -139,6 +176,12 @@ public class ConstraintFactory {
         }
     }
     
+    /**
+     * Translate a primitive type in Ecore into a Z3 sort.
+     * 
+     * @param element   Element whose type must be translated
+     * @return          Translated type (i.e. Z3 sort)
+     */
     public Sort fromEcoreTypedElement(ETypedElement element) {
         switch (element.getEType().getName()) {
             case "EInt":
@@ -152,6 +195,12 @@ public class ConstraintFactory {
         }
     }
     
+    /**
+     * Translate an OCL type.
+     * 
+     * @param type  OCL type
+     * @return      Z3 sort corresponding to the OCL type
+     */
     public Sort fromType(Type type) {
         switch (type.toString()) {
             case "Integer":
@@ -169,6 +218,13 @@ public class ConstraintFactory {
         }
     }
     
+    /**
+     * Translate a literal (ex.: `1`, `"abc"`, `3.14`, etc.)
+     * 
+     * @param sort  Z3 type of the literal
+     * @param clp   Literal
+     * @return      Translated literal into a Z3 expression
+     */
     public Expr fromValue(Sort sort, CollectionLiteralPart clp) {
         switch (sort.getSortKind()) {
             case Z3_INT_SORT:

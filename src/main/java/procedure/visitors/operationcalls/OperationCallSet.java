@@ -12,8 +12,8 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about sets (specifically).
+ * @author Aurélien Pepin
  */
 public class OperationCallSet implements Translatable {
 

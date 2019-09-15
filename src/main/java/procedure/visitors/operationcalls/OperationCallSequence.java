@@ -13,8 +13,8 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about sequences (specifically).
+ * @author Aurélien Pepin
  */
 public class OperationCallSequence implements Translatable {
 

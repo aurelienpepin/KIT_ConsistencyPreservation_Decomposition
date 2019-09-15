@@ -14,10 +14,11 @@ import static procedure.visitors.operationcalls.Translatable.datatypeEquals;
 import static procedure.visitors.operationcalls.Translatable.typeEquals;
 
 /**
+ * Translate operation calls about size of data structures and strings.
  * The `size` operation call is handled in a different class because it is
  * both a function of String and Collection in OCL.
  * 
- * @author Aurelien
+ * @author Aurélien Pepin
  */
 public class OperationCallSize implements Translatable {
 

@@ -2,7 +2,6 @@ package procedure.visitors;
 
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Expr;
-import com.microsoft.z3.SeqExpr;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.ocl.pivot.Annotation;
@@ -136,7 +135,9 @@ import parsers.qvtr.QVTRelation;
 import procedure.translators.TranslatorContext;
 
 /**
- *
+ * Traverse the abstract syntax tree of an OCL expression and recursively
+ * returns the translation into Z3 expressions of OCL expressions.
+ * 
  * @author Aurélien Pepin
  */
 public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> {
@@ -146,7 +147,11 @@ public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> 
      */
     private final QVTRelation relation;
     
+    /**
+     * An access to the constraint factory to handle complex translations.
+     */
     private final ConstraintFactory factory;
+    
     
     public ConstraintVisitor(QVTRelation relation, TranslatorContext context) {
         super(context);

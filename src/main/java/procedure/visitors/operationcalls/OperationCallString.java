@@ -10,8 +10,8 @@ import procedure.translators.TranslatorContext;
 import static procedure.visitors.operationcalls.Translatable.typeEquals;
 
 /**
- *
- * @author Aurelien
+ * Translate operation calls about strings.
+ * @author Aurélien Pepin
  */
 public class OperationCallString implements Translatable {
 

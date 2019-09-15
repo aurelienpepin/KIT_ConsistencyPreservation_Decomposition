@@ -8,7 +8,7 @@ import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
 /**
- *
+ * Translate operation calls about reals to integers.
  * @author Aurelien
  */
 public class OperationCallCast implements Translatable {
