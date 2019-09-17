@@ -19,9 +19,8 @@ import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
 import procedure.translators.VariableIndexer;
 import procedure.visitors.ConstraintVisitor;
-import procedure.visitors.DependencyVisitor;
 import procedure.translators.TranslatorContext;
-import procedure.visitors.QVTDependencyVisitor;
+import procedure.visitors.DependencyVisitor;
 
 /**
  * Represents a relation, i.e. the basic unit of transformation behavior
@@ -48,7 +47,7 @@ public class QVTRelation implements QVTTranslatable {
      * A dependency visitor to provide the set of QVT-R variables
      * used in OCL conditions that appear in domains of the relation.
      */
-    private final QVTDependencyVisitor depV;
+    private final DependencyVisitor depV;
     
     /**
      * A (custom) constraint visitor to translate OCL conditions that appear in
@@ -68,7 +67,7 @@ public class QVTRelation implements QVTTranslatable {
         this.domains = new ArrayList<>();
         
         this.varIndexer = new VariableIndexer(this);
-        this.depV = new QVTDependencyVisitor(TranslatorContext.getInstance());
+        this.depV = new DependencyVisitor(TranslatorContext.getInstance());
         this.conV = new ConstraintVisitor(this, TranslatorContext.getInstance());
         
         for (Domain rd : relation.getDomain()) {
@@ -137,13 +136,6 @@ public class QVTRelation implements QVTTranslatable {
     private void transformDomain(MetaGraph graph, QVTDomain domain) {        
         for (PropertyTemplateItem pti : domain.getParts()) {
             // System.out.println(pti + " " + pti.getValue().accept(depV));
-            System.out.println("va: " + pti.getValue());
-            System.out.println("TV: " + pti.getValue().getTypeValue());
-            System.out.println("TI: " + pti.getValue().getTypeId());
-            System.out.println("T : " + pti.getValue().getType());
-            System.out.println("eA: " + pti.getValue().eAllContents());
-            System.out.println("al: " + pti.getValue().allOwnedElements());
-            System.out.println("cl: " + pti.getValue().getClass());
             
             Set<Variable> variables = pti.getValue().accept(depV);
             varIndexer.addBinding(variables, pti);

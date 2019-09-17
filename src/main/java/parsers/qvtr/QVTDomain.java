@@ -2,10 +2,13 @@ package parsers.qvtr;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.ocl.pivot.Element;
 import org.eclipse.qvtd.pivot.qvtrelation.DomainPattern;
 import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
 import org.eclipse.qvtd.pivot.qvttemplate.ObjectTemplateExp;
 import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
+import procedure.translators.TranslatorContext;
+import procedure.visitors.DependencyVisitor;
 
 /**
  * Represents a domain in QVT-R, i.e. a typed variable that can be matched
@@ -39,6 +42,9 @@ public class QVTDomain {
         this.patterns = new ArrayList<>();
         this.parts = new ArrayList<>();
         
+        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0));
+        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0).getTemplateExpression().getWhere());  
+
         for (DomainPattern dp : domain.getPattern()) {
             this.patterns.add(dp);
             this.parts.addAll(((ObjectTemplateExp) dp.getTemplateExpression()).getPart());

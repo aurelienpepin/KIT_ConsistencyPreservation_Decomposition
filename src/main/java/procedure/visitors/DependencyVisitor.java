@@ -1,9 +1,10 @@
 package procedure.visitors;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.ocl.pivot.Annotation;
 import org.eclipse.ocl.pivot.AnyType;
 import org.eclipse.ocl.pivot.AssociationClass;
@@ -129,17 +130,43 @@ import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.ocl.pivot.Vertex;
 import org.eclipse.ocl.pivot.VoidType;
 import org.eclipse.ocl.pivot.WildcardType;
-import org.eclipse.ocl.pivot.util.AbstractVisitor;
 import org.eclipse.ocl.pivot.util.Visitable;
+import org.eclipse.qvtd.pivot.qvtbase.BaseModel;
+import org.eclipse.qvtd.pivot.qvtbase.Domain;
+import org.eclipse.qvtd.pivot.qvtbase.Function;
+import org.eclipse.qvtd.pivot.qvtbase.FunctionParameter;
+import org.eclipse.qvtd.pivot.qvtbase.Pattern;
+import org.eclipse.qvtd.pivot.qvtbase.Predicate;
+import org.eclipse.qvtd.pivot.qvtbase.Rule;
+import org.eclipse.qvtd.pivot.qvtbase.Transformation;
+import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
+import org.eclipse.qvtd.pivot.qvtrelation.DomainPattern;
+import org.eclipse.qvtd.pivot.qvtrelation.Key;
+import org.eclipse.qvtd.pivot.qvtrelation.QVTrelationPackage;
+import org.eclipse.qvtd.pivot.qvtrelation.QVTrelationPackage.Literals;
+import org.eclipse.qvtd.pivot.qvtrelation.Relation;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationCallExp;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationDomain;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationDomainAssignment;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationImplementation;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationModel;
+import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
+import org.eclipse.qvtd.pivot.qvtrelation.SharedVariable;
+import org.eclipse.qvtd.pivot.qvtrelation.TemplateVariable;
+import org.eclipse.qvtd.pivot.qvtrelation.util.AbstractQVTrelationVisitor;
+import org.eclipse.qvtd.pivot.qvttemplate.CollectionTemplateExp;
+import org.eclipse.qvtd.pivot.qvttemplate.ObjectTemplateExp;
+import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
+import org.eclipse.qvtd.pivot.qvttemplate.TemplateExp;
 import procedure.translators.TranslatorContext;
 
 /**
- * Traverse the abstract syntax tree of an OCL expression and recursively
+ * Traverse the abstract syntax tree of a QVT-R expression and recursively
  * returns the set of QVT-R variables found inside the expression.
  * 
  * @author Aurélien Pepin
  */
-public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
+public class DependencyVisitor extends AbstractQVTrelationVisitor<Set<Variable>, TranslatorContext> {
 
     public DependencyVisitor(TranslatorContext context) {
         super(context);
@@ -311,6 +338,144 @@ public class DependencyVisitor extends AbstractVisitor<Set<Variable>, Translator
     @Override // OK
     public Set<Variable> visitVariableExp(VariableExp ve) {
         return new HashSet<>(Arrays.asList((Variable) ve.getReferredElement()));
+    }
+    
+    /* **********************************************************
+     * BELOW, VISITOR'S METHODS FOR QVT EXPRESSIONS.
+     * **********************************************************
+     */
+    
+    @Override
+    public Set<Variable> visitBaseModel(BaseModel bm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitDomain(Domain domain) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitFunction(Function fnctn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitFunctionParameter(FunctionParameter fp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPattern(Pattern ptrn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitPredicate(Predicate prdct) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRule(Rule rule) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTransformation(Transformation t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTypedModel(TypedModel tm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitCollectionTemplateExp(CollectionTemplateExp cte) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitObjectTemplateExp(ObjectTemplateExp ote) {
+        System.out.println("TEMPORARY OBJECTTEMPLATEEXP VISIT");
+        System.out.println(ote.getPart());
+        System.out.println(ote.getReferredClass());
+        
+        Set<Variable> partsSet = new HashSet<>();
+        for (PropertyTemplateItem pti : ote.getPart()) {
+            partsSet.addAll(pti.accept(this));
+        }
+        
+        return partsSet;
+    }
+
+    @Override
+    public Set<Variable> visitPropertyTemplateItem(PropertyTemplateItem pti) {
+        System.out.println("TEMPORARY PROPERTYTEMPLATEITEM VISIT");
+        System.out.println("NEED TO BIND THIS WITH THE PTI SOURCE");
+        
+        return pti.getValue().accept(this);
+    }
+
+    @Override
+    public Set<Variable> visitTemplateExp(TemplateExp te) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitDomainPattern(DomainPattern dp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitKey(Key key) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelation(Relation rltn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationCallExp(RelationCallExp rce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationDomain(RelationDomain rd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationDomainAssignment(RelationDomainAssignment rda) {
+        System.out.println("rda: " + rda);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationImplementation(RelationImplementation ri) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationModel(RelationModel rm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitRelationalTransformation(RelationalTransformation rt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitSharedVariable(SharedVariable sv) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Variable> visitTemplateVariable(TemplateVariable tv) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /* **********************************************************
