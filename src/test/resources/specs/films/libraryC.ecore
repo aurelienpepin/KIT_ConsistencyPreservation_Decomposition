@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="LibraryC"
+ nsURI="LibraryC_LibraryC.xmi" nsPrefix="LibraryC">
+  <eClassifiers xsi:type="ecore:EClass" name="LibraryC">
+     <eReferences name="featurefilms" eType="#//FeatureFilm" transient="true" unique="true"  lowerBound="0" upperBound="-1" ordered ="false">
+     </eReferences>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureFilm">
+     <eAttributes name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" transient="false" unique="true">
+     </eAttributes>
+  </eClassifiers>
+</ecore:EPackage>

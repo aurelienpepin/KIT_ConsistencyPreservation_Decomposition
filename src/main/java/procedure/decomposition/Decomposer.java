@@ -108,7 +108,7 @@ public class Decomposer {
                 ctx.mkNot((BoolExpr) constraint.getPredicate()), 0, null, null, null, null);
         
         s.add(qt2);
-        
+
         System.out.println("-----------------------------------");
         System.out.println("assertions_size: " + s.getAssertions().length);
         System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));

@@ -1,0 +1,18 @@
+import libApack : 'libraryA.ecore'::LibraryA;
+import libBpack : 'libraryB.ecore'::LibraryB;
+import libCpack : 'libraryC.ecore'::LibraryC;
+
+transformation libAtoLibB(lAp:libApack, lBp:libBpack) {
+	
+	top relation AtoB {
+		mediaId: Integer;
+		m: LibraryA::Medium;
+		l: LibraryA::LibraryA;
+		
+		domain lAp libA:LibraryA {} {l = libA and l.media->includes(m) and m.id = mediaId};
+		
+		domain lBp libB:LibraryB {
+			films = fB:Film {id = mediaId}
+		};
+	}
+}
