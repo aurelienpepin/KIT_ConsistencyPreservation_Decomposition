@@ -42,9 +42,18 @@ public class QVTDomain {
         this.patterns = new ArrayList<>();
         this.parts = new ArrayList<>();
         
+        // System.out.println("VISITONS LE DOMAIN: ");
+        // domain.accept(new DependencyVisitor(TranslatorContext.getInstance()));
+        
+        // System.out.println(domain.eAllContents());
         System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0));
-        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0).getTemplateExpression().getWhere());  
-
+        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0).getTemplateExpression().getWhere());
+        for (Element el : domain.allOwnedElements()) {
+            System.out.println(el + "\t\t||| " + el.eContainer().eClass() + " ? " + el.eContainmentFeature());
+        }
+        
+        
+        
         for (DomainPattern dp : domain.getPattern()) {
             this.patterns.add(dp);
             this.parts.addAll(((ObjectTemplateExp) dp.getTemplateExpression()).getPart());

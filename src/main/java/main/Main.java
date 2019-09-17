@@ -1,5 +1,8 @@
 package main;
 
+import com.microsoft.z3.ArrayExpr;
+import com.microsoft.z3.Context;
+import com.microsoft.z3.Solver;
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.util.mxCellRenderer;
@@ -21,11 +24,12 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
         System.out.println(">> DECOMPOSITION PROCEDURE <<");
+        testZ3();
         
         // 1. CREATE GRAPH
         // TODO: read the filename(s) from `args`
-        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\films\\films.qvtr";
-        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simple\\simple.qvtr";
+        // String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\films\\films.qvtr";
+        String qvtr = "C:\\Logiciels\\eclipse_workspace\\decomposition\\src\\test\\resources\\specs\\simple\\simple.qvtr";
         
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
         showGraph(graph.toDual());
@@ -52,5 +56,25 @@ public class Main {
         BufferedImage image = mxCellRenderer.createBufferedImage(graphAdapter, null, 5, Color.WHITE, true, null);
         File imgFile = new File("src/test/resources/graph.png");
         ImageIO.write(image, "PNG", imgFile);
+    }
+    
+    public static void testZ3() {
+        Context ctx = new Context();
+        Solver s = ctx.mkSolver();
+        
+        //  Three sets with unspecified content
+        ArrayExpr set1 = (ArrayExpr) ctx.mkConst("a", ctx.mkSetSort(ctx.mkIntSort()));
+        ArrayExpr set2 = (ArrayExpr) ctx.mkConst("b", ctx.mkSetSort(ctx.mkIntSort()));
+        ArrayExpr set3 = (ArrayExpr) ctx.mkConst("c", ctx.mkSetSort(ctx.mkIntSort()));
+        
+        s.add(ctx.mkNot(
+            ctx.mkImplies(
+                ctx.mkAnd(ctx.mkSetSubset(set2, set1), ctx.mkSetSubset(set3, set2)),
+                ctx.mkSetSubset(set3, set1)
+            )
+        ));
+        
+        // Result: UNSATISFIABLE
+        System.out.println("S: " + s.check());
     }
 }

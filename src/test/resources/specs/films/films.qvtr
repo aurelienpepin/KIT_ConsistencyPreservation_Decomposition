@@ -16,6 +16,3 @@ transformation libAtoLibB(lAp:libApack, lBp:libBpack) {
 		};
 	}
 }
-
--- class org.eclipse.ocl.pivot.internal.VariableExpImpl
--- class org.eclipse.qvtd.pivot.qvttemplate.impl.ObjectTemplateExpImpl
