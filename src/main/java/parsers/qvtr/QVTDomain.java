@@ -46,13 +46,11 @@ public class QVTDomain {
         // domain.accept(new DependencyVisitor(TranslatorContext.getInstance()));
         
         // System.out.println(domain.eAllContents());
-        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0));
-        System.out.println("aaaaaaaaaaaaaaaah: " + domain.getPattern().get(0).getTemplateExpression().getWhere());
-        for (Element el : domain.allOwnedElements()) {
-            System.out.println(el + "\t\t||| " + el.eContainer().eClass() + " ? " + el.eContainmentFeature());
-        }
-        
-        
+        // System.out.println("templateExp: " + domain.getPattern().get(0));
+        // System.out.println("where of templateExp: " + domain.getPattern().get(0).getTemplateExpression().getWhere());
+        // for (Element el : domain.allOwnedElements()) {
+        //     System.out.println(el + "\t\t||| " + el.eContainer().eClass() + " ? " + el.eContainmentFeature());
+        // }
         
         for (DomainPattern dp : domain.getPattern()) {
             this.patterns.add(dp);

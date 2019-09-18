@@ -4,15 +4,47 @@ import libCpack : 'libraryC.ecore'::LibraryC;
 
 transformation libAtoLibB(lAp:libApack, lBp:libBpack) {
 	
+	-- WITH COLLECTION TEMPLATE EXPRESSION
+	-- 	top relation AtoB {
+	-- 		mediaId: Integer;
+	-- 		m: LibraryA::Medium;
+	-- 		l: LibraryA::LibraryA;
+	-- 		
+	-- 		domain lAp libA:LibraryA {} {l = libA and l.media->includes(m) and m.id = mediaId};
+	-- 		
+	-- 		domain lBp libB:LibraryB {
+	-- 			films = fB:Film {id = mediaId}
+	-- 		};
+	-- 	}
+	
+	-- WITHOUT COLLECTION TEMPLATE EXPRESSION
 	top relation AtoB {
-		mediaId: Integer;
-		m: LibraryA::Medium;
+		idFs: Set(Integer);
 		l: LibraryA::LibraryA;
 		
-		domain lAp libA:LibraryA {} {l = libA and l.media->includes(m) and m.id = mediaId};
+		domain lAp libA:LibraryA {} {l = libA and l.media->collect(id)->includesAll(idFs)};
+		domain lBp libB:LibraryB {} {idFs = libB.films->collect(id)};
+	}
+}
+
+transformation libBtoLibC(lBp:libBpack, lCp:libCpack) {
+	
+	top relation BtoC {
+		idFs: Set(Integer);
+		l: LibraryB::LibraryB;
 		
-		domain lBp libB:LibraryB {
-			films = fB:Film {id = mediaId}
-		};
+		domain lBp libB:LibraryB {} {l = libB and l.films->collect(id)->includesAll(idFs)};
+		domain lCp libC:LibraryC {} {idFs = libC.featurefilms->collect(id)};		
+	}
+}
+
+transformation libAtoLibC(lAp:libApack, lCp:libCpack) {
+	
+	top relation AtoC {
+		idFs: Set(Integer);
+		l: LibraryA::LibraryA;
+		
+		domain lAp libA:LibraryA {} {l = libA and l.media->collect(id)->includesAll(idFs)};
+		domain lCp libC:LibraryC {} {idFs = libC.featurefilms->collect(id)};		
 	}
 }
