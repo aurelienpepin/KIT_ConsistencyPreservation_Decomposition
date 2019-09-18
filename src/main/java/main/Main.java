@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import metamodels.DualGraph;
 import metamodels.MetaGraph;
@@ -19,8 +20,10 @@ import procedure.decomposition.Decomposer;
 
 public class Main {
     
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
     public static void main(String[] args) throws IOException {
-        System.out.println(">> DECOMPOSITION PROCEDURE <<");
+        LOGGER.info(">> DECOMPOSITION PROCEDURE <<");
         
         // 1. CREATE GRAPH
         // TODO: read the filename(s) from `args`
@@ -30,7 +33,7 @@ public class Main {
         showGraph(graph.toDual());
         
         // 2. PERFORM DECOMPOSITION
-        System.out.println(Decomposer.decompose(graph));
+        LOGGER.info(Decomposer.decompose(graph).toString());
     }
     
     /**

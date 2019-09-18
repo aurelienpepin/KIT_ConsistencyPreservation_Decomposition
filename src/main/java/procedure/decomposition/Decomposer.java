@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import metamodels.DualGraph;
 import metamodels.MetaGraph;
 import metamodels.edges.DualEdge;
@@ -28,6 +29,8 @@ import procedure.translators.TranslatorContext;
  */
 public class Decomposer {
 
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
     public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();
         Set<BoolExpr> preconditions = graph.getPreconditions();
@@ -67,7 +70,7 @@ public class Decomposer {
                     component.removeVertex(constraint);
                     removedDualVertices.add(constraint);
                     
-                    System.out.println("REPLACED: " + constraint);
+                    LOGGER.info("REPLACED: " + constraint);
                     break;
                 }
             }
@@ -109,24 +112,10 @@ public class Decomposer {
         
         s.add(qt2);
         
-        System.out.println("-----------------------------------");
-        System.out.println("assertions_size: " + s.getAssertions().length);
-        System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));
+        // System.out.println("-----------------------------------");
+        // System.out.println("assertions_size: " + s.getAssertions().length);
+        // System.out.println("assertions:\n" + Arrays.toString(s.getAssertions()));
         
-        // (!) System.out.println(ctx.SimplifyHelp());
-        // System.out.println(s.check());
-        // System.out.println("UnsatCore: " + Arrays.toString(s.getUnsatCore()));
-        // System.out.println("Statistics: " + s.getStatistics());
-        // System.out.println("Parameters: " + s.getParameterDescriptions());
-        // System.out.println("Ctx Params: " + ctx.mkParams().toString());
-        // System.out.println(s.getReasonUnknown());
-        // System.out.println(s.getModel());
-        // System.out.println("Check: " + fakeS.check());
-        // System.out.println("UnsatCore: " + Arrays.toString(fakeS.getUnsatCore()));
-        // System.out.println(s.check());
-        // System.out.println(s.getModel());
-        
-        // (!!) already unsatisfiable in left hand >> check before? TODO
         return Status.UNSATISFIABLE.equals(s.check());
     }
     

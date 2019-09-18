@@ -63,7 +63,7 @@ public class OperationCallCollection implements Translatable {
         FuncDecl array = ((DatatypeSort) dteExpr.getSort()).getAccessors()[0][1];
 
         if (datatypeEquals(dteExpr, "Sequence")) {
-            IntExpr i = c.mkIntConst("_i"); // TODO: dynamic naming to avoid conflicts
+            IntExpr i = c.mkIntConst("_i"); // TODO: dynamic name to avoid conflicts
             BoolExpr findElem = c.mkEq(operands.get(1), c.mkSelect((ArrayExpr) c.mkApp(array, dteExpr), i));
             BoolExpr search = c.mkImplies(c.mkAnd(c.mkGe(i, c.mkInt(0)), c.mkLt(i, (ArithExpr) c.mkApp(length, dteExpr))), findElem);
             

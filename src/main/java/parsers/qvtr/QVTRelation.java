@@ -135,10 +135,10 @@ public class QVTRelation implements QVTTranslatable {
      */
     private void transformDomain(MetaGraph graph, QVTDomain domain) {        
         for (PropertyTemplateItem pti : domain.getParts()) {
-            // System.out.println(pti + " " + pti.getValue().accept(depV));
             Set<Variable> variables = pti.getValue().accept(depV);
             varIndexer.addBinding(variables, pti);
             
+            // TODO: extend to other kinds of property
             graph.addVertex(new EAttributeVertex((EAttribute) pti.getResolvedProperty().getESObject()));
         }
     }
