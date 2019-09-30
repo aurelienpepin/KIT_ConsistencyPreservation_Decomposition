@@ -97,7 +97,7 @@ public class CollectionConstraintFactory {
     public Expr createSequenceLiteral(CollectionLiteralExp cle) {
         Context c = context.getZ3Ctx();
         Sort sort = parentFactory.fromType(cle.getType().flattenedType());
-        String symbol = context.getCollIndexer().getSymbol(cle);
+        String symbol = context.getCollectionIndexer().getSymbol(cle);
         
         DatatypeSort seqSort = sortFromCollection(CollectionKind.SEQUENCE, sort);
         FuncDecl makeSeq = seqSort.getConstructors()[0];

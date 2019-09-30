@@ -38,7 +38,7 @@ public class TranslatorContext {
         return this.z3Context;
     }
 
-    public OCLCollectionIndexer getCollIndexer() {
+    public OCLCollectionIndexer getCollectionIndexer() {
         return collectionIndexer;
     }
 }
