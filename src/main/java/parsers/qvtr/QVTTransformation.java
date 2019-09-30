@@ -43,6 +43,7 @@ public class QVTTransformation implements QVTTranslatable {
         this.modelParams = new HashMap<>();
         
         // A relation is a concrete subclass of a rule.
+        // Safe cast: the relation (QVTR) is the relation version of the rule (QVTTemplate)
         for (Rule rule : transformation.getRule()) {
             relations.add(new QVTRelation((Relation) rule));
         }

@@ -3,6 +3,7 @@ package procedure.visitors;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
 import com.microsoft.z3.Sort;
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.ocl.pivot.CollectionLiteralExp;
@@ -25,6 +26,7 @@ import procedure.visitors.operationcalls.OperationCallSequence;
 import procedure.visitors.operationcalls.OperationCallSet;
 import procedure.visitors.operationcalls.OperationCallSize;
 import procedure.visitors.operationcalls.OperationCallString;
+import procedure.visitors.operationcalls.Translatable;
 
 /**
  * Transform complex OCL expressions into Z3 predicates.
@@ -37,14 +39,32 @@ public class ConstraintFactory {
     private final TranslatorContext context;
     
     /**
-     * A specialized factory to translate declarations of OCL collection literals.
+     * Specialized factory to translate declarations of OCL collection literals.
      */
     private final CollectionConstraintFactory collFactory;
     
+    /**
+     * Set of objects to translate OCL expressions such as operation calls
+     */
+    private final List<Translatable> translatables;
     
     public ConstraintFactory(TranslatorContext context) {
         this.context = context;
         this.collFactory = new CollectionConstraintFactory(this, context);
+        
+        // Register all translatables
+        this.translatables = new ArrayList<>();
+        this.translatables.add(new OperationCallArith());
+        this.translatables.add(new OperationCallBool());
+        this.translatables.add(new OperationCallCast());
+        this.translatables.add(new OperationCallCollection());
+        this.translatables.add(new OperationCallEq());
+        this.translatables.add(new OperationCallOrd());
+        this.translatables.add(new OperationCallOrdSet());
+        this.translatables.add(new OperationCallSequence());
+        this.translatables.add(new OperationCallSet());
+        this.translatables.add(new OperationCallSize());
+        this.translatables.add(new OperationCallString());
     }
      
     /**
@@ -58,66 +78,15 @@ public class ConstraintFactory {
      * @return          Translated operation
      */
     public Expr fromOperationCall(OperationCallExp oce, List<Expr> operands) {
-        Context c = context.getZ3Ctx();
-
-        switch (oce.getReferredOperation().getOperationId().getName()) {
-            case "=":
-            case "<>":
-                return (new OperationCallEq()).translate(context, oce, operands);
-            // Arithmetic operations
-            case "+":
-            case "-":
-            case "*":
-            case "/":
-            case "div":
-            case "mod":
-            case "abs":
-                return (new OperationCallArith()).translate(context, oce, operands);
-            // Ordered set operations
-            case "max":
-            case "min":
-                return (new OperationCallOrdSet()).translate(context, oce, operands);
-            // Fractionals to integrals
-            case "floor":
-            case "round":
-                return (new OperationCallCast()).translate(context, oce, operands);
-            // Order relations
-            case "<":
-            case "<=":
-            case ">":
-            case ">=":
-                return (new OperationCallOrd()).translate(context, oce, operands);
-            // Boolean functions
-            case "not":
-            case "and":
-            case "or":
-            case "xor":
-            case "implies":
-                return (new OperationCallBool()).translate(context, oce, operands);
-            // String-related functions
-            case "concat": 
-            case "substring":
-            case "toInteger":
-                return (new OperationCallString()).translate(context, oce, operands);
-            // Collection-related functions
-            case "isEmpty":
-            case "notEmpty":
-            case "includes":
-            case "excludes":
-                return (new OperationCallCollection()).translate(context, oce, operands);
-            // (Collection + String)-related functions
-            case "size":
-                return (new OperationCallSize()).translate(context, oce, operands);
-            // Sequence-related functions
-            case "at":
-            case "last":
-            case "first":
-                return (new OperationCallSequence()).translate(context, oce, operands);
-            case "symmetricDifference":
-                return (new OperationCallSet()).translate(context, oce, operands);
-            default:
-                throw new UnsupportedOperationException("Unsupported operation in constraint translation: " + oce.getReferredOperation());
+        String operationName = oce.getReferredOperation().getOperationId().getName();
+        
+        for (Translatable translatable : translatables) {
+            if (translatable.isResponsibleFor(operationName)) {
+                return translatable.translate(context, oce, operands);
+            }
         }
+        
+        throw new UnsupportedOperationException("Unknown or unsupported operation: " + operationName);
     }
     
     /**
@@ -125,7 +94,7 @@ public class ConstraintFactory {
      * 
      * @param cle   Collection literal to translate
      * @return      Translated collection literal
-     */
+     */  
     public Expr fromCollectionLiteral(CollectionLiteralExp cle) {
         switch (cle.getKind()) {
             case SEQUENCE:

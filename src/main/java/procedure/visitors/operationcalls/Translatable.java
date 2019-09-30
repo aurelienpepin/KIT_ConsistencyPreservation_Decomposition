@@ -24,6 +24,13 @@ public interface Translatable {
     public Expr translate(TranslatorContext ctx, OperationCallExp oce, List<Expr> operands);
     
     /**
+     * Find the good utility class to call to translate an operation.
+     * @param operation     Name of the operation to translate
+     * @return              True if the class can translate it, false otherwise
+     */
+    public boolean isResponsibleFor(String operation);
+    
+    /**
      * Helper function for short type verification.
      * @param oce   OCL operation call expression
      * @param type  Type to compare

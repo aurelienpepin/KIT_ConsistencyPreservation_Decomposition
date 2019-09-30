@@ -7,7 +7,10 @@ import com.microsoft.z3.DatatypeExpr;
 import com.microsoft.z3.DatatypeSort;
 import com.microsoft.z3.FuncDecl;
 import com.microsoft.z3.IntExpr;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import procedure.translators.TranslatorContext;
 
@@ -16,7 +19,18 @@ import procedure.translators.TranslatorContext;
  * @author Aurélien Pepin
  */
 public class OperationCallSet implements Translatable {
-
+    
+    /**
+     * To add the support of an operation:
+     *  - Add the operation name in the array below
+     *  - Add a case in OperationCallArith::translate
+     */
+    private static final String[] NAMES = new String[] {
+        "union", "intersection", "symmetricDifference"
+    };
+    
+    private static final Set<String> OPERATIONS = new HashSet<>(Arrays.asList(NAMES));
+    
     @Override
     public Expr translate(TranslatorContext ctx, OperationCallExp oce, List<Expr> operands) {
         Context c = ctx.getZ3Ctx();
@@ -92,5 +106,10 @@ public class OperationCallSet implements Translatable {
         Expr newLength = c.mkAdd((IntExpr) c.mkApp(length, set1), (IntExpr) c.mkApp(length, set2));
         Expr newSet = c.mkSetDifference(c.mkSetUnion(arraySet1, arraySet2), c.mkSetIntersection(arraySet1, arraySet2));
         return c.mkApp(makeSet, newLength, newSet);
+    }
+
+    @Override
+    public boolean isResponsibleFor(String operation) {
+        return OPERATIONS.contains(operation);
     }
 }

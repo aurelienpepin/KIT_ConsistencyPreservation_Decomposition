@@ -93,7 +93,7 @@ public class QVTRelation implements QVTTranslatable {
         this.transformWhen(graph);
         
         // Group variables that have something to do together
-        this.varIndexer.merge();
+        this.varIndexer.joinConstraints();
         
         // Build edges (MetaEdge) that represent constraints on set of metamodel elements
         for (Entry<Set<Variable>, EdgeAssembler> entry : varIndexer.getBindings().entrySet()) {

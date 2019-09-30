@@ -94,12 +94,11 @@ public class VariableIndexer {
      * INPUT:   [({1, 2, 3}:{a, b}), ({2, 4}:{c}), ({5}:{d})]
      * OUTPUT:  [({1, 2, 3, 4}:{a, b, c}), ({5}:{d})]
      */
-    public void merge() {
-        boolean merged = true;
+    public void joinConstraints() {
+        boolean merged = false;
         List<Entry<Set<Variable>, EdgeAssembler>> entries = new ArrayList<>(bindings.entrySet());
         
-        while (merged) {
-            merged = false;
+        do {
             List<Entry<Set<Variable>, EdgeAssembler>> results = new ArrayList<>(); 
             
             while (!entries.isEmpty()) {
@@ -120,8 +119,9 @@ public class VariableIndexer {
             }
                         
             entries = results;
-        }
+        } while (merged);
         
+        // Replace the old (separate) bindings with the merged ones
         bindings.clear();
         for (Entry<Set<Variable>, EdgeAssembler> entry : entries) {
             bindings.put(entry.getKey(), entry.getValue());
