@@ -27,9 +27,11 @@ import procedure.translators.TranslatorContext;
  *
  * @author Aurélien Pepin
  */
-public class Decomposer {
+public final class Decomposer {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
+    private Decomposer() {}
     
     public static List<DecompositionResult> decompose(MetaGraph graph) {
         List<DecompositionResult> results = new ArrayList<>();

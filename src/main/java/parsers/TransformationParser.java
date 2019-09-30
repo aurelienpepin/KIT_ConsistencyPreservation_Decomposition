@@ -30,9 +30,11 @@ import procedure.translators.TransformationTranslator;
  * @see     QVTSpecification
  * @author  Aurelien
  */
-public class TransformationParser {
+public final class TransformationParser {
     
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
+    private TransformationParser() {}
     
     /**
      * Generate graph from an arbitrary number of QVT-R transformation files.
