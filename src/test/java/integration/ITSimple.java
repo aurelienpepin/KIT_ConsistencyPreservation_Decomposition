@@ -10,7 +10,7 @@ import procedure.decomposition.DecompositionResult;
 
 /**
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class ITSimple extends TestCase implements IntegrationTest {
     

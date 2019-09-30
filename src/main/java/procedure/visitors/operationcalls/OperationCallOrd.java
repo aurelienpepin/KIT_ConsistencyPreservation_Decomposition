@@ -12,7 +12,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about order relations.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallOrd implements Translatable {
 

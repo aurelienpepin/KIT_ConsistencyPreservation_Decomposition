@@ -14,7 +14,7 @@ import static procedure.visitors.operationcalls.Translatable.typeEquals;
 
 /**
  * Translate operation calls about strings.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallString implements Translatable {
 

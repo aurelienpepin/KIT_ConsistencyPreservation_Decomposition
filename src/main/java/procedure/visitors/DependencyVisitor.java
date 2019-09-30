@@ -137,7 +137,7 @@ import procedure.translators.TranslatorContext;
  * Traverse the abstract syntax tree of an OCL expression and recursively
  * returns the set of QVT-R variables found inside the expression.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class DependencyVisitor extends AbstractVisitor<Set<Variable>, TranslatorContext>  {
 

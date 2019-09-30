@@ -138,7 +138,7 @@ import procedure.translators.TranslatorContext;
  * Traverse the abstract syntax tree of an OCL expression and recursively
  * returns the translation into Z3 expressions of OCL expressions.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class ConstraintVisitor extends AbstractVisitor<Expr, TranslatorContext> {
     

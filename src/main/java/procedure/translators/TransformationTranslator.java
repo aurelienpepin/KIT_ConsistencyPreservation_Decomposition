@@ -9,7 +9,7 @@ import parsers.qvtr.QVTTransformation;
  * Starting point of the translation of QVT-R transformations.
  * Starts the translation and gives an access of models to translate to the graph.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class TransformationTranslator {
     

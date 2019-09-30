@@ -2,7 +2,7 @@ package integration;
 
 /**
  * Common interface for integration tests.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public interface IntegrationTest {
     

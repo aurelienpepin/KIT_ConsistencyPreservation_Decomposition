@@ -16,7 +16,7 @@ import parsers.qvtr.QVTSpecification;
  * 
  * TODO: preconditions are not shared from metagraph to dual graph (!)
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class DualGraph extends SimpleGraph<MetaEdge, DualEdge> {
 

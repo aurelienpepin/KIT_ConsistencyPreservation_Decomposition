@@ -17,7 +17,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about sequences (specifically).
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallSequence implements Translatable {
 

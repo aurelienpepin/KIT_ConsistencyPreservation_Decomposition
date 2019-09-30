@@ -32,7 +32,7 @@ import procedure.visitors.operationcalls.Translatable;
  * Transform complex OCL expressions into Z3 predicates.
  * Called by the ConstraintVisitor.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class ConstraintFactory {
 

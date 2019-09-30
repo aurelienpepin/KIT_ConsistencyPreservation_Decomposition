@@ -9,7 +9,7 @@ import org.eclipse.ocl.pivot.CollectionLiteralExp;
  * (!) Note: pending implementation as the initialization of constant
  * arrays in Z3 may avoid the use of this class.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OCLCollectionIndexer {
     

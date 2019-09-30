@@ -19,7 +19,7 @@ import static procedure.visitors.operationcalls.Translatable.datatypeEquals;
 
 /**
  * Translate operation calls about collections.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallCollection implements Translatable {
 

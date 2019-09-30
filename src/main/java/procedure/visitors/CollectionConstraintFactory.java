@@ -23,7 +23,7 @@ import procedure.translators.TranslatorContext;
  * 
  * All OCL data structures are represented using Z3 arrays.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class CollectionConstraintFactory {
     

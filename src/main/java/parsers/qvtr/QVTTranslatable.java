@@ -6,7 +6,7 @@ import metamodels.MetaGraph;
  * Common interface for all QVT-R components that can be translated into
  * a metagraph.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public interface QVTTranslatable {
     

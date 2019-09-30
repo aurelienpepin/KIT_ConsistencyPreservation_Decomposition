@@ -25,7 +25,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  *
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public final class Decomposer {
 

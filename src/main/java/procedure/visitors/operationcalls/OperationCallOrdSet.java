@@ -12,7 +12,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about extrema.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallOrdSet implements Translatable {
 

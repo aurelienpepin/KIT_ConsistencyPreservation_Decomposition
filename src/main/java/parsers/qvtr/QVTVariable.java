@@ -7,7 +7,7 @@ import org.eclipse.ocl.pivot.Variable;
  * Represents a variable in QVT-R.
  * Variables are used to bind metamodel elements.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTVariable {
     

@@ -10,7 +10,7 @@ import org.jgrapht.graph.AsSubgraph;
  * Stores a component and edges that have been removed in this component.
  * The result of the decomposition procedure is a set of `DecompositionResult`.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class DecompositionResult {
 

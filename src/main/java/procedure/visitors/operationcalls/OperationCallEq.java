@@ -11,7 +11,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about equality.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallEq implements Translatable {
 

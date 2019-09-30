@@ -12,7 +12,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about booleans.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallBool implements Translatable {
 

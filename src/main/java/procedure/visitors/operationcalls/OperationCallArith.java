@@ -16,7 +16,7 @@ import static procedure.visitors.operationcalls.Translatable.typeEquals;
 
 /**
  * Translate operation calls about arithmetics.
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallArith implements Translatable {
 

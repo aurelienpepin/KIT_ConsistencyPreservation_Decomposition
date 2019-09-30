@@ -6,7 +6,7 @@ import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
  * Represents a model parameter, i.e. a set of typed models that participate in
  * the transformation.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTModelParam {
     

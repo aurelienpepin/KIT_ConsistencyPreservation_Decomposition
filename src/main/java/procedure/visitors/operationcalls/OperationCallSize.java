@@ -21,7 +21,7 @@ import static procedure.visitors.operationcalls.Translatable.typeEquals;
  * The `size` operation call is handled in a different class because it is
  * both a function of String and Collection in OCL.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallSize implements Translatable {
 

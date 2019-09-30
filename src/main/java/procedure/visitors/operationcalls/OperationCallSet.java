@@ -16,7 +16,7 @@ import procedure.translators.TranslatorContext;
 
 /**
  * Translate operation calls about sets (specifically).
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class OperationCallSet implements Translatable {
     

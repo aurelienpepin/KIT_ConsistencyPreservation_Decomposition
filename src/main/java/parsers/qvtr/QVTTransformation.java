@@ -14,7 +14,7 @@ import org.eclipse.qvtd.pivot.qvtrelation.RelationalTransformation;
  * Represents a transformation, i.e. a set of rules to specify how one set of
  * models can be transformed into another. Basic component in QVT-R.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTTransformation implements QVTTranslatable {
     

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * A collection of QVT transformations.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTSpecification {
     

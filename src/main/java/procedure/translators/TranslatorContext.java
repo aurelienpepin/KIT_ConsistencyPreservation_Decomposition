@@ -3,7 +3,7 @@ package procedure.translators;
 /**
  * (Singleton). Provides a unique access to important translation classes.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class TranslatorContext {
     

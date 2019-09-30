@@ -6,7 +6,7 @@ import metamodels.hypergraphs.HyperVertex;
  * Represents a metavertex, i.e. a vertex that represents a metamodel element
  * in the metagraph (consistency graph).
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public abstract class MetaVertex extends HyperVertex {
     

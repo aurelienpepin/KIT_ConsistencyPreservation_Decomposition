@@ -11,7 +11,7 @@ import org.eclipse.qvtd.pivot.qvttemplate.PropertyTemplateItem;
  * Represents a domain in QVT-R, i.e. a typed variable that can be matched
  * in a model of a given model type. A domain is part of a relation.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTDomain {
     

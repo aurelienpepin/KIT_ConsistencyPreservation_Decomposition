@@ -19,7 +19,7 @@ import parsers.qvtr.QVTSpecification;
  * Constraints can involve more than two elements, so the metagraph is a
  * hypergraph (and not only a simple graph).
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class MetaGraph extends HyperGraph<MetaVertex, MetaEdge> {
     

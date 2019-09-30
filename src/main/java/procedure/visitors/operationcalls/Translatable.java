@@ -10,7 +10,7 @@ import procedure.translators.TranslatorContext;
  * Common interface for OperationCallX classes.
  * Provides util functions to check type and datatype equality.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public interface Translatable {
     

@@ -29,7 +29,7 @@ import procedure.translators.TranslatorContext;
  *
  * Edges of the metagraph are produced in the QVTRelation.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class QVTRelation implements QVTTranslatable {
     

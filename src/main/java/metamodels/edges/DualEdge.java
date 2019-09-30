@@ -8,7 +8,7 @@ import org.jgrapht.graph.DefaultEdge;
  * Represents a dual edge, i.e. the set of shared metamodel elements between
  * two constraints. A DualEdge is part of a DualGraph.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class DualEdge extends DefaultEdge {
     

@@ -13,7 +13,7 @@ import procedure.translators.VariableIndexer;
  * VariableIndexer (construction of constraints).
  * 
  * @see     VariableIndexer
- * @author  Aurélien Pepin
+ * @author  AurÃ©lien Pepin
  */
 public class EdgeAssembler {
     

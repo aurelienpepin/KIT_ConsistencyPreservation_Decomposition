@@ -8,7 +8,7 @@ import java.util.HashSet;
  * The class only includes the methods necessary to manipulate
  * a hypergraph in the context of the decomposition procedure.
  * 
- * @author  Aurélien Pepin
+ * @author  AurÃ©lien Pepin
  * @param   <V> The vertex type, derived from HyperVertex
  * @param   <E> The edge type, derived from HyperEdge
  */

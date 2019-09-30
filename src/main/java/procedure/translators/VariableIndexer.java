@@ -24,7 +24,7 @@ import procedure.visitors.ConstraintFactory;
  * The VariableIndexer organizes the consistency patterns in QVT-R in such a
  * way that the constraints of the metagraph can be created.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class VariableIndexer {
     

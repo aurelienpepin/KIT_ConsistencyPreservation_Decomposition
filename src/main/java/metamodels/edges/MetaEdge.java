@@ -15,7 +15,7 @@ import procedure.translators.TranslatorContext;
  * vertices, a set of Z3 expressions (formulas) and a set of free variables
  * that appear in formulas.
  * 
- * @author Aurélien Pepin
+ * @author AurÃ©lien Pepin
  */
 public class MetaEdge extends HyperEdge<MetaVertex> {
     
