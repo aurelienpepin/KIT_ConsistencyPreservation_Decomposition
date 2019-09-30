@@ -95,10 +95,11 @@ public class VariableIndexer {
      * OUTPUT:  [({1, 2, 3, 4}:{a, b, c}), ({5}:{d})]
      */
     public void joinConstraints() {
-        boolean merged = false;
+        boolean merged;
         List<Entry<Set<Variable>, EdgeAssembler>> entries = new ArrayList<>(bindings.entrySet());
         
         do {
+            merged = false;
             List<Entry<Set<Variable>, EdgeAssembler>> results = new ArrayList<>(); 
             
             while (!entries.isEmpty()) {

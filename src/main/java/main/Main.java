@@ -27,7 +27,7 @@ public class Main {
         
         // 1. CREATE GRAPH
         // TODO: read the filename(s) from `args`
-        String qvtr = "src\\test\\resources\\specs\\simple\\simple.qvtr";
+        String qvtr = "src\\test\\resources\\specs\\simpleDoubleConcat\\simpleDoubleConcat.qvtr";
 
         MetaGraph graph = TransformationParser.generateGraphFrom(qvtr);
         showGraph(graph.toDual());
